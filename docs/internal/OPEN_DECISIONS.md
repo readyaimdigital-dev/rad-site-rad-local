@@ -13,10 +13,11 @@ Astro 5.2 and later installs Tailwind 4 through the `@tailwindcss/vite`
 plugin. Tailwind 4 uses CSS-first theme configuration, so no legacy
 `tailwind.config.mjs` file is needed.
 
-The twelve brand values remain ordinary CSS variables in the `:root` block
-of `tokens.css`. An `@theme inline` block aliases them into Tailwind's theme
-namespaces without duplicating their values. This keeps `tokens.css` as the
-binding re-skin mechanism while satisfying the required Tailwind mapping.
+The brand values, including the responsive type scale, remain ordinary CSS
+variables in the `:root` block of `tokens.css`. An `@theme inline` block
+aliases them into Tailwind's theme namespaces without duplicating their
+values. This keeps `tokens.css` as the binding re-skin mechanism while
+satisfying the required Tailwind mapping.
 
 ## Default OG image is an SVG placeholder
 

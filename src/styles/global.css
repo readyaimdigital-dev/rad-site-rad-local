@@ -16,7 +16,8 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
-  line-height: 1.6;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line-height);
 }
 
 h1,
@@ -25,8 +26,25 @@ h3,
 h4 {
   font-family: var(--font-heading);
   color: var(--color-primary);
-  line-height: 1.2;
+  line-height: var(--type-heading-line-height);
+  letter-spacing: var(--type-heading-letter-spacing);
   margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: var(--type-h1-size);
+}
+
+h2 {
+  font-size: var(--type-h2-size);
+}
+
+h3 {
+  font-size: var(--type-h3-size);
+}
+
+h4 {
+  font-size: var(--type-h4-size);
 }
 
 a {
@@ -81,6 +99,11 @@ a {
 
 .text-muted {
   color: var(--color-muted);
+}
+
+.text-lead {
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-line-height);
 }
 
 .field {

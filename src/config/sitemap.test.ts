@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { shouldIncludeInSitemap } from "./sitemap";
+import { GET as getRobotsTxt } from "../pages/robots.txt";
 
 describe("shouldIncludeInSitemap", () => {
   it("excludes noindex legal templates", () => {
@@ -10,5 +11,11 @@ describe("shouldIncludeInSitemap", () => {
   it("includes indexable client pages", () => {
     expect(shouldIncludeInSitemap("https://example.com.au/" )).toBe(true);
     expect(shouldIncludeInSitemap("https://example.com.au/contact/")).toBe(true);
+  });
+
+  it("advertises the conventional sitemap.xml URL in robots.txt", async () => {
+    const response = await getRobotsTxt({} as never);
+
+    expect(await response.text()).toContain("Sitemap: https://example.com.au/sitemap.xml");
   });
 });

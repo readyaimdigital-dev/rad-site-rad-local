@@ -3,7 +3,9 @@ import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { readdir, readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import { extname, join } from "node:path";
+import { ensureSitemapAlias } from "./src/lib/build-artifacts.mjs";
 import { site } from "./src/config/site.ts";
 import { shouldIncludeInSitemap } from "./src/config/sitemap.ts";
 
@@ -21,10 +23,14 @@ async function stripGeneratorMetaFromHtml(directory) {
   }
 }
 
-const stripGeneratorMeta = () => ({
-  name: "strip-generator-meta",
+const finaliseBuildOutput = () => ({
+  name: "finalise-build-output",
   hooks: {
-    "astro:build:done": async ({ dir }) => stripGeneratorMetaFromHtml(new URL(dir).pathname),
+    "astro:build:done": async ({ dir }) => {
+      const directory = fileURLToPath(dir);
+      await stripGeneratorMetaFromHtml(directory);
+      await ensureSitemapAlias(directory);
+    },
   },
 });
 
@@ -32,7 +38,7 @@ export default defineConfig({
   site: site.url,
   output: "static",
   adapter: vercel(),
-  integrations: [sitemap({ filter: shouldIncludeInSitemap }), stripGeneratorMeta()],
+  integrations: [sitemap({ filter: shouldIncludeInSitemap }), finaliseBuildOutput()],
   vite: {
     plugins: [tailwindcss()],
   },

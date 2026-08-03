@@ -12,7 +12,7 @@ const services = getFeaturedServices();
   <section class="section hero">
     <div class="container">
       <h1>{content.home.hero.heading}</h1>
-      <p class="text-muted hero__lead">{content.home.hero.intro}</p>
+      <p class="text-muted text-lead hero__lead">{content.home.hero.intro}</p>
       <div class="hero__actions">
         <Button href="/contact">{content.home.hero.primaryCta}</Button>
         <Button href="/services" variant="secondary">{content.home.hero.secondaryCta}</Button>
@@ -48,7 +48,6 @@ const services = getFeaturedServices();
 <style>
   .hero__lead {
     max-width: 40rem;
-    font-size: 1.125rem;
   }
 
   .hero__actions {

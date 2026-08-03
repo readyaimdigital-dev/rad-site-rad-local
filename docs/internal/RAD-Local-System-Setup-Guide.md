@@ -162,18 +162,36 @@ Put tokens in `tokens.css` as CSS variables, *not* hard-coded into Tailwind. Thi
   --color-text: #1a1a1a;
   --color-muted: #666666;
 
-  /* type ... two slots only */
+  /* type ... two font slots plus one responsive scale */
   --font-heading: "Font A", sans-serif;
   --font-body: "Font B", sans-serif;
 
-  /* scale */
+  --type-body-size: 1rem;
+  --type-lead-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+  --type-h4-size: 1.125rem;
+  --type-h3-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --type-h2-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  --type-h1-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --type-body-line-height: 1.6;
+  --type-lead-line-height: 1.5;
+  --type-heading-line-height: 1.15;
+  --type-heading-letter-spacing: -0.02em;
+
+  /* shape and layout */
   --radius: 0.5rem;
   --space-section: 5rem;
   --shadow-card: 0 2px 12px rgba(0,0,0,0.08);
 }
 ```
 
-Map these into Tailwind so utilities and tokens stay in sync. On build day, the approved style guide becomes "edit these ~12 values" and the site re-skins instantly. **This is the mechanism that lets one template produce visually distinct sites.** How the design that fills these values is actually produced is the design phase ... see Stage 4.
+Map these into Tailwind so utilities and tokens stay in sync, including the
+`--text-*` font-size namespace and its line-height and letter-spacing
+modifiers. Apply the same tokens as semantic defaults for `h1` through `h4`
+so Tailwind preflight cannot flatten the heading hierarchy. On build day, the
+approved style guide becomes "edit these core values" and the site re-skins
+instantly. **This is the mechanism that lets one template produce visually
+distinct sites.** How the design that fills these values is actually produced
+is the design phase ... see Stage 4.
 
 ### 1.5 Plumbing checklist (build all of this now)
 

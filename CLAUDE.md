@@ -38,9 +38,10 @@ before treating a white-label build as ready.
 ## Token contract
 
 `src/styles/tokens.css` holds the compact CSS variable set that re-skins a site:
-colour, two font slots, radius, section spacing, card shadow and container
-width. This is the *only* place brand styling changes. Do not hard-code
-colours, fonts or spacing values in components or pages. Tailwind 4 is
+colour, two font slots, a responsive type scale, radius, section spacing, card
+shadow and container width. This is the *only* place brand styling changes. Do
+not hard-code colours, fonts, type sizes or spacing values in components or
+pages. Tailwind 4 is
 installed through its official Vite plugin, and `tokens.css` maps the root
 tokens into theme aliases such as `text-brand-primary`, `bg-brand-surface`
 and `font-brand-heading`. Use those utilities or the underlying

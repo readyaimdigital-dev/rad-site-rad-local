@@ -15,7 +15,7 @@ IMPLEMENTATION_REPORT_STAGE_1.md
 scripts
 integrations
 vitest.config.ts
-**/*.test.ts
+**/*.test.*
 
 # Secrets and local state.
 .env

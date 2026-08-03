@@ -52,8 +52,9 @@ Before building a client site, edit:
 - Environment variables: use `PUBLIC_BUILD_TYPE=direct` together with both
   attribution variables for a direct build. Missing or unsafe values fail
   back to white-label. Do not hard-code agency identity in shippable source.
-- `src/styles/tokens.css`: the ~12 CSS variables that re-skin the site and
-  their Tailwind 4 theme aliases. Change values only in the `:root` token block.
+- `src/styles/tokens.css`: the core CSS variables that re-skin the site,
+  including its responsive type scale, plus their Tailwind 4 theme aliases.
+  Change values only in the `:root` token block.
 
 ## Checks
 

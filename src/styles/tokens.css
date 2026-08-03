@@ -1,5 +1,5 @@
 /**
- * Design tokens: the re-skin mechanism. Editing these ~12 values re-skins
+ * Design tokens: the re-skin mechanism. Editing these core values re-skins
  * the whole site. Do not hard-code colours, fonts or spacing elsewhere;
  * reference these variables instead.
  */
@@ -17,6 +17,16 @@
   /* type */
   --font-heading: "Georgia", serif;
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --type-body-size: 1rem;
+  --type-lead-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+  --type-h4-size: 1.125rem;
+  --type-h3-size: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --type-h2-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+  --type-h1-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --type-body-line-height: 1.6;
+  --type-lead-line-height: 1.5;
+  --type-heading-line-height: 1.15;
+  --type-heading-letter-spacing: -0.02em;
 
   /* scale */
   --radius: 0.5rem;
@@ -41,6 +51,22 @@
   --color-brand-error: var(--color-error);
   --font-brand-heading: var(--font-heading);
   --font-brand-body: var(--font-body);
+  --text-brand-body: var(--type-body-size);
+  --text-brand-body--line-height: var(--type-body-line-height);
+  --text-brand-lead: var(--type-lead-size);
+  --text-brand-lead--line-height: var(--type-lead-line-height);
+  --text-brand-h4: var(--type-h4-size);
+  --text-brand-h4--line-height: var(--type-heading-line-height);
+  --text-brand-h4--letter-spacing: var(--type-heading-letter-spacing);
+  --text-brand-h3: var(--type-h3-size);
+  --text-brand-h3--line-height: var(--type-heading-line-height);
+  --text-brand-h3--letter-spacing: var(--type-heading-letter-spacing);
+  --text-brand-h2: var(--type-h2-size);
+  --text-brand-h2--line-height: var(--type-heading-line-height);
+  --text-brand-h2--letter-spacing: var(--type-heading-letter-spacing);
+  --text-brand-h1: var(--type-h1-size);
+  --text-brand-h1--line-height: var(--type-heading-line-height);
+  --text-brand-h1--letter-spacing: var(--type-heading-letter-spacing);
   --radius-brand: var(--radius);
   --spacing-section: var(--space-section);
   --shadow-brand-card: var(--shadow-card);
