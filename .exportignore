@@ -1,0 +1,31 @@
+# Defines what an on-exit client export excludes. The export contains that
+# client's site files only; RAD methodology, tooling and internal docs never
+# leave RAD. See docs/internal/RAD-Local-Decisions.md.
+
+.git
+.github
+
+# RAD IP: build methodology and internal setup docs, never shipped to a client.
+CLAUDE.md
+README.md
+docs/internal
+IMPLEMENTATION_PACKET_1.md
+IMPLEMENTATION_REPORT_STAGE_1.md
+.exportignore
+scripts
+integrations
+vitest.config.ts
+**/*.test.ts
+
+# Secrets and local state.
+.env
+.env.*
+!.env.example
+
+# Build artefacts and dependencies, regenerated per environment.
+node_modules
+dist
+.astro
+.vercel
+coverage
+exports

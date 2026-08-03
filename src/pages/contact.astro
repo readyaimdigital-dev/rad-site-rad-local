@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/ui/ContactForm.astro";
+import { site } from "../config/site";
+import { content } from "../config/content";
+---
+
+<BaseLayout title={content.contact.title} description={content.contact.description}>
+  <section class="section">
+    <div class="container contact-layout">
+      <div>
+        <h1>{content.contact.heading}</h1>
+        <p>{content.contact.intro}</p>
+        <p>
+          <strong>Phone:</strong> <a href={`tel:${site.contact.phone}`}>{site.contact.phone}</a><br />
+          <strong>Email:</strong> <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
+        </p>
+        <p class="text-muted">
+          {site.address.street}, {site.address.suburb} {site.address.state} {site.address.postcode}
+        </p>
+      </div>
+      <div class="card">
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 2rem;
+    align-items: start;
+  }
+</style>

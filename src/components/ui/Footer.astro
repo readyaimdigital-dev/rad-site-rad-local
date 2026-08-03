@@ -1,0 +1,74 @@
+---
+import { site } from "../../config/site";
+import { brand as defaultBrand, getFooterAttribution, type BrandConfig } from "../../config/brand";
+
+export interface Props {
+  /** Override for testing; production pages rely on the default export. */
+  brand?: BrandConfig;
+}
+
+const { brand = defaultBrand } = Astro.props;
+const attribution = getFooterAttribution(brand);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div>
+      <p class="site-footer__name">{site.name}</p>
+      <p class="text-muted">
+        {site.address.suburb}, {site.address.state} &middot; {site.contact.phone}
+      </p>
+    </div>
+    <nav class="site-footer__links" aria-label="Footer">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
+  </div>
+  <div class="container site-footer__bottom">
+    <p class="text-muted">&copy; {year} {site.legalName}. All rights reserved.</p>
+    {
+      attribution && (
+        <p class="text-muted">
+          Powered by <a href={attribution.url}>{attribution.label}</a>
+        </p>
+      )
+    }
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-surface);
+    padding: 2.5rem 0 1.5rem;
+    margin-top: var(--space-section);
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .site-footer__name {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .site-footer__links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    font-size: 0.875rem;
+  }
+</style>

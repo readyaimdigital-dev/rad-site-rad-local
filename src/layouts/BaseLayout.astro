@@ -1,0 +1,31 @@
+---
+import BaseHead from "../components/seo/BaseHead.astro";
+import SchemaOrg from "../components/seo/SchemaOrg.astro";
+import Header from "../components/ui/Header.astro";
+import Footer from "../components/ui/Footer.astro";
+import { site } from "../config/site";
+import "../styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <BaseHead title={title} description={description} noindex={noindex} />
+    <SchemaOrg />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

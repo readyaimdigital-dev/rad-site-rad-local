@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { content } from "../config/content";
+---
+
+<BaseLayout title={content.about.title} description={content.about.description}>
+  <section class="section">
+    <div class="container">
+      <h1>{content.about.heading}</h1>
+      {content.about.paragraphs.map((paragraph, index) => (
+        <p class:list={{ "text-muted": index > 0 }}>{paragraph}</p>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

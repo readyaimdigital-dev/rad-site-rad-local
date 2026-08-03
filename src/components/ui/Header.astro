@@ -1,0 +1,66 @@
+---
+import { site } from "../../config/site";
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__brand font-brand-heading text-brand-primary">{site.name}</a>
+    <nav aria-label="Primary">
+      <ul class="site-header__nav">
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-surface);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .site-header__brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-decoration: none;
+  }
+
+  .site-header__nav {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-header__nav a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .site-header__nav a:hover {
+    color: var(--color-accent);
+  }
+</style>

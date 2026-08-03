@@ -1,0 +1,55 @@
+---
+import { site } from "../../config/site";
+import { buildGa4InlineScript, normaliseGa4Id } from "../../lib/analytics";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+
+const pageTitle = title ? site.seo.titleTemplate.replace("%s", title) : site.seo.defaultTitle;
+const pageDescription = description ?? site.seo.defaultDescription;
+const canonicalUrl = new URL(Astro.url.pathname, site.url).toString();
+const ogImageUrl = new URL(site.images.ogDefault, site.url).toString();
+
+const ga4Id = normaliseGa4Id(import.meta.env.PUBLIC_GA4_ID);
+const ga4InlineScript = ga4Id ? buildGa4InlineScript(ga4Id) : null;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="icon" type="image/svg+xml" href={site.images.favicon} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:locale" content={site.locale.replace("-", "_")} />
+<meta property="og:site_name" content={site.name} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{
+  ga4Id && (
+    <>
+      <script async is:inline src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ga4Id)}`} />
+      <script
+        is:inline
+        set:html={ga4InlineScript}
+      />
+    </>
+  )
+}

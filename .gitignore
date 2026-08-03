@@ -1,0 +1,28 @@
+# build output
+dist/
+.output/
+.vercel/
+.astro/
+
+# dependencies
+node_modules/
+
+# Environment variables (never commit real values)
+.env*
+!.env.example
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# macOS
+.DS_Store
+
+# coverage
+coverage/
+exports/

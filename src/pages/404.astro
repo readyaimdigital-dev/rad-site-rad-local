@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page not found" noindex>
+  <section class="section not-found">
+    <div class="container">
+      <h1>Page not found</h1>
+      <p>Sorry, we couldn't find the page you were looking for.</p>
+      <a href="/" class="button">Back to home</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    text-align: center;
+    padding-block: calc(var(--space-section) * 1.5);
+  }
+</style>

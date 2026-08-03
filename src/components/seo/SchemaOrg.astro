@@ -1,0 +1,8 @@
+---
+import { buildLocalBusinessSchema, serializeJsonLd } from "../../config/schema";
+
+const schema = buildLocalBusinessSchema();
+const serialisedSchema = serializeJsonLd(schema);
+---
+
+<script type="application/ld+json" is:inline set:html={serialisedSchema} />

@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import Card from "../components/ui/Card.astro";
+import { site } from "../config/site";
+import { content, getFeaturedServices } from "../config/content";
+
+const services = getFeaturedServices();
+---
+
+<BaseLayout>
+  <section class="section hero">
+    <div class="container">
+      <h1>{content.home.hero.heading}</h1>
+      <p class="text-muted hero__lead">{content.home.hero.intro}</p>
+      <div class="hero__actions">
+        <Button href="/contact">{content.home.hero.primaryCta}</Button>
+        <Button href="/services" variant="secondary">{content.home.hero.secondaryCta}</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="container">
+      <h2>{content.home.servicesHeading}</h2>
+      <div class="grid">
+        {
+          services.map((service) => (
+            <Card title={service.title}>
+              <p>{service.body}</p>
+            </Card>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{content.home.serviceAreaHeading}</h2>
+      <p class="text-muted">
+        {content.home.serviceAreaIntro} {site.serviceArea.join(", ")} {content.home.serviceAreaSuffix}
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero__lead {
+    max-width: 40rem;
+    font-size: 1.125rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+</style>
