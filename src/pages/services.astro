@@ -1,32 +1,82 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Card from "../components/ui/Card.astro";
-import { content } from "../config/content";
+import JumpLinkHero from "../components/sections/JumpLinkHero.astro";
+import ServiceBand from "../components/sections/ServiceBand.astro";
+import PricingBasisGrid from "../components/sections/PricingBasisGrid.astro";
+import ProcessTimeline from "../components/sections/ProcessTimeline.astro";
+import FaqAccordion from "../components/sections/FaqAccordion.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import { content, getServicesByIds } from "../config/content";
+
+const { servicesPage } = content;
+const pricingCards = getServicesByIds(servicesPage.pricing.featuredServiceIds).map((service) => ({
+  unit: service.pricing.basis,
+  title: service.title,
+  value: servicesPage.serviceLabels.pricingValue,
+  note: service.pricing.note,
+}));
 ---
 
-<BaseLayout title={content.servicesPage.title} description={content.servicesPage.description}>
-  <section class="section">
-    <div class="container">
-      <h1>{content.servicesPage.heading}</h1>
-      <p class="text-muted">{content.servicesPage.intro}</p>
-      <div class="grid">
-        {
-          content.services.map((service) => (
-            <Card title={service.title}>
-              <p>{service.body}</p>
-            </Card>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<BaseLayout title={servicesPage.title} description={content.servicesPage.description}>
+  <JumpLinkHero
+    eyebrow={servicesPage.eyebrow}
+    heading={servicesPage.heading}
+    headlineAccent={servicesPage.headlineAccent}
+    lead={servicesPage.intro}
+    links={content.services.map((service) => ({ id: service.id, label: service.title }))}
+    image={servicesPage.image}
+  />
 
-<style>
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+  {
+    content.services.map((service, index) => (
+      <ServiceBand
+        id={service.id}
+        eyebrow={`${servicesPage.serviceLabels.eyebrowPrefix} ${String(index + 1).padStart(2, "0")}`}
+        icon={service.icon}
+        title={service.title}
+        body={service.body}
+        image={service.image}
+        photoSide={index % 2 === 0 ? "right" : "left"}
+        surface={index % 2 === 0 ? "default" : "surface"}
+        pricing={{
+          label: service.pricing.basis,
+          value: servicesPage.serviceLabels.pricingValue,
+          note: service.pricing.note,
+        }}
+        primaryCta={{ label: servicesPage.serviceLabels.primaryCtaLabel, href: "/contact" }}
+        secondaryCta={{ label: servicesPage.serviceLabels.secondaryCtaLabel, href: "#pricing" }}
+      />
+    ))
   }
-</style>
+
+  <div id="pricing">
+    <PricingBasisGrid
+      eyebrow={servicesPage.pricing.eyebrow}
+      heading={servicesPage.pricing.heading}
+      cards={pricingCards}
+      cta={{ label: servicesPage.pricing.ctaLabel, href: "/contact" }}
+      prompt={servicesPage.pricing.prompt}
+    />
+  </div>
+
+  <ProcessTimeline
+    eyebrow={servicesPage.process.eyebrow}
+    heading={servicesPage.process.heading}
+    steps={servicesPage.process.steps}
+    surface="default"
+  />
+
+  <FaqAccordion
+    eyebrow={servicesPage.faq.eyebrow}
+    heading={servicesPage.faq.heading}
+    items={servicesPage.faq.items}
+    surface="surface"
+  />
+
+  <CtaBand
+    heading={servicesPage.cta.heading}
+    sub={servicesPage.cta.sub}
+    ctaLabel={servicesPage.cta.ctaLabel}
+    href="/contact"
+  />
+</BaseLayout>

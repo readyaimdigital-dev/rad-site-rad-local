@@ -1,0 +1,199 @@
+---
+import type { ProcessStep, SectionImage } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  lead?: string;
+  steps: ProcessStep[];
+  image?: SectionImage;
+  note?: { heading: string; body: string };
+  surface?: "default" | "surface";
+}
+
+const { eyebrow, heading, lead, steps, image, note, surface = "surface" } = Astro.props;
+---
+
+<section class:list={["section process-timeline", surface === "surface" && "section--surface"]}>
+  <div class:list={["container", image && "process-timeline__grid"]}>
+    <div>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 class="process-timeline__title">{heading}</h2>
+      {lead && <p class="text-muted process-timeline__lead">{lead}</p>}
+      <ol class="process-timeline__list">
+        {
+          steps.map((step, index) => (
+            <li class="process-timeline__step">
+              <div class="process-timeline__num">{String(index + 1).padStart(2, "0")}</div>
+              <h3 class="process-timeline__step-title">{step.title}</h3>
+              <p class="process-timeline__step-body">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+    {
+      image && (
+        <div class="process-timeline__aside">
+          <div class="process-timeline__photo">
+            <img src={image.src} alt={image.alt} width="800" height="1000" loading="lazy" />
+            {(image.caption || image.meta) && (
+              <div class="process-timeline__cap">
+                {image.caption && <span class="process-timeline__cap-title">{image.caption}</span>}
+                {image.meta && <span class="process-timeline__cap-meta">{image.meta}</span>}
+              </div>
+            )}
+          </div>
+          {note && (
+            <div class="process-timeline__note">
+              <h4>{note.heading}</h4>
+              <p>{note.body}</p>
+            </div>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .process-timeline__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-14);
+    align-items: flex-start;
+  }
+
+  .process-timeline__title {
+    margin: var(--space-2) 0 0;
+  }
+
+  .process-timeline__lead {
+    margin-top: var(--space-3);
+    max-width: var(--measure-md);
+    font-size: var(--type-body-lg-size);
+  }
+
+  .process-timeline__list {
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process-timeline__step {
+    position: relative;
+    padding-left: var(--space-14);
+    padding-bottom: var(--space-7);
+    margin-left: var(--space-5);
+    border-left: 2px dashed var(--color-accent);
+  }
+
+  .process-timeline__step:last-child {
+    border-left: 2px dashed transparent;
+    padding-bottom: 0;
+  }
+
+  .process-timeline__num {
+    position: absolute;
+    left: calc(var(--space-5-5) * -1);
+    top: calc(var(--space-1) * -1);
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--radius-pill);
+    background: var(--color-primary);
+    color: var(--color-on-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--type-sm-size);
+  }
+
+  .process-timeline__step-title {
+    margin: 0;
+    font-size: var(--type-h4-size);
+  }
+
+  .process-timeline__step-body {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-compact-line-height);
+    color: var(--color-muted);
+    margin: var(--space-1-5) 0 0;
+  }
+
+  .process-timeline__aside {
+    position: sticky;
+    top: var(--space-24);
+  }
+
+  .process-timeline__photo {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+  }
+
+  .process-timeline__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .process-timeline__cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-5) var(--space-4) var(--space-3);
+    background: linear-gradient(to top, var(--overlay-caption) 0%, transparent 100%);
+    color: var(--color-on-accent);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .process-timeline__cap-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--type-body-sm-size);
+  }
+
+  .process-timeline__cap-meta {
+    font-size: var(--type-sm-size);
+    color: var(--overlay-caption-muted);
+    margin-top: var(--space-0-5);
+  }
+
+  .process-timeline__note {
+    margin-top: var(--space-4);
+    padding: var(--space-5);
+    background: var(--color-bg);
+    border: 1px solid var(--color-surface);
+    border-radius: var(--radius);
+  }
+
+  .process-timeline__note h4 {
+    margin: 0;
+    font-size: var(--type-h4-size);
+  }
+
+  .process-timeline__note p {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-compact-line-height);
+    color: var(--color-muted);
+    margin: var(--space-2) 0 0;
+  }
+
+  @media (max-width: 1024px) {
+    .process-timeline__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .process-timeline__aside {
+      position: static;
+    }
+  }
+</style>

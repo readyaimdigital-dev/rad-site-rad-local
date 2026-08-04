@@ -1,66 +1,71 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/ui/Button.astro";
-import Card from "../components/ui/Card.astro";
+import HeroSplit from "../components/sections/HeroSplit.astro";
+import FeatureGrid from "../components/sections/FeatureGrid.astro";
+import StorySplit from "../components/sections/StorySplit.astro";
+import GalleryMosaic from "../components/sections/GalleryMosaic.astro";
+import ServiceAreaSplit from "../components/sections/ServiceAreaSplit.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
 import { site } from "../config/site";
 import { content, getFeaturedServices } from "../config/content";
 
-const services = getFeaturedServices();
+const featuredServices = getFeaturedServices().map((service) => ({
+  icon: service.icon,
+  title: service.title,
+  body: service.body,
+}));
 ---
 
 <BaseLayout>
-  <section class="section hero">
-    <div class="container">
-      <h1>{content.home.hero.heading}</h1>
-      <p class="text-muted text-lead hero__lead">{content.home.hero.intro}</p>
-      <div class="hero__actions">
-        <Button href="/contact">{content.home.hero.primaryCta}</Button>
-        <Button href="/services" variant="secondary">{content.home.hero.secondaryCta}</Button>
-      </div>
-    </div>
-  </section>
+  <HeroSplit
+    eyebrow={content.home.hero.eyebrow}
+    heading={content.home.hero.heading}
+    headlineAccent={content.home.hero.headlineAccent}
+    lead={content.home.hero.intro}
+    primaryCta={{ label: content.home.hero.primaryCta, href: "/contact" }}
+    secondaryCta={{ label: content.home.hero.secondaryCta, href: "/services" }}
+    facts={content.home.hero.facts}
+    image={content.home.hero.image}
+  />
 
-  <section class="section section--surface">
-    <div class="container">
-      <h2>{content.home.servicesHeading}</h2>
-      <div class="grid">
-        {
-          services.map((service) => (
-            <Card title={service.title}>
-              <p>{service.body}</p>
-            </Card>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+  <FeatureGrid heading={content.home.servicesHeading} items={featuredServices} surface="surface" />
 
-  <section class="section">
-    <div class="container">
-      <h2>{content.home.serviceAreaHeading}</h2>
-      <p class="text-muted">
-        {content.home.serviceAreaIntro} {site.serviceArea.join(", ")} {content.home.serviceAreaSuffix}
-      </p>
-    </div>
-  </section>
+  <FeatureGrid
+    eyebrow={content.home.why.eyebrow}
+    heading={content.home.why.heading}
+    items={content.trustPillars}
+  />
+
+  <StorySplit
+    as="h2"
+    eyebrow={content.home.ownerIntro.eyebrow}
+    heading={content.home.ownerIntro.heading}
+    body={content.home.ownerIntro.body}
+    image={content.home.ownerIntro.image}
+    imageSide="left"
+    primaryCta={{ label: content.home.ownerIntro.ctaLabel, href: "/about" }}
+  />
+
+  <GalleryMosaic
+    id="work"
+    eyebrow={content.home.gallery.eyebrow}
+    heading={content.home.gallery.heading}
+    intro={content.home.gallery.intro}
+    images={content.home.gallery.images}
+  />
+
+  <ServiceAreaSplit
+    eyebrow={content.home.serviceAreaEyebrow}
+    heading={content.home.serviceAreaHeading}
+    lead={`${content.home.serviceAreaIntro} ${site.serviceArea.join(", ")} ${content.home.serviceAreaSuffix}`}
+    areas={site.serviceArea}
+    image={content.home.serviceAreaImage}
+  />
+
+  <CtaBand
+    heading={content.home.cta.heading}
+    sub={content.home.cta.sub}
+    ctaLabel={content.home.cta.ctaLabel}
+    href="/contact"
+  />
 </BaseLayout>
-
-<style>
-  .hero__lead {
-    max-width: 40rem;
-  }
-
-  .hero__actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-  }
-</style>

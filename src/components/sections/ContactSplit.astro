@@ -1,0 +1,42 @@
+---
+import ContactDetailsAside from "./ContactDetailsAside.astro";
+import type { Props as ContactDetailsProps } from "./ContactDetailsAside.astro";
+
+export interface Props {
+  heading: string;
+  intro: string;
+  details: ContactDetailsProps;
+}
+
+const { heading, intro, details } = Astro.props;
+---
+
+<section class="section contact-split" aria-labelledby="contact-split-heading">
+  <div class="container contact-split__grid">
+    <div>
+      <h1 id="contact-split-heading">{heading}</h1>
+      <p class="text-muted text-lead contact-split__intro">{intro}</p>
+      <div class="card contact-split__form">
+        <slot />
+      </div>
+    </div>
+    <ContactDetailsAside {...details} />
+  </div>
+</section>
+
+<style>
+  .contact-split__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--measure-sm)), 1fr));
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .contact-split__intro {
+    margin-top: var(--space-3);
+  }
+
+  .contact-split__form {
+    margin-top: var(--space-6);
+  }
+</style>

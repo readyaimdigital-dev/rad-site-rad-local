@@ -1,0 +1,111 @@
+---
+import Icon from "../ui/Icon.astro";
+import type { FeatureItem } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading?: string;
+  items: FeatureItem[];
+  columns?: 2 | 3 | 4;
+  surface?: "default" | "surface";
+}
+
+const { eyebrow, heading, items, columns = 4, surface = "surface" } = Astro.props;
+---
+
+<section class:list={["section feature-grid", surface === "surface" && "section--surface"]}>
+  <div class="container">
+    {
+      heading ? (
+        <div class="section-head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          <h2 class="section-head__title">{heading}</h2>
+        </div>
+      ) : (
+        eyebrow && <p class="eyebrow feature-grid__standalone-eyebrow">{eyebrow}</p>
+      )
+    }
+    <div class:list={["feature-grid__grid", `feature-grid__grid--cols-${columns}`]}>
+      {
+        items.map((item) => (
+          <article class="card feature-grid__card">
+            {item.icon && (
+              <span class="feature-grid__icon">
+                <Icon name={item.icon} size="26" />
+              </span>
+            )}
+            <h3 class="feature-grid__title">{item.title}</h3>
+            <p class="feature-grid__body">{item.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-head {
+    max-width: var(--measure-lg);
+    margin-bottom: var(--space-8);
+  }
+
+  .section-head__title {
+    margin: var(--space-2) 0 0;
+  }
+
+  .feature-grid__standalone-eyebrow {
+    display: block;
+    margin-bottom: var(--space-6);
+  }
+
+  .feature-grid__grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .feature-grid__grid--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feature-grid__grid--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .feature-grid__grid--cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .feature-grid__card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature-grid__icon {
+    color: var(--color-primary);
+  }
+
+  .feature-grid__title {
+    margin: var(--space-3-5) 0 0;
+    font-size: var(--type-h4-size);
+  }
+
+  .feature-grid__body {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-compact-line-height);
+    color: var(--color-muted);
+    margin: var(--space-2) 0 0;
+  }
+
+  @media (max-width: 1024px) {
+    .feature-grid__grid--cols-3,
+    .feature-grid__grid--cols-4 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .feature-grid__grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

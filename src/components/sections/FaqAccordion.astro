@@ -1,0 +1,121 @@
+---
+import Icon from "../ui/Icon.astro";
+import type { FaqItem } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading?: string;
+  items: FaqItem[];
+  surface?: "default" | "surface";
+}
+
+const { eyebrow, heading, items, surface = "default" } = Astro.props;
+---
+
+<section class:list={["section faq-accordion", surface === "surface" && "section--surface"]}>
+  <div class="container">
+    {
+      heading && (
+        <div class="section-head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          <h2 class="section-head__title">{heading}</h2>
+        </div>
+      )
+    }
+    <div class="faq-accordion__list">
+      {
+        items.map((item, index) => (
+          <details class="faq-accordion__item" open={index === 0}>
+            <summary class="faq-accordion__q">
+              {item.question}
+              <span class="faq-accordion__icon">
+                <Icon name="chevron-down" size="18" />
+              </span>
+            </summary>
+            <div class="faq-accordion__a">
+              <p>{item.answer}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-head {
+    max-width: var(--measure-lg);
+    margin-bottom: var(--space-6);
+  }
+
+  .section-head__title {
+    margin: var(--space-2) 0 0;
+  }
+
+  .faq-accordion__list {
+    max-width: var(--measure-xl);
+  }
+
+  .faq-accordion__item {
+    border-top: 1px solid var(--color-surface);
+  }
+
+  .faq-accordion__item:last-child {
+    border-bottom: 1px solid var(--color-surface);
+  }
+
+  .faq-accordion__q {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-5) 0;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--type-body-lg-size);
+    color: var(--color-primary);
+    list-style: none;
+  }
+
+  .faq-accordion__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-accordion__icon {
+    flex-shrink: 0;
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--color-surface);
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-accordion__icon :global(.icon) {
+    transition: transform 0.2s ease;
+  }
+
+  .faq-accordion__item[open] .faq-accordion__icon {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-accent);
+  }
+
+  .faq-accordion__item[open] .faq-accordion__icon :global(.icon) {
+    transform: rotate(180deg);
+  }
+
+  .faq-accordion__a p {
+    font-size: var(--type-body-size);
+    line-height: var(--type-body-line-height);
+    color: var(--color-muted);
+    margin: 0 0 var(--space-5);
+    max-width: 64ch;
+  }
+</style>

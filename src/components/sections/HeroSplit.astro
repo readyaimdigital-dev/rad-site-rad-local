@@ -1,0 +1,240 @@
+---
+import Button from "../ui/Button.astro";
+import Icon from "../ui/Icon.astro";
+import type { Action, FactStat, FeaturedImage } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  headlineAccent?: string;
+  lead: string;
+  primaryCta?: Action;
+  secondaryCta?: Action;
+  facts?: FactStat[];
+  image: FeaturedImage;
+  imageSide?: "left" | "right";
+  surface?: "default" | "surface";
+}
+
+const {
+  eyebrow,
+  heading,
+  headlineAccent,
+  lead,
+  primaryCta,
+  secondaryCta,
+  facts,
+  image,
+  imageSide = "right",
+  surface = "default",
+} = Astro.props;
+---
+
+<section class:list={["section hero-split", surface === "surface" && "section--surface"]}>
+  <div
+    class:list={[
+      "container hero-split__grid",
+      imageSide === "left" && "hero-split__grid--media-left",
+    ]}
+  >
+    <div class="hero-split__copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="hero-split__headline">
+        {heading}
+        {headlineAccent && (
+          <>
+            {" "}
+            <span class="hero-split__accent">{headlineAccent}</span>
+          </>
+        )}
+      </h1>
+      <p class="text-muted text-lead hero-split__lead">{lead}</p>
+      {
+        (primaryCta || secondaryCta) && (
+          <div class="hero-split__actions">
+            {primaryCta && <Button href={primaryCta.href}>{primaryCta.label}</Button>}
+            {secondaryCta && (
+              <a href={secondaryCta.href} class="hero-split__secondary">
+                {secondaryCta.label} <Icon name="arrow-right" size="17" />
+              </a>
+            )}
+          </div>
+        )
+      }
+      {
+        facts && facts.length > 0 && (
+          <div class="hero-split__facts">
+            {facts.map((fact) => (
+              <div class="hero-split__fact">
+                <div class="hero-split__fact-k">{fact.k}</div>
+                <div class="hero-split__fact-v">{fact.v}</div>
+              </div>
+            ))}
+          </div>
+        )
+      }
+    </div>
+    <div class="hero-split__media">
+      <div class="hero-split__photo">
+        <img src={image.src} alt={image.alt} width="800" height="1000" loading="eager" fetchpriority="high" />
+      </div>
+      {
+        (image.label || image.note) && (
+          <div class="hero-split__namecard">
+            {image.label && <div class="hero-split__namecard-label">{image.label}</div>}
+            {image.note && <div class="hero-split__namecard-note">{image.note}</div>}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-split__grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .hero-split__grid--media-left .hero-split__media {
+    order: -1;
+  }
+
+  .hero-split__headline {
+    margin: var(--space-3) 0 0;
+  }
+
+  .hero-split__accent {
+    color: var(--color-accent);
+  }
+
+  .hero-split__lead {
+    max-width: var(--measure-md);
+    margin-top: var(--space-5);
+  }
+
+  .hero-split__actions {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    margin-top: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .hero-split__secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .hero-split__secondary:hover {
+    color: var(--color-accent);
+  }
+
+  .hero-split__facts {
+    margin-top: var(--space-10);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(var(--measure-fact-min), 1fr));
+    border: 1px solid var(--color-surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .hero-split__fact {
+    padding: var(--space-4) var(--space-4-5);
+    border-right: 1px solid var(--color-surface);
+  }
+
+  .hero-split__fact:last-child {
+    border-right: none;
+  }
+
+  .hero-split__fact-k {
+    font-size: var(--type-2xs-size);
+    letter-spacing: var(--type-label-letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+
+  .hero-split__fact-v {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--type-stat-size);
+    color: var(--color-primary);
+    margin-top: var(--space-1);
+  }
+
+  .hero-split__media {
+    position: relative;
+  }
+
+  .hero-split__photo {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero-split__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-split__namecard {
+    position: absolute;
+    bottom: calc(var(--space-5) * -1);
+    left: calc(var(--space-5) * -1);
+    background: var(--color-bg);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--color-surface);
+    box-shadow: var(--shadow-card);
+    max-width: var(--measure-sm);
+  }
+
+  .hero-split__namecard-label {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .hero-split__namecard-note {
+    font-size: var(--type-sm-size);
+    color: var(--color-muted);
+    margin-top: var(--space-1);
+  }
+
+  @media (max-width: 1024px) {
+    .hero-split__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .hero-split__grid--media-left .hero-split__media {
+      order: 0;
+    }
+
+    .hero-split__photo {
+      aspect-ratio: 16 / 10;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-split__facts {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-split__namecard {
+      left: 0;
+      bottom: calc(var(--space-4) * -1);
+    }
+  }
+</style>

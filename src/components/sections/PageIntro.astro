@@ -1,0 +1,43 @@
+---
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  lead: string;
+  noticeLabel?: string;
+  notice?: string;
+}
+
+const { eyebrow, heading, lead, noticeLabel, notice } = Astro.props;
+---
+
+<section class="section page-intro">
+  <div class="container">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="page-intro__title">{heading}</h1>
+    <p class="text-muted text-lead page-intro__lead">{lead}</p>
+    {notice && <div class="page-intro__notice">{noticeLabel && <strong>{noticeLabel}</strong>} {notice}</div>}
+  </div>
+</section>
+
+<style>
+  .page-intro__title {
+    margin: var(--space-3) 0 0;
+  }
+
+  .page-intro__lead {
+    margin-top: var(--space-5);
+    max-width: 45ch;
+  }
+
+  .page-intro__notice {
+    margin-top: var(--space-6);
+    padding: var(--space-4) var(--space-5);
+    max-width: var(--measure-lg);
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-compact-line-height);
+    color: var(--color-text);
+  }
+</style>

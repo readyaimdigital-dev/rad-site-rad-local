@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { content } from "./content";
 import { site } from "./site";
 
@@ -50,5 +50,39 @@ describe("client-editable content", () => {
       expect(source).not.toContain("Two Rivers");
       expect(source).not.toContain(">T<");
     }
+  });
+
+  it("only references public image assets that exist", () => {
+    const serialized = JSON.stringify(content);
+    const imagePaths = [...serialized.matchAll(/"src":"(\/images\/[^"]+)"/g)].map(
+      ([, src]) => src
+    );
+
+    expect(imagePaths.length).toBeGreaterThan(0);
+    for (const src of imagePaths) {
+      expect(existsSync(`public${src}`), `${src} should exist under public/`).toBe(true);
+    }
+  });
+
+  it("marks the abstract placeholder image as decorative", () => {
+    const images: Array<{ src: string; alt?: string }> = [];
+    const visit = (value: unknown): void => {
+      if (!value || typeof value !== "object") return;
+      if ("src" in value && typeof value.src === "string") {
+        images.push(value as { src: string; alt?: string });
+      }
+      for (const child of Object.values(value)) visit(child);
+    };
+    visit(content);
+
+    const placeholders = images.filter((image) => image.src === "/images/placeholder.svg");
+    expect(placeholders.length).toBeGreaterThan(0);
+    for (const image of placeholders) expect(image.alt).toBe("");
+  });
+
+  it("derives service-area coverage from site configuration", () => {
+    const source = readFileSync("src/config/content.ts", "utf8");
+    expect(source).toContain("site.serviceArea.length");
+    expect(source).not.toContain('{ k: "Coverage", v: "5 suburbs" }');
   });
 });

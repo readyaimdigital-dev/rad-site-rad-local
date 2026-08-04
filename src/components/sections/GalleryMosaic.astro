@@ -1,0 +1,171 @@
+---
+import type { SectionImage } from "./types";
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading: string;
+  intro?: string;
+  images: SectionImage[];
+}
+
+const { id, eyebrow, heading, intro, images } = Astro.props;
+const [feature, ...rest] = images;
+const sideImages = rest.slice(0, 2);
+const rowImages = rest.slice(2);
+---
+
+<section id={id} class="section gallery-mosaic">
+  <div class="container">
+    <div class="section-head">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 class="section-head__title">{heading}</h2>
+      {intro && <p class="text-muted section-head__sub">{intro}</p>}
+    </div>
+
+    {
+      feature && (
+        <div class="gallery-mosaic__feature">
+          <figure class="gallery-mosaic__photo gallery-mosaic__photo--main">
+            <img src={feature.src} alt={feature.alt} width="1024" height="768" loading="lazy" />
+            {(feature.caption || feature.meta) && (
+              <figcaption class="gallery-mosaic__cap">
+                {feature.caption && <span class="gallery-mosaic__cap-title">{feature.caption}</span>}
+                {feature.meta && <span class="gallery-mosaic__cap-meta">{feature.meta}</span>}
+              </figcaption>
+            )}
+          </figure>
+          {sideImages.length > 0 && (
+            <div class="gallery-mosaic__side">
+              {sideImages.map((image) => (
+                <figure class="gallery-mosaic__photo">
+                  <img src={image.src} alt={image.alt} width="800" height="600" loading="lazy" />
+                  {(image.caption || image.meta) && (
+                    <figcaption class="gallery-mosaic__cap">
+                      {image.caption && <span class="gallery-mosaic__cap-title">{image.caption}</span>}
+                      {image.meta && <span class="gallery-mosaic__cap-meta">{image.meta}</span>}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+
+    {
+      rowImages.length > 0 && (
+        <div class="gallery-mosaic__row">
+          {rowImages.map((image) => (
+            <figure class="gallery-mosaic__photo gallery-mosaic__photo--square">
+              <img src={image.src} alt={image.alt} width="600" height="600" loading="lazy" />
+              {(image.caption || image.meta) && (
+                <figcaption class="gallery-mosaic__cap">
+                  {image.caption && <span class="gallery-mosaic__cap-title">{image.caption}</span>}
+                  {image.meta && <span class="gallery-mosaic__cap-meta">{image.meta}</span>}
+                </figcaption>
+              )}
+            </figure>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .section-head {
+    max-width: var(--measure-lg);
+    margin-bottom: var(--space-8);
+  }
+
+  .section-head__title {
+    margin: var(--space-2) 0 0;
+  }
+
+  .section-head__sub {
+    font-size: var(--type-body-lg-size);
+    margin-top: var(--space-3);
+    max-width: 55ch;
+  }
+
+  .gallery-mosaic__photo {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    margin: 0;
+  }
+
+  .gallery-mosaic__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-mosaic__cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-5) var(--space-4) var(--space-3);
+    background: linear-gradient(to top, var(--overlay-caption) 0%, transparent 100%);
+    color: var(--color-on-accent);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .gallery-mosaic__cap-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--type-body-sm-size);
+  }
+
+  .gallery-mosaic__cap-meta {
+    font-size: var(--type-sm-size);
+    color: var(--overlay-caption-muted);
+    margin-top: var(--space-0-5);
+  }
+
+  .gallery-mosaic__feature {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .gallery-mosaic__photo--main {
+    aspect-ratio: 4 / 3;
+  }
+
+  .gallery-mosaic__side {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .gallery-mosaic__row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .gallery-mosaic__photo--square {
+    aspect-ratio: 1 / 1;
+  }
+
+  @media (max-width: 1024px) {
+    .gallery-mosaic__feature {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-mosaic__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

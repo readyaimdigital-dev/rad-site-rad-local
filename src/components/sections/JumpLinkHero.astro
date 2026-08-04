@@ -1,0 +1,128 @@
+---
+import type { JumpLink, SectionImage } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  headlineAccent?: string;
+  lead: string;
+  links: JumpLink[];
+  image: SectionImage;
+}
+
+const { eyebrow, heading, headlineAccent, lead, links, image } = Astro.props;
+---
+
+<section class="section section--surface jump-link-hero">
+  <div class="container jump-link-hero__grid">
+    <div>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="jump-link-hero__title">
+        {heading}
+        {headlineAccent && (
+          <>
+            {" "}
+            <span class="jump-link-hero__accent">{headlineAccent}</span>
+          </>
+        )}
+      </h1>
+      <p class="text-muted text-lead jump-link-hero__lead">{lead}</p>
+      {
+        links.length > 0 && (
+          <nav class="jump-link-hero__jump" aria-label="Jump to service">
+            {links.map((link) => (
+              <a href={`#${link.id}`}>{link.label}</a>
+            ))}
+          </nav>
+        )
+      }
+    </div>
+    <div class="jump-link-hero__media">
+      <img src={image.src} alt={image.alt} width="800" height="1000" loading="eager" fetchpriority="high" />
+      {image.meta && <span class="jump-link-hero__meta">{image.meta}</span>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .jump-link-hero__grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .jump-link-hero__title {
+    margin: var(--space-3) 0 0;
+  }
+
+  .jump-link-hero__accent {
+    color: var(--color-accent);
+  }
+
+  .jump-link-hero__lead {
+    max-width: var(--measure-md);
+    margin-top: var(--space-5);
+  }
+
+  .jump-link-hero__jump {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2-5);
+  }
+
+  .jump-link-hero__jump a {
+    font-weight: 600;
+    font-size: var(--type-label-size);
+    color: var(--color-text);
+    text-decoration: none;
+    background: var(--color-bg);
+    border: 1px solid var(--color-surface);
+    border-radius: var(--radius-pill);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .jump-link-hero__jump a:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .jump-link-hero__media {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+  }
+
+  .jump-link-hero__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .jump-link-hero__meta {
+    position: absolute;
+    right: var(--space-3);
+    bottom: var(--space-3);
+    padding: var(--space-1-5) var(--space-2-5);
+    border-radius: var(--radius);
+    background: var(--overlay-caption);
+    color: var(--color-on-accent);
+    font-size: var(--type-xs-size);
+    font-weight: 600;
+  }
+
+  @media (max-width: 1024px) {
+    .jump-link-hero__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .jump-link-hero__media {
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>

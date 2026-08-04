@@ -1,0 +1,247 @@
+---
+import Button from "../ui/Button.astro";
+import Icon from "../ui/Icon.astro";
+import type { IconName } from "../ui/icon-names";
+import type { Action, SectionImage } from "./types";
+
+export interface Props {
+  id?: string;
+  eyebrow?: string;
+  icon?: IconName;
+  title: string;
+  body: string;
+  image: SectionImage;
+  photoSide?: "left" | "right";
+  surface?: "default" | "surface";
+  pricing?: { label: string; value: string; note?: string };
+  primaryCta?: Action;
+  secondaryCta?: Action;
+}
+
+const {
+  id,
+  eyebrow,
+  icon,
+  title,
+  body,
+  image,
+  photoSide = "right",
+  surface = "default",
+  pricing,
+  primaryCta,
+  secondaryCta,
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={["section service-band", surface === "surface" && "section--surface"]}
+>
+  <div class="container">
+    <div
+      class:list={[
+        "service-band__grid",
+        photoSide === "left" ? "service-band__grid--photo-left" : "service-band__grid--photo-right",
+      ]}
+    >
+      <div class="service-band__media">
+        <img src={image.src} alt={image.alt} width="800" height="600" loading="lazy" />
+        {
+          (image.caption || image.meta) && (
+            <div class="service-band__cap">
+              {image.caption && <span class="service-band__cap-title">{image.caption}</span>}
+              {image.meta && <span class="service-band__cap-meta">{image.meta}</span>}
+            </div>
+          )
+        }
+      </div>
+      <div class="service-band__copy">
+        <div class="service-band__head">
+          {icon && (
+            <span class="service-band__icon">
+              <Icon name={icon} size="24" />
+            </span>
+          )}
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        </div>
+        <h2 class="service-band__title">{title}</h2>
+        <p class="service-band__body">{body}</p>
+        {
+          pricing && (
+            <div class="service-band__pricing">
+              <span class="service-band__pricing-k">{pricing.label}</span>
+              <span class="service-band__pricing-v">{pricing.value}</span>
+              {pricing.note && <span class="service-band__pricing-note">{pricing.note}</span>}
+            </div>
+          )
+        }
+        {
+          (primaryCta || secondaryCta) && (
+            <div class="service-band__actions">
+              {primaryCta && <Button href={primaryCta.href}>{primaryCta.label}</Button>}
+              {secondaryCta && (
+                <a href={secondaryCta.href} class="service-band__secondary">
+                  {secondaryCta.label} <Icon name="arrow-right" size="17" />
+                </a>
+              )}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .service-band__grid {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .service-band__grid--photo-left {
+    grid-template-columns: 1fr 1.1fr;
+  }
+
+  .service-band__grid--photo-left .service-band__media {
+    order: -1;
+  }
+
+  .service-band__grid--photo-right {
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .service-band__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .service-band__icon {
+    width: var(--space-12);
+    height: var(--space-12);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    border: 1px solid var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .service-band__title {
+    margin: var(--space-3-5) 0 0;
+  }
+
+  .service-band__body {
+    font-size: var(--type-body-lg-size);
+    line-height: var(--type-body-line-height);
+    color: var(--color-muted);
+    margin: var(--space-3-5) 0 0;
+    max-width: var(--measure-md);
+  }
+
+  .service-band__pricing {
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg);
+    border-left: 3px solid var(--color-accent);
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--space-0-5);
+    max-width: var(--measure-sm);
+  }
+
+  .service-band__pricing-k {
+    font-size: var(--type-2xs-size);
+    letter-spacing: var(--type-label-letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+
+  .service-band__pricing-v {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .service-band__pricing-note {
+    font-size: var(--type-sm-size);
+    color: var(--color-muted);
+    margin-top: var(--space-1);
+  }
+
+  .service-band__actions {
+    margin-top: var(--space-6);
+    display: flex;
+    gap: var(--space-5);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .service-band__secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .service-band__secondary:hover {
+    color: var(--color-accent);
+  }
+
+  .service-band__media {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 3;
+  }
+
+  .service-band__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .service-band__cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-5) var(--space-4) var(--space-3);
+    background: linear-gradient(to top, var(--overlay-caption) 0%, transparent 100%);
+    color: var(--color-on-accent);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .service-band__cap-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--type-body-sm-size);
+  }
+
+  .service-band__cap-meta {
+    font-size: var(--type-sm-size);
+    color: var(--overlay-caption-muted);
+    margin-top: var(--space-0-5);
+  }
+
+  @media (max-width: 1024px) {
+    .service-band__grid--photo-left,
+    .service-band__grid--photo-right {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+
+    .service-band__grid--photo-left .service-band__media {
+      order: -1;
+    }
+  }
+</style>

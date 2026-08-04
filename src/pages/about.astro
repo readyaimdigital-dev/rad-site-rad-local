@@ -1,15 +1,43 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import StorySplit from "../components/sections/StorySplit.astro";
+import FeatureGrid from "../components/sections/FeatureGrid.astro";
+import ProcessRow from "../components/sections/ProcessRow.astro";
+import ServiceAreaSplit from "../components/sections/ServiceAreaSplit.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import { site } from "../config/site";
 import { content } from "../config/content";
+
+const { about } = content;
 ---
 
-<BaseLayout title={content.about.title} description={content.about.description}>
-  <section class="section">
-    <div class="container">
-      <h1>{content.about.heading}</h1>
-      {content.about.paragraphs.map((paragraph, index) => (
-        <p class:list={{ "text-muted": index > 0 }}>{paragraph}</p>
-      ))}
-    </div>
-  </section>
+<BaseLayout title={about.title} description={about.description}>
+  <StorySplit
+    as="h1"
+    eyebrow={about.eyebrow}
+    heading={about.heading}
+    body={about.paragraphs}
+    image={about.image}
+    imageSide="left"
+    primaryCta={{ label: about.primaryCtaLabel, href: "/contact" }}
+    secondaryCta={{ label: about.secondaryCtaLabel, href: "/#work" }}
+  />
+
+  <FeatureGrid
+    eyebrow={about.credentials.eyebrow}
+    heading={about.credentials.heading}
+    items={content.trustPillars}
+  />
+
+  <ProcessRow eyebrow={about.process.eyebrow} heading={about.process.heading} steps={about.process.steps} />
+
+  <ServiceAreaSplit
+    eyebrow={about.whereEyebrow}
+    heading={about.whereHeading}
+    lead={about.whereLead}
+    areas={site.serviceArea}
+    image={about.whereImage}
+  />
+
+  <CtaBand heading={about.cta.heading} sub={about.cta.sub} ctaLabel={about.cta.ctaLabel} href="/contact" />
 </BaseLayout>

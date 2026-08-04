@@ -1,0 +1,122 @@
+---
+import Icon from "../ui/Icon.astro";
+import type { Action, PricingCard } from "./types";
+
+export interface Props {
+  eyebrow?: string;
+  heading: string;
+  cards: PricingCard[];
+  cta: Action;
+  prompt?: string;
+  surface?: "default" | "surface";
+}
+
+const { eyebrow, heading, cards, cta, prompt, surface = "surface" } = Astro.props;
+---
+
+<section class:list={["section pricing-basis-grid", surface === "surface" && "section--surface"]}>
+  <div class="container">
+    <div class="section-head">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h2 class="section-head__title">{heading}</h2>
+    </div>
+    <div class="pricing-basis-grid__grid">
+      {
+        cards.map((card) => (
+          <article class="card pricing-basis-grid__card">
+            <div class="pricing-basis-grid__unit">{card.unit}</div>
+            <h3 class="pricing-basis-grid__svc">{card.title}</h3>
+            <div class="pricing-basis-grid__value">{card.value}</div>
+            <p class="pricing-basis-grid__note">{card.note}</p>
+            <div class="pricing-basis-grid__foot">
+              {prompt && <span class="pricing-basis-grid__prompt">{prompt}</span>}
+              <a href={cta.href} class="pricing-basis-grid__cta">
+                {cta.label} <Icon name="arrow-right" size="16" />
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-head {
+    max-width: var(--measure-lg);
+    margin-bottom: var(--space-8);
+  }
+
+  .section-head__title {
+    margin: var(--space-2) 0 0;
+  }
+
+  .pricing-basis-grid__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  .pricing-basis-grid__unit {
+    font-family: var(--font-heading);
+    font-size: var(--type-xs-size);
+    font-weight: 600;
+    letter-spacing: var(--type-label-letter-spacing);
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .pricing-basis-grid__svc {
+    margin: var(--space-2) 0 0;
+    font-size: var(--type-h3-size);
+  }
+
+  .pricing-basis-grid__value {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: var(--space-5) 0 0;
+  }
+
+  .pricing-basis-grid__note {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-compact-line-height);
+    color: var(--color-muted);
+    margin: var(--space-3) 0 0;
+  }
+
+  .pricing-basis-grid__foot {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .pricing-basis-grid__prompt {
+    font-size: var(--type-sm-size);
+    color: var(--color-muted);
+  }
+
+  .pricing-basis-grid__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .pricing-basis-grid__cta:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .pricing-basis-grid__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
