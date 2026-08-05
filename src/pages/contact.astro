@@ -7,7 +7,12 @@ import { content } from "../config/content";
 
 const { contact } = content;
 const telHref = `tel:${site.contact.phone.replace(/\s+/g, "")}`;
-const fullAddress = `${site.address.street}, ${site.address.suburb} ${site.address.state} ${site.address.postcode}`;
+const fullAddress = [
+  site.address.street,
+  `${site.address.suburb} ${site.address.state} ${site.address.postcode}`,
+]
+  .filter(Boolean)
+  .join(", ");
 const trustItems = content.trustPillars.map((pillar) => ({
   icon: pillar.icon,
   label: pillar.title,

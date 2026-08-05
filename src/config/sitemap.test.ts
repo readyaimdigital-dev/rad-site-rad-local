@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { shouldIncludeInSitemap } from "./sitemap";
+import { site } from "./site";
 import { GET as getRobotsTxt } from "../pages/robots.txt";
 
 describe("shouldIncludeInSitemap", () => {
@@ -16,6 +17,6 @@ describe("shouldIncludeInSitemap", () => {
   it("advertises the conventional sitemap.xml URL in robots.txt", async () => {
     const response = await getRobotsTxt({} as never);
 
-    expect(await response.text()).toContain("Sitemap: https://example.com.au/sitemap.xml");
+    expect(await response.text()).toContain(`Sitemap: ${site.url}/sitemap.xml`);
   });
 });

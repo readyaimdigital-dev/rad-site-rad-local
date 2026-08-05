@@ -5,12 +5,12 @@
  */
 :root {
   /* colour */
-  --color-primary: #1a3a5c;
-  --color-accent: #b45309;
+  --color-primary: #070707;
+  --color-accent: #b13c0d; /* accessible text treatment of supplied #d64911 */
   --color-bg: #ffffff;
-  --color-surface: #f5f6f8;
-  --color-text: #1a1a1a;
-  --color-muted: #666b73;
+  --color-surface: #eef7f6;
+  --color-text: #070707;
+  --color-muted: #4f5c5a;
   --color-on-accent: #ffffff;
   --color-error: #b3261e;
 

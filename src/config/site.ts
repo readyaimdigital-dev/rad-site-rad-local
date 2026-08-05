@@ -70,54 +70,39 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  name: "Two Rivers Plumbing & Gas",
-  legalName: "Two Rivers Plumbing & Gas Pty Ltd",
-  tagline: "Local plumbers you can rely on",
+  name: "RAD Local",
+  legalName: "Ready Aim Digital",
+  tagline: "A better website, without the technical headache",
   description:
-    "Two Rivers Plumbing & Gas provides residential and commercial plumbing, gas fitting and emergency repairs across the Riverina region.",
-  url: "https://example.com.au",
+    "RAD Local builds and supports websites for regional Australian businesses.",
+  url: "https://radlocal.readyaim.digital",
   locale: "en-AU",
   contact: {
-    email: "hello@example.com.au",
-    phone: "+61 2 5550 1234",
+    email: "hello@readyaim.digital",
+    phone: "+61 2 5632 9005",
   },
   address: {
-    street: "12 Wattle Street",
-    suburb: "Wagga Wagga",
+    street: "",
+    suburb: "Maclean",
     state: "NSW",
-    postcode: "2650",
+    postcode: "2463",
     country: "AU",
   },
-  geo: {
-    lat: -35.1082,
-    lng: 147.3598,
-  },
-  serviceArea: ["Wagga Wagga", "Junee", "Coolamon", "Ladysmith", "The Rock"],
-  openingHours: [
-    {
-      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "07:00",
-      closes: "17:00",
-    },
-    {
-      days: ["Saturday"],
-      opens: "08:00",
-      closes: "12:00",
-    },
-  ],
+  serviceArea: ["Yamba", "Maclean", "Grafton", "Iluka"],
+  openingHours: [],
   social: {
-    facebook: "https://facebook.com/example",
-    instagram: "https://instagram.com/example",
+    facebook: "https://www.facebook.com/readyaimdigital",
+    instagram: "https://www.instagram.com/readyaimdigital",
   },
   images: {
-    logo: "/images/logo.svg",
+    logo: "/images/placeholder.svg",
     favicon: "/favicon.svg",
     ogDefault: "/images/og-default.svg",
   },
   seo: {
-    defaultTitle: "Two Rivers Plumbing & Gas | Wagga Wagga Plumbers",
-    titleTemplate: "%s | Two Rivers Plumbing & Gas",
+    defaultTitle: "RAD Local | Websites for regional Australian businesses",
+    titleTemplate: "%s | RAD Local",
     defaultDescription:
-      "Trusted local plumbers serving Wagga Wagga and the Riverina. Residential and commercial plumbing, gas fitting and emergency callouts.",
+      "Websites for regional Australian businesses, with ongoing support from Ready Aim Digital.",
   },
 };

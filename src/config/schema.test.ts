@@ -16,10 +16,10 @@ describe("buildLocalBusinessSchema", () => {
     expect(schema.address.addressLocality).toBe(site.address.suburb);
   });
 
-  it("never contains a RAD reference", () => {
+  it("contains the configured business identity", () => {
     const serialised = JSON.stringify(schema).toLowerCase();
-    expect(serialised).not.toContain("ready aim digital");
-    expect(serialised).not.toContain("readyaim.digital");
+    expect(serialised).toContain(site.legalName.toLowerCase());
+    expect(serialised).toContain(site.url.toLowerCase());
   });
 
   it("has no author field", () => {
