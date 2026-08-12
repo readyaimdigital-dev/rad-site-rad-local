@@ -1,34 +1,46 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { content } from "../config/content";
+import Base from '../layouts/RadLocalDesignLayout.astro';
+import Label from '../components/rad-local/Label.astro';
+import { site } from '../config/rad-local-design-site';
+
+/** Maintenance page. Launches before the full policy exists so the consent
+ *  line and footer link resolve rather than 404.
+ *
+ *  The four paragraphs below are the APP 5 collection notice drafted in
+ *  11 Part 4 — who is collecting, why, who else sees it, how to contact.
+ *  A maintenance page alone would not discharge that obligation. */
 ---
-
-<BaseLayout title={content.privacy.title} description={content.privacy.description} noindex>
-  <section class="section">
-    <div class="container">
-      <h1>{content.privacy.heading}</h1>
-
-      <div class="legal-notice">
-        <strong>{content.privacy.notice.label}</strong> {content.privacy.notice.body}
+<Base
+  title="Privacy | RAD Local"
+  description="What RAD Local collects when you ask for a free sample, why we collect it, and how to have it deleted."
+  stickyCta={false}
+>
+  <section class="section section--paper">
+    <div class="shell doc">
+      <Label>Privacy</Label>
+      <h1 class="doc__title">What we do with your details</h1>
+      <div class="doc__body">
+        <p>When you ask for a free sample we collect your name, business name, town and phone number. We use them to build your sample and to get in touch about it. Nothing else.</p>
+        <p>We don't sell them and we don't hand them to anyone outside RAD. Want them gone? Email <a href={`mailto:${site.email.general}`}>{site.email.general}</a> and we'll delete them.</p>
+        <p>If you book a walkthrough we record the call so you can watch it back later. Tell us if you'd rather we didn't.</p>
+        <p class="doc__pending">The full privacy policy is on its way. This page will carry it shortly.</p>
       </div>
-
-      <p class="text-muted">{content.privacy.lastUpdated}</p>
-
-      {
-        content.privacy.sections.map((section) => (
-          <>
-            <h2>{section.heading}</h2>
-            <p>
-              {section.body}
-              {section.email && (
-                <>
-                  {" "}<a href={`mailto:${section.email}`}>{section.email}</a>.
-                </>
-              )}
-            </p>
-          </>
-        ))
-      }
     </div>
   </section>
-</BaseLayout>
+</Base>
+
+<style>
+  .doc{max-width:var(--container);padding-block:var(--section-y)}
+  .doc__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(34px,5vw,56px);line-height:1.02;
+    letter-spacing:var(--tracking-display);margin:14px 0 var(--space-9);max-width:20ch;
+  }
+  .doc__body{display:flex;flex-direction:column;gap:var(--space-7);max-width:66ch}
+  .doc__body p{font-size:18px}
+  .doc__pending{
+    border-top:var(--rule) solid var(--ink);padding-top:var(--space-7);
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:1px;color:var(--grey);
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import FoundMark from './FoundMark.astro';
+interface Props { lockup?: 'horizontal' | 'stacked' | 'mark'; tone?: 'ink' | 'paper'; size?: number }
+const { lockup = 'horizontal', tone = 'ink', size = 44 } = Astro.props;
+const stacked = lockup === 'stacked';
+---
+{lockup === 'mark' ? (
+  <FoundMark tone={tone} size={size} />
+) : (
+  <span class:list={['logo', stacked && 'logo--stacked', tone === 'paper' && 'logo--paper']}
+        style={`--logo-size:${size}px`}>
+    <FoundMark tone={tone} size={stacked ? size * 1.6 : size} />
+    <span class="logo__word">RAD LOCAL</span>
+  </span>
+)}
+<style>
+  .logo{display:inline-flex;flex-direction:row;align-items:center;gap:var(--space-5)}
+  .logo--stacked{flex-direction:column;gap:var(--space-4)}
+  .logo__word{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:calc(var(--logo-size) * 0.62);
+    letter-spacing:var(--tracking-display-2);line-height:1;color:var(--ink);white-space:nowrap;
+  }
+  .logo--stacked .logo__word{font-size:calc(var(--logo-size) * 0.68)}
+  .logo--paper .logo__word{color:var(--paper)}
+</style>

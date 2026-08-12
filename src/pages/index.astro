@@ -1,71 +1,611 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroSplit from "../components/sections/HeroSplit.astro";
-import FeatureGrid from "../components/sections/FeatureGrid.astro";
-import StorySplit from "../components/sections/StorySplit.astro";
-import GalleryMosaic from "../components/sections/GalleryMosaic.astro";
-import ServiceAreaSplit from "../components/sections/ServiceAreaSplit.astro";
-import CtaBand from "../components/sections/CtaBand.astro";
-import { site } from "../config/site";
-import { content, getFeaturedServices } from "../config/content";
+import Base from '../layouts/RadLocalDesignLayout.astro';
+import Label from '../components/rad-local/Label.astro';
+import Card from '../components/rad-local/Card.astro';
+import Chip from '../components/rad-local/Chip.astro';
+import Button from '../components/rad-local/Button.astro';
+import Figure from '../components/rad-local/Figure.astro';
+import PriceNumber from '../components/rad-local/PriceNumber.astro';
+import PricingCard from '../components/rad-local/PricingCard.astro';
+import GuaranteeBadge from '../components/rad-local/GuaranteeBadge.astro';
+import { meta, pricing, guarantee, portfolio, heroImages, ctaLabel } from '../config/rad-local-design-content';
+import { routes, flags } from '../config/rad-local-design-site';
 
-const featuredServices = getFeaturedServices().map((service) => ({
-  icon: service.icon,
-  title: service.title,
-  body: service.body,
-}));
+/** Market comparison. Kept as is under the F-05 accepted risk, except the two
+ *  rows that had to track the pricing change. */
+const marketRows = [
+  ['Website build', '$3,000 to $6,000', '$599 build'],
+  ['Hosting', '$15 to $30 a month', 'Included'],
+  ['SSL certificate', '$45 to $99 a year', 'Included'],
+  ['Contact forms', '$50 to $150 each', 'Included'],
+  ['Extra pages', '$150 each', 'Included'],
+  ['Blog setup', '$100', 'Included'],
+  ['Google Analytics setup', '$50', 'Included'],
+  ['Google map', '$50', 'Included'],
+  ['Google Business Profile setup', 'often not offered', 'Included'],
+  ['Content changes', 'around $150 a change', 'Included'],
+  ['Security, backups and updates', 'support packs or hour blocks', 'Included'],
+  ['Monthly visibility snapshot', 'not offered', 'Included'],
+  ['Monthly SEO', '$500 to $1,500 a month', 'Included from Momentum'],
+  ['Monthly plain English performance report', 'agency retainer territory', 'Included from Momentum'],
+  ['90-day get-found guarantee', 'nobody offers one', 'Included'],
+  ['Leave anytime and take your content', 'rarely in writing', 'In writing'],
+];
+
+const setout = [
+  { n: '01', title: "Map where you'll show up",
+    body: ['Before anything gets built, we map the places locals could find you.', 'Google search. Google Maps.', 'And the AI tools people now ask instead.'] },
+  { n: '02', title: 'Build to that map',
+    body: ['Then we build your site to show up in those places.', 'Structured underneath so Google and AI tools can read every page properly.', 'And fast, because slow sites get skipped.'] },
+  { n: '03', title: 'Prove it monthly',
+    body: ['Every month you get a snapshot in plain English.', "Where you're showing up, and what we're doing about it.", 'No jargon, no fog.'] },
+];
+
+const steps = [
+  { tag: 'Step one', title: 'Tell us about your business',
+    body: ['A short form, then a quick video call.', 'What you do, where you are, what you want more of.', "That's all we need to get started."] },
+  { tag: 'Step two', title: 'We build and launch fast',
+    body: ['Your site gets designed, written and launched in days, not months.', 'You see it and sign off before it goes live.'] },
+  { tag: 'Step three', title: 'You get found, and we keep it working',
+    body: ['Hosting, security, backups, updates and your monthly snapshot. All handled.', 'You run the business. We keep it found.'] },
+];
+
+const ownership = [
+  { tag: 'Always yours', body: 'Your domain. Your Google Business Profile. Your content. Your brand. Yours from day one, and we never hold them.' },
+  { tag: 'The service', body: "The website, the hosting, the security, the growth work. That's what your monthly pays for, while you want it." },
+  { tag: 'If you leave', body: "Full export of your content. No exit fee. No drama. You take what's yours and go." },
+];
+
+const faqs = [
+  { q: 'How much does a website really cost in Australia?',
+    a: ['Most custom websites in Australia cost $3,000 to $6,000 upfront.', 'Then hosting, SSL, content changes and SEO get billed on top, month after month.', 'With RAD Local you pay $599 to build, then from $199 a month.', "Everything is included in that number. That's the lot."] },
+  { q: 'Do I own my website?',
+    a: ['You own everything that matters.', 'Your domain, your Google Business Profile, your content and your brand are yours from day one.', 'The website itself is the service we run for you: built, hosted, secured and worked on every month.', 'If you ever leave, we export all your content in full and hand it over. No exit fee.'] },
+  { q: 'What happens if I cancel?',
+    a: ['You can cancel anytime.', "There's no contract locking you in and no exit fee.", 'We export your content in full and hand over everything that was always yours: your domain, your Google Business Profile, your content, your brand.', 'Our full policy on leaving is published on the guarantee terms page.'] },
+  { q: 'What exactly does the guarantee cover?',
+    a: ["Within 90 days of launch, your site will be live, indexed by Google, and showing up when someone searches your business name and your area.", "If it's not, your monthly fee pauses until it is.", "It doesn't cover rankings for competitive terms, lead numbers, or a spot in AI answers… nobody controls those, so we won't guarantee them.", 'The full terms are published on this site.'] },
+  { q: 'Why a subscription instead of paying upfront?',
+    a: ["Because a website isn't a thing you buy once.", 'It needs hosting, security, backups, updates and someone actually watching it.', "Pay upfront and that upkeep gets sold to you bit by bit, or it doesn't happen and the site quietly dies.", 'The subscription means one fixed price with someone working on your site every month.', 'From $199 a month. Less than a tank of diesel a week.'] },
+  { q: "What's AI search and why does it matter?",
+    a: ["AI search is people asking tools like ChatGPT and Google's AI instead of scrolling through links.", 'Those tools read websites to pick which local businesses to mention.', "Most websites weren't built to be read that way, so they get skipped.", 'We build yours so it can be read properly by Google and by AI tools.', 'Nobody can promise you a spot in an AI answer, and anyone who does is having a lend.', "We build so you're findable there, then show you what's happening in your monthly snapshot."] },
+];
 ---
+<Base title={meta.home.title} description={meta.home.description} current="home">
 
-<BaseLayout>
-  <HeroSplit
-    eyebrow={content.home.hero.eyebrow}
-    heading={content.home.hero.heading}
-    headlineAccent={content.home.hero.headlineAccent}
-    lead={content.home.hero.intro}
-    primaryCta={{ label: content.home.hero.primaryCta, href: "/contact" }}
-    secondaryCta={{ label: content.home.hero.secondaryCta, href: "/services" }}
-    facts={content.home.hero.facts}
-    image={content.home.hero.image}
-  />
+  <!-- S1 · hero -->
+  <section class="section section--paper s1" id="top">
+    <div class="shell s1__grid">
+      <div class="s1__copy">
+        <h1 class="s1__title">Get <em>found</em> everywhere locals search. Google, Maps… and now AI.</h1>
+        <div class="lede s1__lede">
+          <p>Live in days.</p>
+          <p>$599 build, then from $199 a month, everything included.</p>
+          <p>Found in 90 days or the fee pauses.</p>
+        </div>
+        <Button variant="primary" size="lg" href={routes.freeDemo}>{ctaLabel}</Button>
+      </div>
+      <div class="s1__media">
+        <Figure
+          image={heroImages.town.image}
+          alt={heroImages.town.alt}
+          minHeight={420}
+          loading="eager"
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 1023px) 100vw, 40vw"
+        />
+        <a class="s1__badge" href={routes.guaranteeTerms}>
+          <GuaranteeBadge size={164} lines={guarantee.badge.lines} footnote={guarantee.badge.footnote} />
+        </a>
+      </div>
+    </div>
+  </section>
 
-  <FeatureGrid heading={content.home.servicesHeading} items={featuredServices} surface="surface" />
+  <!-- S2 · problem -->
+  <section class="section section--paper">
+    <div class="shell">
+      <h2 class="h2 s2__title">Getting a website shouldn't cost you a fortune. Or a year of your weekends.</h2>
+      <div class="s2__cards">
+        <Card>
+          <h3 class="s2__card-title">The five grand agency quote</h3>
+          <div class="stack">
+            <p>You ask what a website costs.</p>
+            <p>The quote comes back north of $3,000.</p>
+            <p>Then hosting, changes and SEO get billed on top.</p>
+            <p>So the old site stays up another year.</p>
+          </div>
+        </Card>
+        <Card>
+          <h3 class="s2__card-title">The DIY builder that stalled</h3>
+          <div class="stack">
+            <p>You were going to build it yourself one weekend.</p>
+            <p>The half finished site is still sitting there.</p>
+            <p>Meanwhile locals are searching. And finding someone else.</p>
+          </div>
+        </Card>
+      </div>
+      <div class="s2__panel" data-surface="ink">
+        <p class="s2__panel-title">There's a <em>third way</em>.</p>
+        <div class="stack">
+          <p>A pro builds your site. It goes live fast.</p>
+          <p>And one fixed monthly price keeps it running, secure and found.</p>
+          <p class="s2__panel-gap">Because here's the bit nobody tells you: cheap websites fail because nobody maintains them.</p>
+          <p>A website isn't a thing you buy once. It's a thing you keep working.</p>
+          <p>That's the whole idea behind RAD Local.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <FeatureGrid
-    eyebrow={content.home.why.eyebrow}
-    heading={content.home.why.heading}
-    items={content.trustPillars}
-  />
+  <!-- S3 · the setout -->
+  <section class="section section--tint" id="how">
+    <div class="shell">
+      <Label>How it works</Label>
+      <h2 class="h2 s3__title">How The Setout works</h2>
+      <div class="lede s3__lede">
+        <p>The Setout is our method for getting local businesses found. The idea is simple.</p>
+        <p>We work out where you need to show up before we build a single page.</p>
+      </div>
+      <div class="rail">
+        {setout.map((s) => (
+          <div class="rail__cell">
+            <span class="rail__num" aria-hidden="true">{s.n}</span>
+            <h3 class="rail__title">{s.title}</h3>
+            <div class="stack">{s.body.map((b) => <p class="rail__body">{b}</p>)}</div>
+          </div>
+        ))}
+      </div>
+      <div class="s3__callout">
+        <Chip variant="teal">A quick word on AI search</Chip>
+        <div class="stack">
+          <p>More locals now ask ChatGPT or Google's AI things like "who's a good electrician around here".</p>
+          <p>Those tools read websites to pick their answers.</p>
+          <p>Most websites weren't built to be read that way. Yours will be.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <StorySplit
-    as="h2"
-    eyebrow={content.home.ownerIntro.eyebrow}
-    heading={content.home.ownerIntro.heading}
-    body={content.home.ownerIntro.body}
-    image={content.home.ownerIntro.image}
-    imageSide="left"
-    primaryCta={{ label: content.home.ownerIntro.ctaLabel, href: "/about" }}
-  />
+  <!-- S4 · price stack -->
+  <section class="section section--paper" id="pricing">
+    <div class="shell">
+      <Label>Pricing</Label>
+      <h2 class="h2 s4__title">What websites usually cost. And what you pay with us.</h2>
 
-  <GalleryMosaic
-    id="work"
-    eyebrow={content.home.gallery.eyebrow}
-    heading={content.home.gallery.heading}
-    intro={content.home.gallery.intro}
-    images={content.home.gallery.images}
-  />
+      <div class="market">
+        <div class="market__head">
+          <span>What the market charges</span><span>RAD Local</span>
+        </div>
+        {marketRows.map(([label, market, included]) => (
+          <div class="market__row">
+            <span class="market__label"><b>{label}</b><span class="market__price"> · {market}</span></span>
+            <Chip variant="solid">{included}</Chip>
+          </div>
+        ))}
+        <div class="market__payoff">
+          <p>One simple price. $599 build, then from <em>$199 a month</em>. That's the lot.</p>
+        </div>
+      </div>
+      <p class="market__source">Based on typical published Australian market pricing.</p>
 
-  <ServiceAreaSplit
-    eyebrow={content.home.serviceAreaEyebrow}
-    heading={content.home.serviceAreaHeading}
-    lead={`${content.home.serviceAreaIntro} ${site.serviceArea.join(", ")} ${content.home.serviceAreaSuffix}`}
-    areas={site.serviceArea}
-    image={content.home.serviceAreaImage}
-  />
+      <!-- build-fee anchor · new, from the July page -->
+      <div class="anchor">
+        <p class="anchor__copy">One <strong>one-off build fee</strong> on every plan. That's everything it takes to get you designed, built and live. Then choose the monthly plan that fits.</p>
+        <PriceNumber amount={pricing.buildFee.amount} suffix={pricing.buildFee.caption} size={64} class="anchor__price" />
+      </div>
 
-  <CtaBand
-    heading={content.home.cta.heading}
-    sub={content.home.cta.sub}
-    ctaLabel={content.home.cta.ctaLabel}
-    href="/contact"
-  />
-</BaseLayout>
+      <p class="s4__baseline">{pricing.baseline}</p>
+
+      <div class="plans">
+        {pricing.tiers.map((t) => (
+          <PricingCard
+            name={t.name}
+            outcome={t.outcome}
+            price={t.price}
+            lines={t.lines as any}
+            bestFor={t.bestFor}
+            popular={t.popular}
+            popularLabel={'popularLabel' in t ? t.popularLabel : undefined}
+            cta={ctaLabel}
+            ctaHref={routes.freeDemo}
+          />
+        ))}
+      </div>
+      <p class="s4__closing">{pricing.closingNote}</p>
+      <p class="s4__gst">{pricing.footnote}</p>
+    </div>
+  </section>
+
+  <!-- S5 · guarantee -->
+  <section class="section section--ink" data-surface="ink">
+    <div class="shell s5">
+      <div class="s5__left">
+        <Label tone="paper">The guarantee</Label>
+        <a class="s5__badge" href={routes.guaranteeTerms}>
+          <GuaranteeBadge size={190} onInk lines={guarantee.badge.lines} footnote={guarantee.badge.footnote} />
+        </a>
+      </div>
+      <div class="s5__right">
+        <h2 class="h2 s5__title">{guarantee.heading}</h2>
+        <div class="stack s5__body">{guarantee.body.map((b) => <p>{b}</p>)}</div>
+        <div class="stack s5__dim">
+          <p>{guarantee.notGuaranteed.body}</p>
+          <p>Nobody controls those, so nobody honest guarantees them.</p>
+        </div>
+        <a class="s5__link" href={routes.guaranteeTerms}>What it covers and what it doesn't, in full &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 · process -->
+  <section class="section section--paper">
+    <div class="shell">
+      <h2 class="h2 s6__title">From "we should fix the website" to found. In three steps.</h2>
+      <div class="s6__rail">
+        {steps.map((s) => (
+          <div class="s6__step">
+            <span class="s6__tag">{s.tag}</span>
+            <h3 class="s6__step-title">{s.title}</h3>
+            <div class="stack">{s.body.map((b) => <p class="s6__body">{b}</p>)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 · portfolio -->
+  <section class="section section--tint">
+    <div class="shell">
+      <h2 class="h2">{portfolio.heading}</h2>
+      <div class="lede s7__lede">
+        {portfolio.lede.map((l) => <p>{l}</p>)}
+        {portfolio.note.map((l) => <p class="s7__note">{l}</p>)}
+      </div>
+      <div class="s7__grid">
+        {portfolio.items.map((item) => (
+          <div class:list={['s7__item', item.featured && 's7__item--featured']}>
+            <Figure
+              image={item.image}
+              alt={item.alt}
+              minHeight={item.featured ? 420 : 220}
+              widths={item.featured ? [640, 1000, 1400] : [400, 640, 900]}
+              sizes={item.featured ? '(max-width: 1023px) 100vw, 1100px' : '(max-width: 1023px) 100vw, 360px'}
+            />
+            <span class="s7__caption">{item.caption}</span>
+          </div>
+        ))}
+      </div>
+      <div class="s7__cta">
+        <p class="s7__cta-title">Want one with your name on it?</p>
+        <Button variant="primary" size="lg" href={routes.freeDemo}>{ctaLabel}</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8 · leave anytime -->
+  <section class="section section--paper">
+    <div class="shell">
+      <Label>Leave anytime</Label>
+      <h2 class="h2 s8__title">The part most providers won't say out loud.</h2>
+      <div class="lede s8__lede">
+        <p>What happens if you want to leave?</p>
+        <p>Most providers hope you never ask.</p>
+        <p>Here's our answer, in writing.</p>
+      </div>
+      <div class="s8__grid">
+        {ownership.map((o) => (
+          <Card sticker>
+            <span class="s8__tag">{o.tag}</span>
+            <p class="s8__body">{o.body}</p>
+          </Card>
+        ))}
+      </div>
+      <p class="s8__link-wrap">
+        <a class="s8__link" href={`${routes.guaranteeTerms}#leaving`}>Our full policy on leaving, published in plain words &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- S9 · FAQ -->
+  <section class="section section--paper">
+    <div class="shell">
+      <h2 class="h2 s9__title">Fair questions. Straight answers.</h2>
+      <div class="faq">
+        {faqs.map((f, i) => (
+          <div class="faq__item">
+            <h3 class="faq__heading">
+              <button
+                class="faq__button"
+                id={`faq-${i}-btn`}
+                aria-expanded={i === 0 && flags.faqFirstOpen ? 'true' : 'false'}
+                aria-controls={`faq-${i}`}
+              >
+                <span>{f.q}</span>
+                <span class="faq__sign" aria-hidden="true">{i === 0 && flags.faqFirstOpen ? '–' : '+'}</span>
+              </button>
+            </h3>
+            <div
+              class="faq__panel"
+              id={`faq-${i}`}
+              role="region"
+              aria-labelledby={`faq-${i}-btn`}
+              hidden={!(i === 0 && flags.faqFirstOpen)}
+            >
+              <div class="stack faq__body">{f.a.map((p) => <p>{p}</p>)}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 · final CTA -->
+  <section class="section section--tint">
+    <div class="shell s10">
+      <h2 class="s10__title">See what your site could look like. <em>Free</em>, before you decide anything.</h2>
+      <div class="stack s10__lede">
+        <p>We'll build you a working sample of your own site.</p>
+        <p>No card, no obligation, no hard sell.</p>
+        <p>If you like it, we take it live. If not, no worries.</p>
+      </div>
+      <div class="s10__chips">
+        <Chip>$599 build, from $199 a month</Chip>
+        <Chip>Everything included</Chip>
+        <Chip>90-day guarantee</Chip>
+        <Chip>Leave anytime</Chip>
+      </div>
+      <Button variant="primary" size="lg" href={routes.freeDemo}>{ctaLabel}</Button>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  /* S1 — the export's min-height:calc(100dvh - 70px) is dropped below 1024;
+     it fought the sticky bar on short viewports. (08) */
+  .s1__grid{
+    padding-block:56px 64px;
+    display:grid;grid-template-columns:1.35fr .65fr;gap:48px;align-items:center;
+    min-height:calc(100dvh - 70px);
+  }
+  .s1__copy{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+  .s1__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(42px,5.6vw,76px);letter-spacing:var(--tracking-hero);
+    line-height:.95;text-wrap:balance;max-width:14ch;
+  }
+  .s1__title em{font-style:normal;color:var(--text-accent-display)}
+  .s1__lede{gap:var(--space-2);max-width:46ch}
+  .s1__lede p{font-size:20px}
+  .s1__media{position:relative}
+  .s1__badge{position:absolute;left:-28px;bottom:-34px;text-decoration:none}
+
+  .s2__title{max-width:20ch;margin-bottom:40px}
+  .s2__cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:var(--space-8)}
+  .s2__card-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:24px;letter-spacing:var(--tracking-display-2);margin-bottom:var(--space-5);
+  }
+  .s2__cards p,.s2__panel p{font-size:16px}
+  .s2__panel{
+    margin-top:var(--space-8);background:var(--ink);color:var(--paper);
+    border:var(--rule) solid var(--ink);padding:36px 32px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;align-items:center;
+  }
+  .s2__panel-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:var(--tracking-display);
+  }
+  .s2__panel-title em{font-style:normal;color:var(--salmon)}
+  .s2__panel-gap{margin-top:var(--space-5) !important}
+
+  .s3__title{margin:14px 0 16px}
+  .s3__lede{max-width:62ch;margin-bottom:48px}
+  .s3__lede p{font-size:19px}
+  .s3__callout{
+    margin-top:40px;border:var(--rule) solid var(--border-teal);background:var(--paper);
+    padding:28px 32px;max-width:74ch;display:flex;flex-direction:column;
+    gap:var(--space-4);align-items:flex-start;
+  }
+  .s3__callout p{font-size:16.5px}
+
+  .rail{display:grid;grid-template-columns:repeat(3,1fr);border-top:var(--rule) solid var(--ink)}
+  .rail__cell{padding:28px}
+  .rail__cell:first-child{padding-left:0}
+  .rail__cell:last-child{padding-right:0}
+  .rail__cell:not(:last-child){border-right:var(--rule) solid var(--ink)}
+  .rail__num{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:56px;line-height:1;color:var(--text-accent-display);
+    display:block;margin-bottom:var(--space-4);
+  }
+  .rail__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:22px;letter-spacing:var(--tracking-display-2);margin-bottom:var(--space-4);
+  }
+  .rail__body{font-size:16px}
+
+  .s4__title{margin:14px 0 40px;max-width:22ch}
+  .market{border:var(--rule) solid var(--ink);background:var(--white);max-width:900px}
+  .market__head{
+    display:grid;grid-template-columns:1fr auto;gap:var(--space-6);
+    background:var(--ink);color:var(--paper);
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:1.5px;text-transform:uppercase;padding:13px 20px;
+  }
+  .market__row{
+    display:grid;grid-template-columns:1fr auto;gap:var(--space-6);align-items:center;
+    padding:13px 20px;border-bottom:1px solid var(--paper-dark);
+  }
+  .market__label{font-size:var(--text-body-sm)}
+  .market__price{color:var(--grey)}
+  .market__payoff{border-top:var(--rule) solid var(--ink);padding:28px 20px}
+  .market__payoff p{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(24px,2.6vw,30px);line-height:1.08;letter-spacing:var(--tracking-display-2);
+  }
+  /* clamp min raised to 24px so Signal Orange stays legal here (08 §F-10) */
+  .market__payoff em{font-style:normal;color:var(--text-accent-display)}
+  .market__source{
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:1px;color:var(--grey);margin-top:12px;
+  }
+
+  .anchor{
+    margin-top:56px;border:var(--rule) solid var(--ink);background:var(--white);
+    padding:var(--space-8);display:grid;grid-template-columns:1fr auto;
+    gap:var(--space-9);align-items:center;
+  }
+  .anchor__copy{font-size:17px;max-width:52ch}
+  .anchor__price{flex-direction:column;align-items:flex-end;gap:0}
+
+  .s4__baseline{font-size:17px;font-weight:var(--weight-bold);max-width:74ch;margin:40px 0 24px}
+  /* seven direct children => seven shared subgrid rows (07 §1c PC-2) */
+  .plans{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    grid-template-rows:auto auto auto auto 1fr auto auto;
+    gap:var(--space-8);align-items:stretch;
+  }
+  .plans > :global(.pcard){display:grid;grid-template-rows:subgrid;grid-row:span 7;row-gap:var(--space-5)}
+  .s4__closing{margin-top:28px;font-size:16px;color:var(--grey);max-width:62ch}
+  .s4__gst{
+    margin-top:12px;font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:1px;color:var(--grey);
+  }
+
+  .s5{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;align-items:start}
+  .s5__left{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+  .s5__badge{text-decoration:none}
+  .s5__right{display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+  .s5__title{max-width:18ch}
+  .s5__body{max-width:62ch}
+  .s5__body p{font-size:17.5px}
+  .s5__dim{max-width:62ch;opacity:.78}
+  .s5__dim p{font-size:16px}
+  .s5__link{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--salmon);
+    border-bottom:1px solid var(--salmon);padding-bottom:2px;
+  }
+  .s5__link:hover{color:var(--salmon)}
+
+  .s6__title{max-width:20ch;margin-bottom:var(--space-11)}
+  .s6__rail{
+    border-left:var(--rule-heavy) solid var(--orange);padding-left:32px;
+    display:flex;flex-direction:column;gap:36px;max-width:74ch;
+  }
+  .s6__step{display:flex;flex-direction:column;gap:var(--space-3)}
+  .s6__tag{
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--text-accent-small);
+  }
+  .s6__step-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(22px,2.6vw,28px);letter-spacing:var(--tracking-display-2);
+  }
+  .s6__body{font-size:16.5px}
+
+  .s7__lede{max-width:66ch;margin-bottom:40px;gap:var(--space-2)}
+  .s7__lede p{font-size:18px}
+  .s7__note{font-size:17px !important;margin-top:var(--space-5)}
+  /* four samples: featured across the top, three beneath (11 Part 1, layout B) */
+  .s7__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8)}
+  .s7__item{display:flex;flex-direction:column;gap:var(--space-4)}
+  .s7__item--featured{grid-column:1 / -1}
+  .s7__caption{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--grey);
+  }
+  .s7__cta{margin-top:40px;display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-8)}
+  .s7__cta-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(24px,3vw,34px);letter-spacing:var(--tracking-display-2);
+  }
+
+  .s8__title{margin:14px 0 16px;max-width:20ch}
+  .s8__lede{max-width:62ch;margin-bottom:var(--space-11)}
+  .s8__lede p{font-size:18px}
+  .s8__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px}
+  .s8__tag{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-label);color:var(--text-accent-small);
+    display:block;margin-bottom:var(--space-5);
+  }
+  .s8__body{font-size:17px;font-weight:var(--weight-bold)}
+  .s8__link-wrap{margin-top:32px}
+  .s8__link{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;
+    border-bottom:1px solid var(--orange-deep);padding-bottom:2px;
+  }
+
+  .s9__title{margin-bottom:40px}
+  .faq{max-width:900px;border-top:var(--rule) solid var(--ink)}
+  .faq__item{border-bottom:var(--rule) solid var(--ink)}
+  .faq__heading{margin:0}
+  .faq__button{
+    width:100%;background:transparent;border:none;padding:22px 0;
+    display:flex;gap:var(--space-8);align-items:baseline;justify-content:space-between;
+    cursor:pointer;text-align:left;
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(19px,2.2vw,24px);letter-spacing:var(--tracking-display-2);color:var(--ink);
+  }
+  /* 20px sign uses --orange-deep: --orange was 3.87:1 and broke the system's
+     own "deep under 24px" rule (08 §F-10) */
+  .faq__sign{font-family:var(--font-mono);font-size:20px;color:var(--text-accent-small)}
+  .faq__body{max-width:70ch;padding-bottom:28px}
+  .faq__body p{font-size:17px}
+
+  .s10{padding-block:88px;display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+  .s10__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(34px,5.2vw,64px);line-height:1.02;letter-spacing:-1.5px;max-width:17ch;
+  }
+  .s10__title em{font-style:normal;color:var(--text-accent-display)}
+  .s10__lede{max-width:56ch}
+  .s10__lede p{font-size:19px}
+  .s10__chips{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+
+  @media (max-width:1023px){
+    .s1__grid{grid-template-columns:1fr;min-height:0;gap:40px}
+    .s1__badge{position:static;display:inline-block;margin-top:var(--space-7)}
+    .plans{grid-template-columns:1fr;grid-template-rows:none}
+    .plans > :global(.pcard){display:flex;flex-direction:column;grid-row:auto}
+    .anchor{grid-template-columns:1fr;gap:var(--space-7)}
+    .anchor__price{flex-direction:row;align-items:baseline;gap:var(--space-3)}
+    .s5{grid-template-columns:1fr;gap:36px}
+    .s7__grid{grid-template-columns:1fr}
+  }
+  @media (max-width:767px){
+    .rail{grid-template-columns:1fr}
+    .rail__cell{padding:28px 0}
+    .rail__cell:not(:last-child){border-right:0;border-bottom:var(--rule) solid var(--ink)}
+    .s2__panel{grid-template-columns:1fr;padding:28px 20px}
+    .market__row{grid-template-columns:1fr;gap:var(--space-3);justify-items:start}
+    .s6__rail{padding-left:20px}
+    .s10{padding-block:64px}
+  }
+</style>
+
+<script>
+  /* FAQ accordion. Disclosure pattern, not a tablist: native button semantics
+     and Tab are correct, so no arrow keys and no roving tabindex. Panels stay
+     in the DOM and toggle `hidden`, so aria-controls never dangles. (09 §2) */
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.faq__button'));
+
+  function setOpen(btn: HTMLButtonElement, open: boolean) {
+    const panel = document.getElementById(btn.getAttribute('aria-controls') || '');
+    btn.setAttribute('aria-expanded', String(open));
+    const sign = btn.querySelector('.faq__sign');
+    if (sign) sign.textContent = open ? '–' : '+';
+    if (panel) panel.hidden = !open;
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      buttons.forEach((b) => setOpen(b, false));  // single-open
+      if (!isOpen) setOpen(btn, true);
+    });
+  });
+</script>

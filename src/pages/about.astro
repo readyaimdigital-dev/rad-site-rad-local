@@ -1,43 +1,245 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import StorySplit from "../components/sections/StorySplit.astro";
-import FeatureGrid from "../components/sections/FeatureGrid.astro";
-import ProcessRow from "../components/sections/ProcessRow.astro";
-import ServiceAreaSplit from "../components/sections/ServiceAreaSplit.astro";
-import CtaBand from "../components/sections/CtaBand.astro";
-import { site } from "../config/site";
-import { content } from "../config/content";
+import Base from '../layouts/RadLocalDesignLayout.astro';
+import Label from '../components/rad-local/Label.astro';
+import Card from '../components/rad-local/Card.astro';
+import Button from '../components/rad-local/Button.astro';
+import FoundMark from '../components/rad-local/FoundMark.astro';
+import Figure from '../components/rad-local/Figure.astro';
+import { meta, heroImages } from '../config/rad-local-design-content';
+import { site, routes } from '../config/rad-local-design-site';
 
-const { about } = content;
+const receipts = [
+  {
+    title: 'Published guarantee terms',
+    body: [
+      "What the 90-day get-found guarantee covers, what it doesn't, and what happens if we miss.",
+      'Written like a contract, because it is one.',
+    ],
+    link: { href: routes.guaranteeTerms, text: 'Read the terms' },
+  },
+  {
+    title: 'Published policy on leaving',
+    body: [
+      'What happens if you cancel. The export, the timeline, the no exit fee.',
+      'Published before you sign up, not argued about after.',
+    ],
+    link: { href: `${routes.guaranteeTerms}#leaving`, text: 'Read the policy' },
+  },
+  {
+    title: "What's yours stays yours",
+    body: [
+      'Your domain, your Google Business Profile, your content, your brand.',
+      'Yours from day one, and it says so in writing.',
+    ],
+    link: { href: `${routes.guaranteeTerms}#yours`, text: 'Read the asset split' },
+  },
+];
 ---
+<Base title={meta.about.title} description={meta.about.description} current="about">
 
-<BaseLayout title={about.title} description={about.description}>
-  <StorySplit
-    as="h1"
-    eyebrow={about.eyebrow}
-    heading={about.heading}
-    body={about.paragraphs}
-    image={about.image}
-    imageSide="left"
-    primaryCta={{ label: about.primaryCtaLabel, href: "/contact" }}
-    secondaryCta={{ label: about.secondaryCtaLabel, href: "/#work" }}
-  />
+  <!-- A1 · the person -->
+  <section class="section section--paper" id="top">
+    <div class="shell a1">
+      <div class="a1__photo">
+        <Figure
+          image={heroImages.hayden.image}
+          alt={heroImages.hayden.alt}
+          minHeight={540}
+          loading="eager"
+          widths={[480, 800, 1100]}
+          sizes="(max-width: 767px) 100vw, 45vw"
+          class="a1__frame"
+        />
+        <span class="a1__caption">Hayden · {site.operator.location}</span>
+      </div>
+      <div class="a1__copy">
+        <Label>About</Label>
+        <h1 class="a1__title">G'day. I'm <em>Hayden</em>.</h1>
+        <div class="lede a1__lede">
+          <p>I build websites for regional businesses, and I'm based in Maclean myself.</p>
+          <p>Not a call centre, not a city agency with a regional landing page.</p>
+          <p>When you ring RAD Local, you get me or someone who sits near me.</p>
+        </div>
+        <div class="a1__phone">
+          <a class="a1__number" href={site.phone.href}>{site.phone.display}</a>
+          <p>If I miss you, I'll call back. That's not a slogan, it's the job.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <FeatureGrid
-    eyebrow={about.credentials.eyebrow}
-    heading={about.credentials.heading}
-    items={content.trustPillars}
-  />
+  <!-- A2 · the story -->
+  <section class="section section--tint">
+    <div class="shell a2">
+      <h2 class="h2 a2__title">Why RAD Local exists</h2>
+      <div class="a2__cols">
+        <div class="stack a2__col">
+          <p class="a2__strong">I've built websites for a long time. And I kept watching the same thing happen to regional businesses.</p>
+          <p>A good local business needs a website. So they ask around.</p>
+          <p>The city agency quotes them five grand before hosting and changes get added on.</p>
+          <p>The DIY builder eats three weekends and stalls at half done.</p>
+          <p>Either way, the business ends up invisible right when locals are searching for exactly what they do.</p>
+        </div>
+        <div class="stack a2__col">
+          <p class="a2__strong">Neither option was built for them. So we built the third way.</p>
+          <p>One fixed monthly price with everything included.</p>
+          <p>A site that's live in days and built to be found in Google and AI search.</p>
+          <p>A guarantee with published terms.</p>
+          <p>And the door left open, in writing, if you ever want to leave.</p>
+        </div>
+      </div>
+      <p class="a2__payoff">It's the deal I'd want if I were on the other side of the table. That's the whole story.</p>
+    </div>
+  </section>
 
-  <ProcessRow eyebrow={about.process.eyebrow} heading={about.process.heading} steps={about.process.steps} />
+  <!-- A3 · honesty receipts -->
+  <section class="section section--paper">
+    <div class="shell">
+      <Label>In writing</Label>
+      <h2 class="h2 a3__title">Don't take my word for it. Read the terms.</h2>
+      <div class="lede a3__lede">
+        <p>We're new, so you won't find hundreds of reviews yet.</p>
+        <p>What you will find is everything in writing.</p>
+        <p>Most providers publish none of this.</p>
+      </div>
+      <div class="a3__grid">
+        {receipts.map((r) => (
+          <Card sticker class="a3__card">
+            <h3 class="a3__card-title">{r.title}</h3>
+            <div class="stack a3__card-body">{r.body.map((b) => <p>{b}</p>)}</div>
+            <a class="a3__link" href={r.link.href}>{r.link.text} &rarr;</a>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <ServiceAreaSplit
-    eyebrow={about.whereEyebrow}
-    heading={about.whereHeading}
-    lead={about.whereLead}
-    areas={site.serviceArea}
-    image={about.whereImage}
-  />
+  <!-- A4 · the backing -->
+  <section class="section section--ink" data-surface="ink">
+    <div class="shell a4">
+      <div class="a4__left">
+        <Label tone="paper">The backing</Label>
+        <h2 class="h2 a4__title">Behind RAD Local</h2>
+        <FoundMark tone="paper" size={64} />
+      </div>
+      <div class="a4__right">
+        <div class="stack">
+          <p>RAD Local is built and run by Ready Aim Digital, an Australian web agency.</p>
+          <p>Same team, same tools, same standards… a new name for a simple offer built for regional businesses.</p>
+          <p>So this isn't a startup finding its feet on your website.</p>
+          <p>It's an established operation doing what it already does, at a price that finally makes sense out here.</p>
+        </div>
+        <div class="stack a4__dim">
+          <p>We're Australian owned and regional based, the sites are custom designed, and we build fast.</p>
+          <p>There. Said it once. Now it's back to the stuff that actually sets us apart.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <CtaBand heading={about.cta.heading} sub={about.cta.sub} ctaLabel={about.cta.ctaLabel} href="/contact" />
-</BaseLayout>
+  <!-- A5 · CTA -->
+  <section class="section section--tint">
+    <div class="shell a5">
+      <h2 class="a5__title">Want to see what we'd build <em>for you</em>?</h2>
+      <div class="stack a5__lede">
+        <p>We'll build you a free working sample of your own site before you decide anything.</p>
+        <p>No card, no obligation.</p>
+      </div>
+      <Button variant="primary" size="lg" href={routes.freeDemo}>See your free demo</Button>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .a1{
+    padding-block:64px 72px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:56px;align-items:center;
+  }
+  .a1__photo{display:flex;flex-direction:column;gap:var(--space-4)}
+  .a1__caption{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--grey);
+  }
+  .a1__copy{display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+  .a1__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(44px,6vw,80px);line-height:.96;
+    letter-spacing:var(--tracking-hero);max-width:12ch;
+  }
+  .a1__title em{font-style:normal;color:var(--text-accent-display)}
+  .a1__lede{gap:var(--space-3);max-width:48ch}
+  .a1__lede p{font-size:19px}
+  .a1__phone{
+    border:var(--rule) solid var(--ink);background:var(--white);
+    padding:20px 24px;box-shadow:var(--shadow-sticker);
+    display:flex;flex-direction:column;gap:var(--space-2);align-items:flex-start;
+  }
+  .a1__number{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(26px,3.4vw,36px);letter-spacing:var(--tracking-display);
+    color:var(--ink);border-bottom:var(--rule-heavy) solid var(--orange);padding-bottom:2px;
+  }
+  .a1__number:hover{color:var(--orange-deep)}
+  .a1__phone p{font-size:16px;max-width:34ch}
+
+  .a2{max-width:960px;display:flex;flex-direction:column;gap:36px}
+  .a2__title{max-width:20ch}
+  .a2__cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:36px}
+  .a2__col{max-width:54ch;gap:var(--space-3)}
+  .a2__col p{font-size:17.5px}
+  .a2__strong{font-weight:var(--weight-bold);font-size:18.5px !important}
+  .a2__payoff{
+    border-top:var(--rule) solid var(--ink);padding-top:28px;
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(24px,3.2vw,38px);line-height:1.08;
+    letter-spacing:var(--tracking-display);max-width:26ch;
+  }
+
+  .a3__title{margin:14px 0 20px;max-width:22ch}
+  .a3__lede{gap:var(--space-2);max-width:62ch;margin-bottom:var(--space-11)}
+  .a3__lede p{font-size:18px}
+  .a3__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:stretch}
+  .a3__card{display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start}
+  .a3__card-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:23px;letter-spacing:var(--tracking-display-2);
+  }
+  .a3__card-body{flex:1}
+  .a3__card-body p{font-size:16.5px}
+  .a3__link{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;
+    border-bottom:1px solid var(--orange-deep);padding-bottom:2px;
+  }
+
+  .a4{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;align-items:start}
+  .a4__left{display:flex;flex-direction:column;gap:var(--space-7);align-items:flex-start}
+  .a4__title{max-width:14ch}
+  .a4__right{display:flex;flex-direction:column;gap:22px;max-width:58ch}
+  .a4__right p{font-size:17.5px}
+  .a4__dim{opacity:.78;border-top:1px solid rgba(247,241,229,.25);padding-top:var(--space-6)}
+  .a4__dim p{font-size:16.5px !important}
+
+  .a5{padding-block:88px;display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+  .a5__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(34px,5.2vw,64px);line-height:1.02;letter-spacing:-1.5px;max-width:18ch;
+  }
+  .a5__title em{font-style:normal;color:var(--text-accent-display)}
+  .a5__lede{gap:var(--space-2);max-width:52ch}
+  .a5__lede p{font-size:19px}
+
+  @media (max-width:767px){
+    .a1{padding-block:44px 56px;gap:36px}
+    .a1__photo{order:-1}          /* photo first on mobile, whatever the layout */
+    .a1__frame{--fig-min:380px !important}
+    .a2__cols{grid-template-columns:1fr}
+    .a4{grid-template-columns:1fr;gap:36px}
+    .a5{padding-block:64px}
+  }
+  @media (max-width:479px){
+    .a1__frame{--fig-min:300px !important}
+  }
+</style>

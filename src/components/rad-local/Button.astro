@@ -1,0 +1,39 @@
+---
+/** Button. Primary fill is --fill-accent (--orange-deep) per the contrast
+ *  patch: white on it is 6.41:1, where --orange was 4.36:1 and failed AA. */
+interface Props {
+  variant?: 'primary' | 'secondary' | 'inverse';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string; type?: 'button' | 'submit'; disabled?: boolean;
+  class?: string; id?: string;
+}
+const { variant = 'primary', size = 'md', href, type = 'button', disabled, class: className, id } = Astro.props;
+const Tag = href && !disabled ? 'a' : 'button';
+const rest = Tag === 'a' ? { href } : { type, disabled };
+---
+<Tag id={id} class:list={['button', `button--${variant}`, `button--${size}`, className]} {...rest}>
+  <slot />
+</Tag>
+<style>
+  .button{
+    font-family:var(--font-body);font-weight:var(--weight-bold);line-height:1.2;
+    border-radius:var(--radius-pill);border:var(--rule) solid var(--ink);
+    background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);
+    transition:background var(--motion-fast) var(--motion-ease),
+               color var(--motion-fast) var(--motion-ease);
+  }
+  .button:active{transform:translateY(1px)}
+  .button--sm{padding:9px 18px;font-size:15px}
+  .button--md{padding:13px 26px;font-size:16px}
+  .button--lg{padding:16px 32px;font-size:18px}
+  .button--primary{background:var(--fill-accent);color:var(--white);border-color:var(--fill-accent)}
+  .button--primary:hover{background:var(--fill-accent-hover);border-color:var(--fill-accent-hover);color:var(--white)}
+  .button--secondary:hover{background:var(--ink);color:var(--paper)}
+  .button--inverse{border-color:var(--paper);color:var(--paper)}
+  .button--inverse:hover{background:var(--paper);color:var(--ink)}
+  .button:disabled{cursor:not-allowed;opacity:.4}
+  /* Submitting keeps full opacity: the 40% disabled state drops the label to
+     1.38:1. A submitting button is transient, not unavailable. (09 §8) */
+  .button[aria-busy='true']{cursor:progress;opacity:1}
+</style>

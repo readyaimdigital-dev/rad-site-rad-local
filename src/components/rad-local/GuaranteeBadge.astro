@@ -1,0 +1,64 @@
+---
+/** GuaranteeBadge. Fill is --fill-accent per the contrast patch: paper on it
+ *  is 5.70:1, where --orange was 3.87:1 and failed AA at every size used. */
+interface Props {
+  lines?: readonly string[];
+  footnote?: string;
+  size?: number;
+  href?: string;
+  onInk?: boolean;
+  class?: string;
+}
+const {
+  lines = ['90-DAY', 'GET-FOUND', 'GUARANTEE'],
+  footnote = 'TERMS PUBLISHED IN FULL',
+  size = 150,
+  href,
+  onInk = false,
+  class: className,
+} = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<Tag
+  {...(href ? { href } : {})}
+  class:list={['badge', onInk && 'badge--on-ink', className]}
+  style={`--badge-size:${size}px`}
+>
+  {lines.map((l) => <span>{l}</span>)}
+  {footnote && <span class="badge__footnote">{footnote}</span>}
+</Tag>
+
+<style>
+  .badge{
+    width:var(--badge-size);
+    height:var(--badge-size);
+    flex-shrink:0;
+    box-sizing:border-box;
+    border-radius:50%;
+    background:var(--fill-accent);
+    color:var(--paper);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-family:var(--font-display);
+    font-weight:var(--weight-display);
+    font-size:calc(var(--badge-size) * 0.097);
+    line-height:var(--leading-tight);
+    padding:var(--space-6);
+    border:var(--rule-heavy) solid var(--ink);
+    box-shadow:var(--shadow-sticker);
+    text-decoration:none;
+  }
+  a.badge:hover{background:var(--fill-accent-hover);color:var(--paper)}
+  /* On an ink panel the ink border and shadow vanish, so both go paper. */
+  .badge--on-ink{border-color:var(--paper);box-shadow:4px 4px 0 var(--paper)}
+  .badge__footnote{
+    font-family:var(--font-mono);
+    font-weight:var(--weight-regular);
+    font-size:calc(var(--badge-size) * 0.063);
+    letter-spacing:var(--tracking-chip);
+    margin-top:var(--space-2);
+  }
+</style>

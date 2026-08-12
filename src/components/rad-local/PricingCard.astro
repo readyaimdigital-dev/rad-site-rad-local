@@ -1,0 +1,119 @@
+---
+import PriceNumber from './PriceNumber.astro';
+import Button from './Button.astro';
+
+/**
+ * PricingCard, with the three fixes from 07 §1c:
+ *
+ *  PC-1  No hard-coded 26px flag slot. The source clamped it to 26px while a
+ *        Chip renders 35.8px, overflowing 9.8px and crushing the specified 8px
+ *        gap above the name to 3px.
+ *  PC-2  The flag is a DIRECT child of the card. Nested inside a head wrapper
+ *        it was a grandchild, so subgrid could not equalise it and the popular
+ *        card's name and price sat up to 10px out of line.
+ *  PC-3  The popular flag renders as a full-bleed ink banner, not a solid
+ *        orange Chip. Chip fill and primary Button fill were the identical
+ *        #D64911, putting two solid oranges on one card. Ink also gives the
+ *        orange chip its single meaning back ("Included").
+ *
+ * Seven direct children => seven shared subgrid rows.
+ */
+type Line = string | { lead: true; text: string };
+
+interface Props {
+  name: string;
+  outcome?: string;
+  price: string;
+  priceSuffix?: string;
+  lines?: Line[];
+  bestFor?: string;
+  popular?: boolean;
+  popularLabel?: string;
+  cta?: string;
+  ctaHref?: string;
+}
+const {
+  name, outcome = '', price, priceSuffix = 'a month', lines = [],
+  bestFor = '', popular = false, popularLabel = 'Most popular',
+  cta = 'See your free demo', ctaHref = '/free-demo',
+} = Astro.props;
+---
+<div class:list={['pcard', popular && 'pcard--popular']}>
+  <div class="pcard__flag">{popular && <span class="pcard__banner">{popularLabel}</span>}</div>
+  <span class="pcard__name">{name}</span>
+  <p class="pcard__outcome">{outcome}</p>
+  <PriceNumber amount={price} suffix={priceSuffix} size={54} class="pcard__price" />
+  <ul class="pcard__lines">
+    {lines.map((l) =>
+      typeof l === 'string'
+        ? <li>{l}</li>
+        : <li class="is-lead">{l.text}</li>
+    )}
+  </ul>
+  <div class="pcard__bestfor">
+    {bestFor && (
+      <>
+        <span class="pcard__bestfor-label">Best for</span>
+        <q class="pcard__bestfor-quote">{bestFor}</q>
+      </>
+    )}
+  </div>
+  <Button variant={popular ? 'primary' : 'secondary'} href={ctaHref} class="pcard__cta">{cta}</Button>
+</div>
+
+<style>
+  .pcard{
+    border:var(--rule) solid var(--ink);
+    background:var(--white);
+    padding:var(--space-8);
+    padding-top:0;             /* the banner bleeds to the top edge */
+    display:flex;flex-direction:column;gap:var(--space-5);
+  }
+
+  /* PC-1 + PC-2: direct child, no fixed height, bleeds past the card padding */
+  .pcard__flag{
+    display:block;
+    margin:0 calc(var(--space-8) * -1);
+    min-height:0;
+  }
+  /* PC-3: ink banner, the same language as the DataTable header row */
+  .pcard__banner{
+    display:block;
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;
+    background:var(--ink);color:var(--paper);
+    border-bottom:var(--rule) solid var(--ink);
+    padding:11px var(--space-8);text-align:center;
+  }
+
+  .pcard__name{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:24px;letter-spacing:var(--tracking-display-2);white-space:nowrap;
+  }
+  /* Promise line stays at the design system's 15.5px grey — decision A. */
+  .pcard__outcome{font-size:var(--text-body-sm);color:var(--grey)}
+  .pcard__outcome:empty{display:none}
+
+  .pcard__lines{display:flex;flex-direction:column}
+  .pcard__lines li{
+    padding:8px 0;font-size:var(--text-body-sm);
+    border-bottom:var(--rule-hair) solid var(--paper-dark);
+  }
+  .pcard__lines li:last-child{border-bottom:none}
+  .pcard__lines li.is-lead{
+    font-weight:var(--weight-bold);border-bottom:none;padding-bottom:2px;
+  }
+
+  .pcard__bestfor{
+    border-top:var(--rule-hair) solid var(--paper-dark);
+    padding-top:var(--space-5);
+    display:flex;flex-direction:column;gap:var(--space-2);
+  }
+  .pcard__bestfor:empty{display:none;border-top:0;padding-top:0}
+  .pcard__bestfor-label{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-label);text-transform:uppercase;
+    color:var(--text-accent);
+  }
+  .pcard__bestfor-quote{font-size:var(--text-body-sm);font-style:normal}
+</style>

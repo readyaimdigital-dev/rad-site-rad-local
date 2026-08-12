@@ -177,7 +177,7 @@ export const content = {
   home: {
     hero: {
       eyebrow: "Websites for regional businesses",
-      heading: site.tagline,
+      heading: "A better website,",
       headlineAccent: "without the technical headache.",
       intro: site.description,
       primaryCta: "Start a conversation",

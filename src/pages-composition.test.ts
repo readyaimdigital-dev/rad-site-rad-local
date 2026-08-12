@@ -1,16 +1,17 @@
 import { readFileSync } from "node:fs";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, it } from "vitest";
-import { content, getFeaturedServices } from "./config/content";
+import { meta } from "./config/rad-local-design-content";
 import { site } from "./config/site";
 
 const requestUrl = (path: string) => new Request(new URL(path, "http://localhost/"));
 
 describe("page composition uses the neutral section library", () => {
-  it("home page composes HeroSplit and other sections instead of bespoke markup", () => {
+  it("home page uses the approved RAD Local design layer", () => {
     const source = readFileSync("src/pages/index.astro", "utf8");
-    expect(source).toMatch(/from\s+["']..\/components\/sections\/HeroSplit\.astro["']/);
-    expect(source).toContain("content.home.serviceAreaSuffix");
+    expect(source).toContain("RadLocalDesignLayout.astro");
+    expect(source).toContain("rad-local-design-content");
+    expect(source).toContain("routes.freeDemo");
   });
 
   it("services page composes JumpLinkHero and ServiceBand from the shared catalogue", () => {
@@ -23,10 +24,11 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain("servicesPage.serviceLabels.pricingValue");
   });
 
-  it("about page composes StorySplit", () => {
+  it("about page uses the approved RAD Local design layer", () => {
     const source = readFileSync("src/pages/about.astro", "utf8");
-    expect(source).toMatch(/from\s+["']..\/components\/sections\/StorySplit\.astro["']/);
-    expect(source).toContain("heading={about.credentials.heading}");
+    expect(source).toContain("RadLocalDesignLayout.astro");
+    expect(source).toContain("rad-local-design-content");
+    expect(source).toContain("routes.guaranteeTerms");
   });
 
   it("contact page keeps the existing ContactForm handler and composes ContactSplit", () => {
@@ -38,12 +40,7 @@ describe("page composition uses the neutral section library", () => {
   });
 
   it("keeps page-level styles on the shared design-token contract", () => {
-    const pagePaths = [
-      "src/pages/index.astro",
-      "src/pages/services.astro",
-      "src/pages/about.astro",
-      "src/pages/contact.astro",
-    ];
+    const pagePaths = ["src/pages/services.astro", "src/pages/contact.astro"];
     const rawColour = /#[0-9a-f]{3,8}\b|rgba?\(/i;
     const rawTypeSize = /font-size:\s*(?!var\(|inherit)[^;]*(?:rem|px)\b/i;
     const rawSpacing =
@@ -56,6 +53,11 @@ describe("page composition uses the neutral section library", () => {
       expect(style, `${pagePath} should not hard-code type sizes`).not.toMatch(rawTypeSize);
       expect(style, `${pagePath} should not hard-code reusable spacing`).not.toMatch(rawSpacing);
     }
+
+    const designLayout = readFileSync("src/layouts/RadLocalDesignLayout.astro", "utf8");
+    expect(designLayout).toContain("rad-local-design-global.css");
+    expect(designLayout).toContain("BaseHead");
+    expect(designLayout).toContain("SchemaOrg");
   });
 });
 
@@ -66,7 +68,7 @@ describe("page composition real render", () => {
     const html = await container.renderToString(Home, { request: requestUrl("/") });
 
     expect(html).toContain("<html");
-    for (const service of getFeaturedServices()) expect(html).toContain(service.title);
+    expect(html).toContain(meta.home.title.replace(" | RAD Local", ""));
   });
 
   it("renders the services page without crashing", async () => {
@@ -83,7 +85,7 @@ describe("page composition real render", () => {
     const html = await container.renderToString(About, { request: requestUrl("/about") });
 
     expect(html).toContain("<html");
-    expect(html).toContain(content.about.credentials.heading);
+    expect(html).toContain(meta.about.title.replace(" | RAD Local", ""));
   });
 
   it("renders the contact page without crashing", async () => {

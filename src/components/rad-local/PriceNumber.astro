@@ -1,0 +1,24 @@
+---
+/** PriceNumber. NOTE: the source component defaulted `amount` to '139' — a
+ *  retired price baked into a default. No default here on purpose. (10 §5) */
+interface Props { amount: string; currency?: string; suffix?: string; size?: number; tone?: 'ink' | 'paper' | 'accent'; class?: string }
+const { amount, currency = '$', suffix = 'a month', size = 96, tone = 'ink', class: className } = Astro.props;
+const colour = tone === 'ink' ? 'var(--ink)' : tone === 'paper' ? 'var(--paper)' : 'var(--text-accent-display)';
+---
+<div class:list={['price', className]} style={`--pn:${size}px;color:${colour}`}>
+  <span class="price__amt"><span class="price__cur">{currency}</span>{amount}</span>
+  {suffix && <span class="price__suffix">{suffix}</span>}
+</div>
+<style>
+  .price{display:flex;align-items:baseline;gap:var(--space-3)}
+  .price__amt{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:var(--pn);line-height:var(--leading-hero);
+    letter-spacing:calc(var(--pn) * -0.022);margin-right:calc(var(--pn) * 0.022);
+  }
+  .price__cur{font-size:calc(var(--pn) * 0.5)}
+  .price__suffix{
+    font-family:var(--font-body);font-weight:var(--weight-medium);
+    font-size:max(15px, calc(var(--pn) * 0.19));line-height:1.2;white-space:nowrap;
+  }
+</style>

@@ -29,10 +29,10 @@ describe("client-editable content", () => {
     const contactSource = readFileSync("src/pages/contact.astro", "utf8");
     const privacySource = readFileSync("src/pages/privacy.astro", "utf8");
     const termsSource = readFileSync("src/pages/terms.astro", "utf8");
-    expect(homeSource).toContain("content.home.serviceAreaSuffix");
+    expect(homeSource).toContain("rad-local-design-content");
     expect(servicesSource).toContain("content.servicesPage.description");
     expect(contactSource).toContain("content.contact.description");
-    expect(privacySource).toContain("content.privacy.sections");
+    expect(privacySource).toContain("RadLocalDesignLayout.astro");
     expect(termsSource).toContain("content.terms.sections");
     expect(privacySource).not.toContain("[Business Legal Name]");
     expect(termsSource).not.toContain("[Business Legal Name]");

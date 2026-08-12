@@ -3,7 +3,9 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { scanTextRoots } from "./leakage-lib.mjs";
 
-const requestedRoots = process.argv.slice(2).map((path) => resolve(path));
+const args = process.argv.slice(2);
+const allowRadLocalIdentity = args.includes('--allow-rad-local-identity');
+const requestedRoots = args.filter((arg) => arg !== '--allow-rad-local-identity').map((path) => resolve(path));
 const defaultRoot = existsSync(resolve(".vercel/output")) ? resolve(".vercel/output") : resolve("dist");
 const roots = requestedRoots.length > 0 ? requestedRoots : [defaultRoot];
 const missingRoots = roots.filter((root) => !existsSync(root));
@@ -14,7 +16,7 @@ if (missingRoots.length > 0) {
   process.exit(1);
 }
 
-const { records, findings } = await scanTextRoots(roots);
+const { records, findings } = await scanTextRoots(roots, { allowRadLocalIdentity });
 
 if (findings.length > 0) {
   for (const finding of findings) {

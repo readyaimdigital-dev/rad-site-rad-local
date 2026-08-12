@@ -1,0 +1,16 @@
+---
+type Props = { tone?: 'accent' | 'ink' | 'muted' | 'paper'; as?: string; class?: string }
+const props = Astro.props as Props;
+const { tone = 'accent', as: Tag = 'span', class: className } = props;
+---
+<Tag class:list={['label', `label--${tone}`, className]}><slot /></Tag>
+<style>
+  .label{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-label);text-transform:uppercase;display:block;
+  }
+  .label--accent{color:var(--text-accent)}
+  .label--ink{color:var(--ink)}
+  .label--muted{color:var(--grey)}
+  .label--paper{color:var(--paper)}
+</style>

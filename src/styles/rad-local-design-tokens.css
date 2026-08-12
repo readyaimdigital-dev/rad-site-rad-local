@@ -1,0 +1,135 @@
+/* RAD Local — design tokens
+ *
+ * Ported from the design system at
+ *   rad-local-design-handoff/03-design-export/_ds/rad-local-design-system-2968e45b.../tokens/
+ * with the approved contrast patch applied
+ *   rad-local-design-handoff/04-style-guide/proposed/tokens-contrast-patch.css
+ *
+ * Patch rule: Signal Deep whenever orange carries text — as a colour OR as a
+ * fill. Signal Orange is reserved for display type at 24px and above, and for
+ * non-text marks.
+ */
+
+/* Fonts are still CDN-loaded. No binaries were supplied and none are
+ * self-hosted. To self-host, drop files into public/fonts/ and replace this
+ * with @font-face rules. See 06-design-export-notes.md §3. */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Heebo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  /* ── colour ─────────────────────────────────────────────────────────── */
+  --orange:#D64911;          /* display type >=24px, the bullseye dot, decorative rules */
+  --orange-deep:#A83A0E;     /* every fill that carries text, and orange text under 24px */
+  --orange-deepest:#8C300B;  /* hover target, so "hover deepens" still holds */
+  --ink:#1C1917;
+  --paper:#F7F1E5;
+  --paper-dark:#EFE6D4;
+  --eucalypt:#49A9A5;
+  --eucalypt-deep:#2E6E6B;
+  --grey:#6B655C;
+  --white:#FFFFFF;
+  --salmon:#F0A583;
+
+  --surface-page:var(--paper);
+  --surface-page-tint:var(--paper-dark);
+  --surface-card:var(--white);
+  --surface-inverse:var(--ink);
+  --surface-accent:var(--orange);
+
+  --text-body:var(--ink);
+  --text-muted:var(--grey);
+  --text-inverse:var(--paper);
+  --text-accent:var(--orange-deep);
+  --text-accent-large:var(--orange);
+  --text-teal:var(--eucalypt-deep);
+  --text-on-accent:var(--white);
+  --text-on-inverse-accent:var(--salmon);
+
+  --border-ink:var(--ink);
+  --border-accent:var(--orange);
+  --border-hairline:var(--paper-dark);
+  --border-inverse:rgba(255,255,255,0.12);
+
+  /* patch aliases — components consume these, never the raw palette */
+  --fill-accent:var(--orange-deep);          /* primary buttons, solid chips, badge  6.41:1 on white */
+  --fill-accent-hover:var(--orange-deepest); /* 8.26:1 on white */
+  --text-accent-small:var(--orange-deep);    /* any orange text under 24px           5.70:1 on paper */
+  --text-accent-display:var(--orange);       /* orange word in a headline, big numerals */
+  --border-teal:var(--eucalypt-deep);        /* was --eucalypt at 2.49:1, under the 3.0 non-text floor */
+
+  /* focus rings — the guide's single ink rule is invisible on ink panels */
+  --focus-ring:var(--ink);        /* on paper / paper-dark / white */
+  --focus-ring-inverse:var(--paper); /* on ink panels */
+
+  /* ── type ───────────────────────────────────────────────────────────── */
+  --font-display:'Bricolage Grotesque',sans-serif;
+  --font-body:'Heebo',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+
+  --weight-display:800;
+  --weight-display-bold:700;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-bold:700;
+
+  --text-hero:clamp(56px,9vw,104px);
+  --text-display-1:52px;
+  --text-display-2:44px;
+  --text-display-3:22px;
+  --text-lede:20px;
+  --text-body-size:17px;
+  --text-body-sm:15.5px;
+  --text-caption:13.5px;
+  --text-mono:12px;
+  --text-mono-sm:11px;
+
+  --leading-display:1.08;
+  --leading-hero:0.95;
+  --leading-body:1.65;
+  --leading-tight:1.2;
+
+  --tracking-hero:-2px;
+  --tracking-display:-1px;
+  --tracking-display-2:-0.5px;
+  --tracking-label:2px;
+  --tracking-chip:1px;
+
+  --measure:70ch;
+
+  /* ── spacing ────────────────────────────────────────────────────────── */
+  --space-1:4px;  --space-2:6px;  --space-3:8px;  --space-4:10px;
+  --space-5:14px; --space-6:16px; --space-7:20px; --space-8:24px;
+  --space-9:30px; --space-10:34px; --space-11:44px; --space-12:72px;
+  --space-13:90px;
+
+  --gutter:32px;
+  --container:960px;
+  --container-wide:1180px;
+  --section-y:72px;
+
+  /* ── borders, shadow, motion ────────────────────────────────────────── */
+  --rule:2px;
+  --rule-hair:1px;
+  --rule-heavy:3px;
+  --border:var(--rule) solid var(--ink);
+  --border-hair:var(--rule-hair) solid var(--paper-dark);
+
+  --radius-0:0px;
+  --radius-card:8px;
+  --radius-pill:999px;
+
+  --shadow-sticker:4px 4px 0 var(--ink);
+  --shadow-sticker-sm:3px 3px 0 var(--ink);
+  --shadow-none:none;
+
+  --motion-fast:120ms;
+  --motion-base:180ms;
+  --motion-ease:cubic-bezier(0.2,0,0,1);
+}
+
+/* responsive scale — three breakpoints, per 08-responsive-and-contrast.md */
+@media (max-width:767px){
+  :root{ --gutter:20px; --section-y:56px; }
+}
+@media (max-width:479px){
+  :root{ --gutter:16px; --section-y:44px; }
+}

@@ -1,0 +1,20 @@
+---
+interface Props { tone?: 'white' | 'paper' | 'tint' | 'ink' | 'orange'; sticker?: boolean; radius?: number; class?: string }
+const { tone = 'white', sticker = false, radius = 0, class: className } = Astro.props;
+---
+<div class:list={['card', `card--${tone}`, sticker && 'card--sticker', className]}
+     style={`--card-radius:${radius}px`}>
+  <slot />
+</div>
+<style>
+  .card{
+    border:var(--rule) solid var(--ink);border-radius:var(--card-radius,0);
+    padding:var(--space-8);box-shadow:none;
+  }
+  .card--sticker{box-shadow:var(--shadow-sticker)}
+  .card--white{background:var(--white);color:var(--ink)}
+  .card--paper{background:var(--paper);color:var(--ink)}
+  .card--tint{background:var(--paper-dark);color:var(--ink)}
+  .card--ink{background:var(--ink);color:var(--paper)}
+  .card--orange{background:var(--fill-accent);color:var(--paper)}
+</style>

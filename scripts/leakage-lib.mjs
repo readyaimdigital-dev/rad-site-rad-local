@@ -22,11 +22,20 @@ const TEXT_EXTENSIONS = new Set([
   ".xml",
 ]);
 
-export function findForbiddenReferences(records) {
+const RAD_LOCAL_IDENTITY_PATTERNS = new Set([
+  /ready[\s._-]*aim[\s._-]*digital/i.toString(),
+  /readyaim\.digital/i.toString(),
+  /\bRAD\b/.toString(),
+]);
+
+export function findForbiddenReferences(records, options = {}) {
+  const patterns = options.allowRadLocalIdentity
+    ? FORBIDDEN_PATTERNS.filter((pattern) => !RAD_LOCAL_IDENTITY_PATTERNS.has(pattern.toString()))
+    : FORBIDDEN_PATTERNS;
   const findings = [];
   for (const record of records) {
     const searchable = `${record.path}\n${record.text}`;
-    for (const pattern of FORBIDDEN_PATTERNS) {
+    for (const pattern of patterns) {
       if (pattern.test(searchable)) {
         findings.push({ path: record.path, pattern: pattern.toString() });
       }
@@ -49,7 +58,7 @@ async function collectTextRecords(root, directory = root) {
   return records;
 }
 
-export async function scanTextRoots(roots) {
+export async function scanTextRoots(roots, options = {}) {
   const records = [];
   for (const root of roots) {
     const rootRecords = await collectTextRecords(root);
@@ -60,5 +69,5 @@ export async function scanTextRoots(roots) {
       }))
     );
   }
-  return { records, findings: findForbiddenReferences(records) };
+  return { records, findings: findForbiddenReferences(records, options) };
 }

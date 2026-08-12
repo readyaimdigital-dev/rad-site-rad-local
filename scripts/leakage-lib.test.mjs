@@ -17,6 +17,21 @@ describe("full-output leakage detection", () => {
     expect(findForbiddenReferences([{ path: "index.html", text: "Local business website" }])).toEqual([]);
   });
 
+  it("allows declared RAD Local identity only in the product profile", () => {
+    const records = [{
+      path: "index.html",
+      text: "RAD Local is a Ready Aim Digital company. Contact hello@readyaim.digital.",
+    }];
+
+    expect(findForbiddenReferences(records)).not.toEqual([]);
+    expect(findForbiddenReferences(records, { allowRadLocalIdentity: true })).toEqual([]);
+    expect(
+      findForbiddenReferences([{ path: "index.html", text: "Powered by RAD" }], {
+        allowRadLocalIdentity: true,
+      }),
+    ).not.toEqual([]);
+  });
+
   it("detects forbidden identity in a filename", () => {
     expect(
       findForbiddenReferences([

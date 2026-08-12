@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/** Figure. Takes an imported image so Astro can optimise and generate
+ *  responsive sources at build time. Falls back to an explicit placeholder
+ *  frame when no image is supplied, so a missing asset never ships as a
+ *  broken <img>.
+ *
+ *  `alt` is the accessible description. `direction` is the brief for whoever
+ *  supplies the photo. Different jobs, never interchangeable. (09 §5) */
+interface Props {
+  image?: ImageMetadata;
+  alt: string;
+  direction?: string;
+  widths?: number[];
+  sizes?: string;
+  minHeight?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+}
+const {
+  image, alt, direction,
+  widths = [480, 800, 1200],
+  sizes = '(max-width: 767px) 100vw, 50vw',
+  minHeight = 320, class: className, loading = 'lazy',
+} = Astro.props;
+
+/* Cap the fallback `src` at the largest requested width. Without this Astro
+   uses the source's intrinsic size, so a 4000x6000 camera original ships a
+   2.5 MB fallback to any client that ignores srcset. */
+const maxWidth = Math.min(Math.max(...widths), image?.width ?? Infinity);
+---
+<figure class:list={['figure', className]} style={`--fig-min:${minHeight}px`}>
+  {image ? (
+    <Image
+      src={image}
+      alt={alt}
+      width={maxWidth}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      decoding="async"
+      format="webp"
+      quality={72}
+    />
+  ) : (
+    <div class="figure__pending" role="img" aria-label={alt}>
+      <span class="figure__tag">Image pending</span>
+      {direction && <span class="figure__direction">{direction}</span>}
+    </div>
+  )}
+</figure>
+<style>
+  .figure{
+    margin:0;border:var(--rule) solid var(--ink);
+    background:var(--paper-dark);overflow:hidden;
+    min-height:var(--fig-min);display:flex;
+  }
+  .figure :global(img){width:100%;height:100%;object-fit:cover;min-height:var(--fig-min)}
+  .figure__pending{
+    flex:1;min-height:var(--fig-min);
+    display:flex;flex-direction:column;gap:var(--space-3);
+    align-items:center;justify-content:center;text-align:center;
+    padding:var(--space-8);
+  }
+  .figure__tag{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--orange-deep);
+  }
+  .figure__direction{
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:1px;line-height:1.8;color:var(--grey);max-width:34ch;
+  }
+</style>

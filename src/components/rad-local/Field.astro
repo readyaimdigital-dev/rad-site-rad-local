@@ -1,0 +1,58 @@
+---
+/** Field. The label wraps the control, so it needs no `for`. The note element
+ *  is always rendered and always referenced by aria-describedby, so the error
+ *  message is announced when focus lands on an invalid field. (09 §1, §8) */
+type InputType = 'text' | 'tel' | 'email' | 'url' | 'number';
+type InputMode = 'text' | 'tel' | 'email' | 'url' | 'numeric' | 'decimal' | 'search' | 'none';
+
+interface Props {
+  name: string;
+  label: string;
+  hint?: string;
+  type?: InputType;
+  placeholder?: string;
+  autocomplete?: string;
+  inputmode?: InputMode;
+  required?: boolean;
+}
+const { name, label, hint = '', type = 'text', placeholder, autocomplete, inputmode, required } = Astro.props;
+const noteId = `note-${name}`;
+---
+<label class="field" data-field={name}>
+  <span class="field__label">{label}</span>
+  <input
+    class="field__control"
+    id={`field-${name}`}
+    name={name}
+    type={type}
+    placeholder={placeholder}
+    autocomplete={autocomplete}
+    inputmode={inputmode}
+    required={required}
+    aria-describedby={noteId}
+  />
+  <span class="field__note" id={noteId} data-hint={hint}>{hint}</span>
+</label>
+
+<style>
+  .field{display:flex;flex-direction:column;gap:var(--space-2)}
+  .field__label{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:1.5px;text-transform:uppercase;color:var(--ink);
+  }
+  .field__control{
+    font-family:var(--font-body);font-size:var(--text-body-size);
+    color:var(--ink);background:var(--white);
+    border:var(--rule) solid var(--ink);border-radius:0;
+    padding:12px 14px;width:100%;
+  }
+  .field__control::placeholder{color:var(--grey);opacity:.75}
+  .field[data-invalid] .field__control{border-color:var(--orange-deep)}
+  .field__note{
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:1px;color:var(--grey);
+  }
+  /* --orange-deep on white is 6.41:1 */
+  .field[data-invalid] .field__note{color:var(--orange-deep)}
+  .field__note:empty{display:none}
+</style>

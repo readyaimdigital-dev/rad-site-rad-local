@@ -1,0 +1,317 @@
+---
+import Base from '../layouts/RadLocalDesignLayout.astro';
+import Label from '../components/rad-local/Label.astro';
+import Chip from '../components/rad-local/Chip.astro';
+import Button from '../components/rad-local/Button.astro';
+import Field from '../components/rad-local/Field.astro';
+import FoundMark from '../components/rad-local/FoundMark.astro';
+import GuaranteeBadge from '../components/rad-local/GuaranteeBadge.astro';
+import { meta, demo, guarantee } from '../config/rad-local-design-content';
+import { routes, demoRequest } from '../config/rad-local-design-site';
+
+/* The form carries a honeypot field and an interaction flag. Both are
+   deliberately unlabelled in the emitted HTML: a comment naming the honeypot
+   would defeat it for any bot that reads comments. It is hidden with a
+   visually-hidden class rather than display:none, which some bots detect.
+   The second field records that a human interacted with the form at all. */
+---
+<Base title={meta.freeDemo.title} description={meta.freeDemo.description} current="free-demo" stickyCta={false}>
+
+  <!-- D1 · hero + form -->
+  <section class="section section--paper hero">
+    <div class="shell hero__grid">
+      <div class="hero__copy">
+        <Label>{demo.label}</Label>
+        <h1 class="hero__title">
+          {demo.titleLead} <em>{demo.titleAccent}</em> {demo.titleTail}
+        </h1>
+        <div class="lede hero__lede">
+          {demo.lede.map((l) => <p>{l}</p>)}
+        </div>
+        <a class="hero__badge" href={routes.guaranteeTerms}>
+          <GuaranteeBadge size={180} lines={guarantee.badge.lines} footnote={guarantee.badge.footnote} />
+        </a>
+      </div>
+
+      <div class="demo-card">
+        <form class="demo-form" id="demo-form" novalidate>
+          <h2 class="demo-form__title">{demo.form.title}</h2>
+
+          <div class="demo-form__fields">
+            <Field name="name" label={demo.form.fields[0].label} type="text" placeholder={demo.form.fields[0].placeholder} autocomplete="name" required />
+            <Field name="email" label="Email" type="email" placeholder="e.g. sam@example.com" autocomplete="email" required />
+            <Field name="phone" label={demo.form.fields[3].label} type="tel" placeholder={demo.form.fields[3].placeholder} autocomplete="tel" inputmode="tel" required />
+            <Field name="message" label="Tell us about your business" type="text" placeholder="What would you like your website to do?" required />
+          </div>
+
+          <div class="visually-hidden" aria-hidden="true">
+            <label>Leave this blank
+              <input type="text" name="website" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <input type="hidden" name="interacted" id="interacted" value="" />
+
+          <div class="demo-form__submit">
+            <Button variant="primary" size="lg" type="submit" id="demo-submit">
+              {demo.form.submit}
+            </Button>
+            <p class="demo-form__privacy">
+              {demo.form.privacy}<br />
+              <a href={routes.privacy}>{demo.form.privacyLinkText}</a>.
+            </p>
+          </div>
+        </form>
+
+        <div class="demo-thanks" id="demo-thanks" hidden>
+          <FoundMark size={72} />
+          <h2 class="demo-thanks__title" id="demo-thanks-title" tabindex="-1">{demo.thanks.title}</h2>
+          <div class="demo-thanks__body">
+            {demo.thanks.body.map((l) => <p>{l}</p>)}
+          </div>
+          <!-- The booking link lives here as well as in the email, so a failed
+               send never strands the enquirer. (11 Part 3) -->
+          <Button variant="primary" href={demoRequest.bookingUrl || routes.home} id="booking-cta">
+            {demo.thanks.cta}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- D2 · what happens next -->
+  <section class="section section--tint next" aria-labelledby="next-title">
+    <div class="shell">
+      <h2 class="h2 next__title" id="next-title">{demo.next.heading}</h2>
+      <div class="next__steps">
+        {demo.next.steps.map((s) => (
+          <div class="next__step">
+            <span class="next__step-num" aria-hidden="true">{s.n}</span>
+            <h3 class="next__step-title">{s.title}</h3>
+            <div class="stack">{s.body.map((b) => <p class="next__step-body">{b}</p>)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- D3 · reassurance -->
+  <section class="section section--paper reassure" aria-label="What's included">
+    <div class="shell reassure__row">
+      {demo.chips.map((c, i) => <Chip variant={i === 0 ? 'solid' : 'outline'}>{c}</Chip>)}
+    </div>
+  </section>
+
+</Base>
+
+<style>
+  .hero__grid{
+    padding-block:64px 80px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    gap:64px;align-items:start;
+  }
+  .hero__copy{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
+  .hero__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(38px,5vw,66px);line-height:.98;
+    letter-spacing:var(--tracking-hero);max-width:16ch;
+  }
+  .hero__title em{font-style:normal;color:var(--text-accent-display)}
+  .hero__lede{gap:var(--space-3);max-width:46ch}
+  .hero__lede p{font-size:19px}
+  .hero__badge{text-decoration:none;display:inline-block}
+
+  .demo-card{
+    border:var(--rule) solid var(--ink);background:var(--white);
+    box-shadow:var(--shadow-sticker);padding:36px 32px;
+  }
+  .demo-form{display:flex;flex-direction:column;gap:var(--space-8)}
+  .demo-form__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(24px,3vw,32px);line-height:1.06;
+    letter-spacing:var(--tracking-display);max-width:22ch;
+  }
+  .demo-form__fields{display:flex;flex-direction:column;gap:var(--space-7)}
+  .demo-form__submit{display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start}
+  .demo-form__privacy{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);color:var(--grey);line-height:1.7;max-width:40ch;
+  }
+
+  .demo-thanks{
+    display:flex;flex-direction:column;gap:var(--space-7);
+    align-items:flex-start;min-height:420px;justify-content:center;
+  }
+  .demo-thanks__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(30px,4vw,44px);line-height:1.02;letter-spacing:-1.5px;
+  }
+  .demo-thanks__body{display:flex;flex-direction:column;gap:var(--space-3);max-width:44ch}
+  .demo-thanks__body p{font-size:17.5px}
+
+  .next__title{margin-bottom:var(--space-11)}
+  .next__steps{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:var(--rule) solid var(--ink);
+  }
+  .next__step{padding:28px}
+  .next__step:first-child{padding-left:0}
+  .next__step:last-child{padding-right:0}
+  .next__step:not(:last-child){border-right:var(--rule) solid var(--ink)}
+  .next__step-num{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:56px;line-height:1;color:var(--text-accent-display);
+    display:block;margin-bottom:var(--space-4);
+  }
+  .next__step-title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:22px;letter-spacing:var(--tracking-display-2);margin-bottom:var(--space-4);
+  }
+  .next__step-body{font-size:16px}
+
+  .reassure__row{
+    padding-block:var(--space-11);
+    display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;
+  }
+
+  /* Rails restack below 768: right-rules become bottom rules, padding
+     normalises. (08 §Homepage) */
+  @media (max-width:767px){
+    .next__steps{grid-template-columns:1fr}
+    .next__step{padding:28px 0}
+    .next__step:not(:last-child){border-right:0;border-bottom:var(--rule) solid var(--ink)}
+    .hero__grid{padding-block:44px 56px;gap:40px}
+  }
+  @media (max-width:639px){
+    .demo-card{padding:26px 20px}
+  }
+  @media (max-width:479px){
+    .hero__badge :global(.badge){--badge-size:150px !important}
+  }
+</style>
+
+<script>
+  import { demoRequest } from '../config/rad-local-design-site';
+
+  const form = document.getElementById('demo-form') as HTMLFormElement | null;
+  const thanks = document.getElementById('demo-thanks');
+  const submit = document.getElementById('demo-submit') as HTMLButtonElement | null;
+  // Marks that a human touched the form at all. See the endpoint for why this
+  // replaced a time-since-render threshold.
+  const interacted = document.getElementById('interacted') as HTMLInputElement | null;
+  const markInteracted = () => { if (interacted && !interacted.value) interacted.value = '1'; };
+  form?.addEventListener('focusin', markInteracted, { once: true });
+  form?.addEventListener('input', markInteracted, { once: true });
+
+  const LABELS: Record<string, string> = {
+    name: 'name', email: 'email address', phone: 'phone number', message: 'a short message',
+  };
+  const BAD_PHONE = "That number doesn't look right. Can you check it?";
+
+  const fields = () => Array.from(document.querySelectorAll<HTMLElement>('.field'));
+  const controlOf = (f: HTMLElement) => f.querySelector('.field__control') as HTMLInputElement;
+  const noteOf = (f: HTMLElement) => f.querySelector('.field__note') as HTMLElement;
+
+  function setError(f: HTMLElement, msg: string) {
+    f.setAttribute('data-invalid', 'true');
+    controlOf(f).setAttribute('aria-invalid', 'true');
+    noteOf(f).textContent = msg;
+  }
+  function clearError(f: HTMLElement) {
+    f.removeAttribute('data-invalid');
+    controlOf(f).removeAttribute('aria-invalid');
+    noteOf(f).textContent = noteOf(f).getAttribute('data-hint') || '';
+  }
+
+  function validate(): HTMLElement[] {
+    const invalid: HTMLElement[] = [];
+    fields().forEach((f) => {
+      const key = f.getAttribute('data-field') || '';
+      const value = controlOf(f).value.trim();
+      if (!value) {
+        setError(f, `Almost there. We just need your ${LABELS[key]}.`);
+        invalid.push(f);
+        return;
+      }
+      if (key === 'phone') {
+        const digits = value.replace(/[^0-9]/g, '');
+        // Deliberately loose: 8-12 digits. Wrongly rejecting a real lead costs
+        // far more than accepting a number someone will ring anyway. (09 §9)
+        if (digits.length < 8 || digits.length > 12) {
+          setError(f, BAD_PHONE);
+          invalid.push(f);
+          return;
+        }
+      }
+      clearError(f);
+    });
+    return invalid;
+  }
+
+  fields().forEach((f) => {
+    controlOf(f).addEventListener('input', () => {
+      if (f.hasAttribute('data-invalid')) clearError(f);
+    });
+  });
+
+  function showFailure() {
+    document.getElementById('demo-failure')?.remove();
+    const el = document.createElement('div');
+    el.id = 'demo-failure';
+    el.className = 'demo-failure';
+    el.setAttribute('role', 'alert');
+    el.innerHTML =
+      '<span class="demo-failure__tag">That didn’t go through</span>' +
+      '<p>Something went wrong on our end, not yours.</p>' +
+      '<p>Have another go, or email us at ' +
+      '<a href="mailto:support@readyaim.digital">support@readyaim.digital</a>.</p>';
+    form?.prepend(el);
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const invalid = validate();
+    if (invalid.length) { controlOf(invalid[0]).focus(); return; }
+
+    document.getElementById('demo-failure')?.remove();
+    if (submit) {
+      submit.setAttribute('aria-busy', 'true');
+      submit.setAttribute('aria-disabled', 'true');
+      submit.textContent = 'Building your sample…';
+    }
+
+    try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        const res = await fetch(demoRequest.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.hidden = true;
+      if (thanks) {
+        thanks.hidden = false;
+        (document.getElementById('demo-thanks-title') as HTMLElement)?.focus();
+      }
+    } catch {
+      showFailure();
+    } finally {
+      if (submit) {
+        submit.removeAttribute('aria-busy');
+        submit.removeAttribute('aria-disabled');
+        submit.textContent = 'Build my free sample';
+      }
+    }
+  });
+</script>
+
+<style is:global>
+  .demo-failure{
+    border:var(--rule) solid var(--orange-deep);background:var(--white);
+    padding:20px 22px;display:flex;flex-direction:column;gap:var(--space-3);
+  }
+  .demo-failure__tag{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:1.5px;text-transform:uppercase;color:var(--orange-deep);
+  }
+  .demo-failure p{font-size:var(--text-body-sm)}
+</style>

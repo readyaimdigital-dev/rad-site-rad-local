@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/RadLocalDesignLayout.astro';
+import Label from '../components/rad-local/Label.astro';
+import GuaranteeBadge from '../components/rad-local/GuaranteeBadge.astro';
+import { guarantee } from '../config/rad-local-design-content';
+import { site } from '../config/rad-local-design-site';
+
+/** Maintenance page. The badge on every page reads "TERMS PUBLISHED IN FULL",
+ *  so this must resolve rather than 404. It carries the guarantee's actual
+ *  scope in the meantime. Anchors #leaving and #yours are linked from About
+ *  and Homepage S8. */
+---
+<Base
+  title="90-day get-found guarantee | RAD Local"
+  description="What the 90-day get-found guarantee covers, what it doesn't, and what happens if we miss."
+  stickyCta={false}
+>
+  <section class="section section--paper">
+    <div class="shell doc">
+      <Label>Contract register</Label>
+      <h1 class="doc__title">{guarantee.heading}</h1>
+
+      <div class="doc__lead">
+        <GuaranteeBadge size={150} lines={guarantee.badge.lines} footnote={guarantee.badge.footnote} />
+        <div class="doc__body">
+          {guarantee.body.map((b) => <p>{b}</p>)}
+        </div>
+      </div>
+
+      <div class="doc__block">
+        <h2 class="doc__h2">{guarantee.notGuaranteed.heading}</h2>
+        <p>{guarantee.notGuaranteed.body}</p>
+      </div>
+
+      <div class="doc__block" id="leaving">
+        <h2 class="doc__h2">{guarantee.noLockIn.heading}</h2>
+        <p>{guarantee.noLockIn.body}</p>
+      </div>
+
+      <div class="doc__block" id="yours">
+        <h2 class="doc__h2">What's yours stays yours</h2>
+        <p>Your domain, your Google Business Profile, your content and your brand are yours from day one. The website is the service. If you leave, you take the content with you.</p>
+      </div>
+
+      <p class="doc__pending">
+        The full terms are being published. Until then, ask us anything at
+        <a href={`mailto:${site.email.general}`}>{site.email.general}</a> or ring
+        <a href={site.phone.href}>{site.phone.display}</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .doc{max-width:var(--container);padding-block:var(--section-y)}
+  .doc__title{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:clamp(34px,5vw,56px);line-height:1.02;
+    letter-spacing:var(--tracking-display);margin:14px 0 var(--space-9);max-width:20ch;
+  }
+  .doc__lead{display:flex;gap:var(--space-9);align-items:flex-start;flex-wrap:wrap;margin-bottom:var(--space-11)}
+  .doc__body{display:flex;flex-direction:column;gap:var(--space-5);flex:1;min-width:320px;max-width:62ch}
+  .doc__body p{font-size:17.5px}
+  .doc__block{border-top:var(--rule) solid var(--ink);padding-top:var(--space-8);margin-bottom:var(--space-9);max-width:66ch}
+  .doc__h2{
+    font-family:var(--font-display);font-weight:var(--weight-display);
+    font-size:26px;letter-spacing:var(--tracking-display-2);margin-bottom:var(--space-5);
+  }
+  .doc__block p{font-size:17px}
+  .doc__pending{
+    border-top:var(--rule) solid var(--ink);padding-top:var(--space-7);
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:1px;color:var(--grey);line-height:1.9;
+  }
+</style>

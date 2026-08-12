@@ -1,0 +1,82 @@
+/* RAD Local — global base
+ * Interaction and accessibility per 09-interaction-and-forms.md.
+ */
+
+@import './rad-local-design-tokens.css';
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:var(--text-body-size);
+  line-height:var(--leading-body);
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+img{max-width:100%;height:auto;display:block}
+
+a{color:var(--text-accent);text-decoration:none}
+a:hover{color:var(--orange)}
+
+/* Focus. The style guide's single ink rule measures 1.00:1 on ink panels, so
+ * dark surfaces get a paper ring. Positive offset keeps the ring on the page
+ * background rather than on a control fill. */
+:focus-visible{
+  outline:var(--rule) solid var(--focus-ring);
+  outline-offset:2px;
+}
+[data-surface='ink'] :focus-visible,
+.site-footer :focus-visible,
+.sticky-cta :focus-visible{
+  outline-color:var(--focus-ring-inverse);
+}
+
+.visually-hidden{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;
+  clip-path:inset(50%);overflow:hidden;white-space:nowrap;
+}
+
+.skip-link{
+  position:absolute;left:var(--gutter);top:-100px;z-index:60;
+  background:var(--ink);color:var(--paper);
+  font-family:var(--font-mono);font-size:var(--text-mono);
+  letter-spacing:var(--tracking-chip);text-transform:uppercase;
+  padding:12px 18px;
+}
+.skip-link:focus{top:12px;color:var(--paper)}
+
+.shell{
+  max-width:var(--container-wide);
+  margin:0 auto;
+  padding-inline:var(--gutter);
+}
+.section{border-bottom:var(--rule) solid var(--ink)}
+.section > .shell{padding-block:var(--section-y)}
+.section--paper{background:var(--paper)}
+.section--tint{background:var(--paper-dark)}
+.section--ink{background:var(--ink);color:var(--paper)}
+
+.h2{
+  font-family:var(--font-display);font-weight:var(--weight-display);
+  font-size:clamp(30px,4vw,46px);line-height:1.06;
+  letter-spacing:var(--tracking-display);
+}
+.lede{display:flex;flex-direction:column;gap:var(--space-2);font-weight:var(--weight-medium)}
+.stack{display:flex;flex-direction:column;gap:var(--space-2)}
+
+/* The sticky bar sits over the page; reserve room so it never covers the
+ * footer's last line. */
+body[data-sticky-cta='true']{padding-bottom:var(--sticky-cta-h,72px)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition-duration:.01ms !important;
+    animation-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}

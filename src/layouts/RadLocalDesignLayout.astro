@@ -1,0 +1,183 @@
+---
+import '../styles/rad-local-design-global.css';
+import BaseHead from '../components/seo/BaseHead.astro';
+import SchemaOrg from '../components/seo/SchemaOrg.astro';
+import Logo from '../components/rad-local/Logo.astro';
+import Button from '../components/rad-local/Button.astro';
+import { site, routes, nav, flags } from '../config/rad-local-design-site';
+import { site as canonicalSite } from '../config/site';
+import { legalFooter, stickyCta } from '../config/rad-local-design-content';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: 'home' | 'about' | 'free-demo';
+  stickyCta?: boolean;
+  noindex?: boolean;
+}
+const { title, description, current, stickyCta: showSticky = flags.stickyCtaBar, noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <BaseHead
+    title={title.replace(/\s*\|\s*RAD Local$/, '')}
+    description={description}
+    noindex={noindex}
+  />
+  <SchemaOrg />
+</head>
+<body data-sticky-cta={showSticky ? 'true' : 'false'}>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell">
+      <a class="site-header__brand" href={routes.home} aria-label="RAD Local, home">
+        <Logo size={36} />
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={current === 'about' && item.href === routes.about ? 'page' : undefined}
+            class:list={[current === 'about' && item.href === routes.about && 'is-current']}
+          >{item.label}</a>
+        ))}
+        {current !== 'free-demo' && (
+          <Button variant="primary" size="sm" href={routes.freeDemo}>Free demo</Button>
+        )}
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site-footer" data-surface="ink">
+    <div class="shell">
+      <Logo tone="paper" size={34} />
+      <div class="site-footer__meta">
+        <div>ABN {site.abn}</div>
+        <div><a href={`tel:${canonicalSite.contact.phone.replace(/\s+/g, '')}`}>{canonicalSite.contact.phone}</a></div>
+        <div><a href={`mailto:${canonicalSite.contact.email}`}>{canonicalSite.contact.email}</a></div>
+      </div>
+      <div class="site-footer__links">
+        <a href={routes.guaranteeTerms}>Guarantee terms</a>
+        <a href={routes.privacy}>Privacy</a>
+      </div>
+      <div class="site-footer__fine">
+        <p>Australian owned. Regional based. Custom design. Built fast.</p>
+        <p>A Ready Aim Digital company</p>
+      </div>
+      <p class="site-footer__legal">{legalFooter}</p>
+    </div>
+  </footer>
+
+  {showSticky && (
+    <div class="sticky-cta" role="region" aria-label="Offer summary" data-surface="ink">
+      <span class="sticky-cta__label">{stickyCta.label}</span>
+      <span class="sticky-cta__label sticky-cta__label--short">{stickyCta.labelShort}</span>
+      <Button variant="primary" size="sm" href={routes.freeDemo}>{stickyCta.cta}</Button>
+    </div>
+  )}
+
+<style>
+  .site-header{
+    position:sticky;top:0;z-index:40;
+    background:var(--paper);border-bottom:var(--rule) solid var(--ink);
+  }
+  .site-header .shell{
+    height:70px;display:flex;align-items:center;
+    justify-content:space-between;gap:var(--space-8);
+  }
+  .site-header__brand{display:flex;align-items:center;text-decoration:none}
+  .site-nav{display:flex;align-items:center;gap:28px}
+  .site-nav a{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--ink);
+  }
+  .site-nav a:hover{color:var(--orange-deep)}
+  .site-nav a.is-current{color:var(--orange-deep);border-bottom:var(--rule) solid var(--orange)}
+
+  .site-footer{background:var(--ink);color:var(--paper)}
+  .site-footer .shell{
+    padding-block:56px 88px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:40px;align-items:start;
+  }
+  .site-footer__meta,.site-footer__links{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);line-height:2;text-transform:uppercase;
+  }
+  .site-footer__links{display:flex;flex-direction:column}
+  .site-footer a{color:var(--paper)}
+  .site-footer a:hover{color:var(--salmon)}
+  .site-footer__fine{
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:var(--tracking-chip);line-height:2;text-transform:uppercase;opacity:.6;
+  }
+  .site-footer__fine p + p{margin-top:var(--space-4)}
+  .site-footer__legal{
+    grid-column:1 / -1;
+    font-family:var(--font-mono);font-size:var(--text-mono-sm);
+    letter-spacing:.5px;line-height:1.9;opacity:.6;max-width:100ch;
+    border-top:1px solid var(--border-inverse);padding-top:var(--space-7);
+  }
+
+  .sticky-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:var(--ink);border-top:var(--rule) solid var(--orange);
+    padding:12px 20px;display:flex;align-items:center;
+    justify-content:space-between;gap:var(--space-6);flex-wrap:wrap;
+  }
+  .sticky-cta__label{
+    font-family:var(--font-mono);font-size:var(--text-mono);
+    letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--paper);
+  }
+  .sticky-cta__label--short{display:none}
+
+  /* Tablet — 768 to 1023 */
+  @media (max-width:1023px){
+    .site-header .shell{height:auto;min-height:70px;padding-block:var(--space-5)}
+  }
+  /* Mobile — two-row header. No hamburger: the system defines no icon set and
+     the Lucide substitution is unconfirmed. (08 §Shell)
+     The header also stops being sticky here. Two rows plus the sticky bottom
+     bar measured 240px of permanent chrome on a 375x812 screen, roughly 30% of
+     the viewport. The bottom bar keeps the conversion path persistent, so the
+     header can scroll away. */
+  @media (max-width:767px){
+    .site-header{position:static}
+    .site-header .shell{
+      flex-direction:column;align-items:flex-start;
+      gap:var(--space-4);padding-block:var(--space-4);
+    }
+    .site-nav{gap:var(--space-5) var(--space-6);flex-wrap:wrap}
+    .site-nav a{display:inline-flex;align-items:center;min-height:44px}
+    .site-footer .shell{padding-block:44px 72px}
+  }
+  @media (max-width:639px){
+    .sticky-cta__label{display:none}
+    .sticky-cta__label--short{display:inline}
+  }
+  @media (max-width:479px){
+    .site-footer .shell{grid-template-columns:1fr;gap:28px}
+    .sticky-cta{justify-content:center}
+    .sticky-cta__label--short{display:none}
+    .sticky-cta :global(.button){width:100%}
+  }
+</style>
+
+<script>
+  // Reserve exactly the bar's height so it never covers the footer's last line.
+  const bar = document.querySelector<HTMLElement>('.sticky-cta');
+  if (bar) {
+    const set = () =>
+      document.body.style.setProperty('--sticky-cta-h', `${bar.offsetHeight}px`);
+    set();
+    window.addEventListener('resize', set);
+  }
+</script>
+</body>
+</html>
