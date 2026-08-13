@@ -100,4 +100,14 @@ describe("page composition real render", () => {
     expect(html).toContain(site.address.street);
     expect(html).toContain(site.address.suburb);
   });
+
+  it("keeps the free-demo confirmation hidden until the form succeeds", async () => {
+    const { default: FreeDemo } = await import("./pages/free-demo.astro");
+    const container = await AstroContainer.create();
+    const html = await container.renderToString(FreeDemo, { request: requestUrl("/free-demo") });
+    const source = readFileSync("src/pages/free-demo.astro", "utf8");
+
+    expect(html).toContain('id="demo-thanks" hidden');
+    expect(source).toContain(".demo-thanks[hidden]{display:none}");
+  });
 });
