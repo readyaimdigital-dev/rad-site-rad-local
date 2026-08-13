@@ -364,8 +364,8 @@ const faqs = [
   /* S1 — the export's min-height:calc(100dvh - 70px) is dropped below 1024;
      it fought the sticky bar on short viewports. (08) */
   .s1__grid{
-    padding-block:56px 64px;
-    display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;
+    padding-block:40px 48px;
+    display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;
     min-height:calc(100dvh - 70px);
   }
   .s1__copy{display:flex;flex-direction:column;gap:28px;align-items:flex-start}
@@ -378,6 +378,8 @@ const faqs = [
   .s1__lede{gap:var(--space-2);max-width:46ch}
   .s1__lede p{font-size:20px}
   .s1__media{position:relative;min-width:0}
+  .s1__media :global(.figure){aspect-ratio:5 / 4;min-height:0}
+  .s1__media :global(.figure img){min-height:0;object-fit:cover}
   .s1__badge{position:absolute;left:-28px;bottom:-34px;text-decoration:none}
 
   .s2__title{max-width:20ch;margin-bottom:40px}
