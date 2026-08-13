@@ -12,6 +12,9 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain("RadLocalDesignLayout.astro");
     expect(source).toContain("rad-local-design-content");
     expect(source).toContain("routes.freeDemo");
+    expect(source).toContain("How The Setout works");
+    expect(source).toContain("set·out <span>· noun · trade term</span>");
+    expect(source).toContain("Every good tradie sets out a job before they build it.");
   });
 
   it("services page composes JumpLinkHero and ServiceBand from the shared catalogue", () => {
