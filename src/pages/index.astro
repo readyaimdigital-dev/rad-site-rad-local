@@ -394,7 +394,7 @@ const faqs = [
     border:var(--rule) solid var(--ink);padding:36px 32px;
     display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;align-items:center;
   }
-  .s2__panel-title{
+  .s2__panel .s2__panel-title{
     font-family:var(--font-display);font-weight:var(--weight-display);
     font-size:clamp(34px,4.2vw,52px);line-height:1.02;letter-spacing:var(--tracking-display);
   }
@@ -578,6 +578,10 @@ const faqs = [
     .anchor__price{flex-direction:row;align-items:baseline;gap:var(--space-3)}
     .s5{grid-template-columns:1fr;gap:36px}
     .s7__grid{grid-template-columns:1fr}
+  }
+  @media (min-width:768px){
+    .s2__panel .s2__panel-title{font-size:clamp(40px,5vw,64px)}
+    .s7__lede{margin-top:var(--space-7)}
   }
   @media (max-width:767px){
     .rail{grid-template-columns:1fr}
