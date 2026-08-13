@@ -15,6 +15,9 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain("How The Setout works");
     expect(source).toContain("set·out <span>· noun · trade term</span>");
     expect(source).toContain("Every good tradie sets out a job before they build it.");
+    expect(source).toContain("<p>We do the same thing with your website.</p>");
+    expect(source).toContain("<p>Google. Maps. AI search.</p>");
+    expect(source).toContain("<p>Mapped first, built second.</p>");
   });
 
   it("services page composes JumpLinkHero and ServiceBand from the shared catalogue", () => {
