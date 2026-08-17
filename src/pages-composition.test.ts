@@ -46,6 +46,22 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain('href="https://readyaim.digital/#reviews" target="_blank" rel="noopener noreferrer"');
   });
 
+  it("builds the placeholder legal pages from one design-layer content source", () => {
+    const privacySource = readFileSync("src/pages/privacy.astro", "utf8");
+    const termsSource = readFileSync("src/pages/terms.astro", "utf8");
+    const legalSource = readFileSync("src/config/rad-local-legal-content.ts", "utf8");
+    const documentSource = readFileSync("src/components/rad-local/LegalDocument.astro", "utf8");
+
+    expect(privacySource).toContain("legalPages.privacy");
+    expect(termsSource).toContain("legalPages.terms");
+    expect(legalSource).toContain("placeholder legal content");
+    expect(legalSource).toContain("id: 'guarantee'");
+    expect(documentSource).toContain('href={`#${section.id}`}');
+    expect(documentSource).toContain('id={section.id}');
+    expect(documentSource).toContain("Template notice:");
+    expect(documentSource).toContain("noindex");
+  });
+
   it("contact page keeps the existing ContactForm handler and composes ContactSplit", () => {
     const source = readFileSync("src/pages/contact.astro", "utf8");
     expect(source).toContain('from "../components/ui/ContactForm.astro"');
@@ -114,6 +130,21 @@ describe("page composition real render", () => {
     expect(html).toContain(site.contact.email);
     expect(html).toContain(site.address.street);
     expect(html).toContain(site.address.suburb);
+  });
+
+  it("renders the Terms and Privacy pages with the legal anchor structure", async () => {
+    const { default: Terms } = await import("./pages/terms.astro");
+    const { default: Privacy } = await import("./pages/privacy.astro");
+    const container = await AstroContainer.create();
+    const termsHtml = await container.renderToString(Terms, { request: requestUrl("/terms") });
+    const privacyHtml = await container.renderToString(Privacy, { request: requestUrl("/privacy") });
+
+    expect(termsHtml).toContain('id="guarantee"');
+    expect(termsHtml).toContain('href="#guarantee"');
+    expect(termsHtml).toContain("Guarantee terms");
+    expect(privacyHtml).toContain('id="collect"');
+    expect(privacyHtml).toContain('id="complaints"');
+    expect(privacyHtml).toContain("Privacy policy");
   });
 
   it("keeps the free-demo confirmation hidden until the form succeeds", async () => {

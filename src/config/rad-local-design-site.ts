@@ -37,13 +37,14 @@ export const routes = {
   home: '/',
   about: '/about',
   freeDemo: '/free-demo',
+  terms: '/terms',
   privacy: '/privacy',
-  guaranteeTerms: '/guarantee-terms',
+  guaranteeTerms: '/terms#guarantee',
 } as const;
 
 /**
- * /privacy and /guarantee-terms launch as maintenance pages and are replaced
- * with real content post-launch. Flip these to false when that happens.
+ * Legal pages remain visible placeholders until their wording is reviewed and
+ * populated with final, client-specific legal content.
  */
 export const maintenance = {
   privacy: true,

@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/RadLocalDesignLayout.astro';
+import Chip from './Chip.astro';
+import Label from './Label.astro';
+import { legalTemplateNotice, type LegalPage } from '../../config/rad-local-legal-content';
+
+interface Props {
+  page: LegalPage;
+}
+
+const { page } = Astro.props as Props;
+---
+<Base title={page.title} description={page.description} stickyCta={false} noindex>
+  <section class="legal-hero section section--paper">
+    <div class="shell legal-hero__inner">
+      <Label>Contract register</Label>
+      <h1 class="legal-hero__title">{page.headingLead} <span>{page.headingAccent}</span></h1>
+      <p class="legal-hero__intro">{page.intro}</p>
+      <div class="legal-hero__chips" aria-label="Document status">
+        <Chip variant="teal">Placeholder text</Chip>
+        <Chip>Last updated {page.updated}</Chip>
+      </div>
+      <aside class="legal-notice"><strong>Template notice:</strong> {legalTemplateNotice}</aside>
+    </div>
+  </section>
+
+  <section class="legal-short section section--ink" data-surface="ink">
+    <div class="shell legal-short__inner">
+      <Label tone="paper">The short version</Label>
+      <h2 class="legal-short__title">{page.shortVersion.heading}</h2>
+      <div class="legal-copy legal-copy--inverse">
+        {page.shortVersion.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="legal-clauses section section--paper">
+    <div class="shell legal-clauses__inner">
+      <nav class="legal-toc" aria-label="On this page">
+        <div class="legal-toc__label">On this page</div>
+        <div class="legal-toc__links">
+          {page.sections.map((section) => <a href={`#${section.id}`}>{section.number}&nbsp;&nbsp;{section.heading}</a>)}
+        </div>
+      </nav>
+
+      <div class="legal-sections">
+        {page.sections.map((section) => (
+          <section class="legal-section" id={section.id} aria-labelledby={`${section.id}-heading`}>
+            <div class="legal-section__number">{section.number}</div>
+            <h2 id={`${section.id}-heading`} class="legal-section__title">{section.heading}</h2>
+            <div class="legal-copy">
+              {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                </ul>
+              )}
+            </div>
+            {section.note && <aside class="legal-note">{section.note}</aside>}
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {page.closing && (
+    <section class="legal-closing section section--tint">
+      <div class="shell legal-closing__inner">
+        <Label>Questions</Label>
+        <h2 class="legal-closing__title">{page.closing.heading}</h2>
+        <p class="legal-closing__body">{page.closing.body}</p>
+        <span class="legal-button" aria-label="Placeholder email contact">Email [EMAIL]</span>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .legal-hero{border-bottom:var(--rule) solid var(--ink)}
+  .legal-hero__inner{padding-block:var(--space-12) var(--space-11);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-8)}
+  .legal-hero__title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-1);line-height:var(--leading-hero);letter-spacing:var(--tracking-hero);max-width:18ch}
+  .legal-hero__title span{color:var(--text-accent-display)}
+  .legal-hero__intro{font-size:var(--text-lede);font-weight:var(--weight-medium);max-width:var(--measure)}
+  .legal-hero__chips{display:flex;flex-wrap:wrap;gap:var(--space-4)}
+  .legal-notice{border:var(--rule) solid var(--ink);background:var(--paper-dark);padding:var(--space-7) var(--space-8);max-width:var(--measure);font-size:var(--text-body-sm)}
+
+  .legal-short{border-bottom:var(--rule) solid var(--ink)}
+  .legal-short__inner{padding-block:var(--space-12) var(--space-13);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-8)}
+  .legal-short__title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-2);line-height:var(--leading-tight);letter-spacing:var(--tracking-display);max-width:26ch;color:var(--paper)}
+
+  .legal-clauses{border-bottom:var(--rule) solid var(--ink)}
+  .legal-clauses__inner{padding-block:var(--space-12) var(--space-13)}
+  .legal-toc{border:var(--rule) solid var(--ink);background:var(--white);padding-block:var(--space-3);margin-bottom:var(--space-12)}
+  .legal-toc__label{padding:var(--space-7) var(--space-8);font-family:var(--font-mono);font-size:var(--text-mono-sm);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--grey)}
+  .legal-toc__links{border-top:var(--rule-hair) solid var(--paper-dark);padding:var(--space-7) var(--space-8);display:grid;grid-template-columns:repeat(auto-fit,minmax(14ch,1fr));gap:var(--space-5) var(--space-9);font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-chip)}
+  .legal-toc__links a{color:var(--text-accent)}
+  .legal-toc__links a:hover{color:var(--orange-deepest)}
+
+  .legal-sections{display:flex;flex-direction:column}
+  .legal-section{display:flex;flex-direction:column;gap:var(--space-6);padding-block:var(--space-11);border-bottom:var(--rule) solid var(--ink);scroll-margin-top:var(--space-12)}
+  .legal-section:first-child{padding-top:0}
+  .legal-section:last-child{border-bottom:0;padding-bottom:0}
+  .legal-section__number{font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-label);color:var(--text-accent)}
+  .legal-section__title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-3);line-height:var(--leading-tight);letter-spacing:var(--tracking-display-2);max-width:24ch}
+  .legal-copy{display:flex;flex-direction:column;gap:var(--space-5);max-width:var(--measure)}
+  .legal-copy p,.legal-copy li{font-size:var(--text-body-size)}
+  .legal-copy ul{display:flex;flex-direction:column;gap:var(--space-4);padding-left:var(--space-8)}
+  .legal-copy--inverse p{color:var(--paper)}
+  .legal-note{border:var(--rule) solid var(--ink);background:var(--paper-dark);padding:var(--space-7) var(--space-8);max-width:var(--measure);font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-chip);line-height:var(--leading-body);text-transform:uppercase}
+
+  .legal-closing{border-bottom:var(--rule) solid var(--ink)}
+  .legal-closing__inner{padding-block:var(--space-12) var(--space-13);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-7)}
+  .legal-closing__title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-2);line-height:var(--leading-tight);letter-spacing:var(--tracking-display);max-width:26ch}
+  .legal-closing__body{font-size:var(--text-body-size);max-width:var(--measure)}
+  .legal-button{display:inline-flex;align-items:center;justify-content:center;background:var(--fill-accent);color:var(--white);padding:var(--space-6) var(--space-8);font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-chip);text-transform:uppercase}
+
+  @media (max-width:767px){
+    .legal-hero__inner,.legal-short__inner,.legal-clauses__inner,.legal-closing__inner{padding-block:var(--space-11) var(--space-12)}
+    .legal-hero__title{font-size:var(--text-display-2)}
+    .legal-toc__label,.legal-toc__links{padding-inline:var(--space-6)}
+  }
+</style>

@@ -50,12 +50,6 @@ export interface FactStatContent {
   v: string;
 }
 
-export interface LegalSectionContent {
-  heading: string;
-  body: string;
-  email?: string;
-}
-
 const services: ServiceContent[] = [
   {
     id: "website-builds",
@@ -103,71 +97,6 @@ const trustPillars: TrustPillarContent[] = [
     icon: "shield-check",
     title: "A managed relationship",
     body: "A consistent team to help keep your website useful over time.",
-  },
-];
-
-const legalNotice = {
-  label: "Template notice:",
-  body: "this is placeholder legal content. It must be reviewed and populated with client-specific detail by a qualified advisor before the site launches. Do not publish as-is.",
-};
-
-const privacySections: LegalSectionContent[] = [
-  {
-    heading: "1. Introduction",
-    body: '[Business Legal Name] ("we", "us") respects your privacy. This policy explains what personal information we collect, how we use it, and your rights under the Privacy Act 1988 (Cth) and the Australian Privacy Principles.',
-  },
-  {
-    heading: "2. Information we collect",
-    body: "[Describe the personal information collected, for example: name, email address, phone number and any details submitted via the contact form.]",
-  },
-  {
-    heading: "3. How we use your information",
-    body: "[Describe the purposes information is used for, such as responding to enquiries and providing quotes.]",
-  },
-  {
-    heading: "4. Disclosure of information",
-    body: "[State whether information is shared with third parties, such as email delivery providers, and under what circumstances.]",
-  },
-  {
-    heading: "5. Data security",
-    body: "[Describe security measures in place to protect personal information.]",
-  },
-  {
-    heading: "6. Your rights",
-    body: "[Explain how a person can access, correct or request deletion of their personal information, and provide a contact method.]",
-  },
-  {
-    heading: "7. Contact us",
-    body: "For privacy enquiries, contact us at",
-    email: site.contact.email,
-  },
-];
-
-const termsSections: LegalSectionContent[] = [
-  {
-    heading: "1. Acceptance of terms",
-    body: 'By using the website of [Business Legal Name] ("we", "us"), you agree to these terms. If you do not agree, please do not use this website.',
-  },
-  {
-    heading: "2. Services",
-    body: "[Describe the services offered and any conditions that apply to quotes, bookings or work performed.]",
-  },
-  {
-    heading: "3. Website use",
-    body: "[Describe acceptable use of the website, including any restrictions on copying content or misusing the contact form.]",
-  },
-  {
-    heading: "4. Limitation of liability",
-    body: "[Insert liability limitations appropriate to the business and reviewed by a qualified legal advisor.]",
-  },
-  {
-    heading: "5. Governing law",
-    body: `These terms are governed by the laws of ${site.address.state}, Australia.`,
-  },
-  {
-    heading: "6. Contact us",
-    body: "For questions about these terms, contact us at",
-    email: site.contact.email,
   },
 ];
 
@@ -358,22 +287,6 @@ export const content = {
     detailsEyebrow: "Email and address",
     trustEyebrow: "What to expect",
     areaEyebrow: "Service area",
-  },
-  privacy: {
-    title: "Privacy Policy",
-    heading: "Privacy Policy",
-    description: `Privacy policy for ${site.name}.`,
-    notice: legalNotice,
-    lastUpdated: "Last updated: [Effective Date]",
-    sections: privacySections,
-  },
-  terms: {
-    title: "Terms of Service",
-    heading: "Terms of Service",
-    description: `Terms of service for ${site.name}.`,
-    notice: legalNotice,
-    lastUpdated: "Last updated: [Effective Date]",
-    sections: termsSections,
   },
 } as const;
 

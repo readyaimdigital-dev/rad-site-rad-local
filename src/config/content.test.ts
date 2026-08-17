@@ -21,9 +21,6 @@ describe("client-editable content", () => {
     expect(content.home.serviceAreaSuffix).toBeTruthy();
     expect(content.servicesPage.description).toBeTruthy();
     expect(content.contact.description).toBeTruthy();
-    expect(content.privacy.sections.length).toBeGreaterThan(0);
-    expect(content.terms.sections.length).toBeGreaterThan(0);
-
     const homeSource = readFileSync("src/pages/index.astro", "utf8");
     const servicesSource = readFileSync("src/pages/services.astro", "utf8");
     const contactSource = readFileSync("src/pages/contact.astro", "utf8");
@@ -32,10 +29,8 @@ describe("client-editable content", () => {
     expect(homeSource).toContain("rad-local-design-content");
     expect(servicesSource).toContain("content.servicesPage.description");
     expect(contactSource).toContain("content.contact.description");
-    expect(privacySource).toContain("RadLocalDesignLayout.astro");
-    expect(termsSource).toContain("content.terms.sections");
-    expect(privacySource).not.toContain("[Business Legal Name]");
-    expect(termsSource).not.toContain("[Business Legal Name]");
+    expect(privacySource).toContain("rad-local-legal-content");
+    expect(termsSource).toContain("rad-local-legal-content");
   });
 
   it("keeps business identity out of reusable public brand assets", () => {
