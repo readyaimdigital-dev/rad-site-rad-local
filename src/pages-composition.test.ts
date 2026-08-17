@@ -56,6 +56,11 @@ describe("page composition uses the neutral section library", () => {
     expect(termsSource).toContain("legalPages.terms");
     expect(legalSource).toContain("placeholder legal content");
     expect(legalSource).toContain("id: 'guarantee'");
+    expect(legalSource).toContain("id: 'getting'");
+    expect(legalSource).toContain("id: 'usual-bits'");
+    expect(legalSource).toContain('3.2 Anything we create for your business');
+    expect(legalSource).toContain('11.5 When you cancel:');
+    expect(legalSource).not.toContain("footer: 'Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW'");
     expect(legalSource).toContain("What's yours, what's ours, and what happens if you leave");
     expect(documentSource).toContain('href={`#${section.id}`}');
     expect(documentSource).toContain('id={section.id}');
@@ -144,10 +149,11 @@ describe("page composition real render", () => {
 
     expect(termsHtml).toContain('id="guarantee"');
     expect(termsHtml).toContain('href="#guarantee"');
-    expect(termsHtml).toContain("Guarantee terms");
+    expect(termsHtml).toContain('href="#getting"');
+    expect(termsHtml).toContain("Our 90-day guarantee");
     expect(termsHtml).toContain("What&#39;s yours, what&#39;s ours, and what happens if you leave");
     expect(termsHtml).toContain("No exit fee.");
-    expect(termsHtml).toContain("Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW");
+    expect(termsHtml).not.toContain("Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW");
     expect(privacyHtml).toContain('id="collect"');
     expect(privacyHtml).toContain('id="complaints"');
     expect(privacyHtml).toContain("Privacy policy");
