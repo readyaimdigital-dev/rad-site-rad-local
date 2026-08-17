@@ -35,6 +35,10 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain("RadLocalDesignLayout.astro");
     expect(source).toContain("rad-local-design-content");
     expect(source).toContain("routes.guaranteeTerms");
+    expect(source).not.toContain("We're new, so you won't find hundreds of reviews yet.");
+    expect(source).toContain("more than 15 years");
+    expect(source).toContain('href="https://readyaim.digital/recent-works/" target="_blank" rel="noopener noreferrer"');
+    expect(source).toContain('href="https://readyaim.digital/#reviews" target="_blank" rel="noopener noreferrer"');
   });
 
   it("contact page keeps the existing ContactForm handler and composes ContactSplit", () => {
