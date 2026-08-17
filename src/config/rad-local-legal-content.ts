@@ -7,6 +7,19 @@ export interface LegalSection {
   note?: string;
 }
 
+export interface ShortVersionItem {
+  label: string;
+  body: string;
+}
+
+export interface ShortVersionSection {
+  heading: string;
+  paragraphs?: readonly string[];
+  bullets?: readonly ShortVersionItem[];
+  highlights?: readonly ShortVersionItem[];
+  emphasis?: string;
+}
+
 export interface LegalPage {
   title: string;
   description: string;
@@ -17,6 +30,8 @@ export interface LegalPage {
   shortVersion: {
     heading: string;
     paragraphs: readonly string[];
+    sections?: readonly ShortVersionSection[];
+    footer?: string;
   };
   sections: readonly LegalSection[];
   closing?: {
@@ -132,11 +147,59 @@ export const legalPages = {
     intro: 'The rules that cover your subscription. Written to be read, not to be survived.',
     updated: placeholderDate,
     shortVersion: {
-      heading: 'The terms are written down before you sign up.',
+      heading: "What's yours, what's ours, and what happens if you leave",
       paragraphs: [
-        'Placeholder. This page is a plain-English structure for the final legal terms. [LEGAL COPY TO BE SUPPLIED]',
-        'Placeholder. It must be reviewed and populated with client-specific detail before launch.',
+        'One page. Read it before you pay us anything. It forms part of these Terms of Service.',
       ],
+      sections: [
+        {
+          heading: 'Yours. Always. In your name.',
+          bullets: [
+            { label: 'Your domain', body: 'your web address, in your name, the whole time' },
+            { label: 'Your Google Business Profile', body: 'yours, we just set it up and work on it' },
+            { label: 'Your photos, words and content', body: 'including anything we write or shoot for you' },
+            { label: 'Your brand', body: 'obviously' },
+          ],
+          paragraphs: [
+            'We never put any of these in our name. We never place a hold or a lien over them.',
+            'Not for a payment dispute, not for anything.',
+          ],
+        },
+        {
+          heading: "Ours. It's the service you're paying for.",
+          bullets: [
+            { label: 'The website build', body: 'we build it, and you subscribe to it' },
+            { label: 'Hosting, security, SSL and backups', body: 'the unglamorous part that stops a site quietly falling over' },
+            { label: 'The ongoing getting-found work', body: 'Google and AI search, every month, on the plans that include it' },
+            { label: 'The system underneath', body: 'the platform and method we use to build and run sites stays ours' },
+          ],
+          emphasis: "While you subscribe, you don't own the website outright. We're telling you that plainly, up front, because plenty of people in this industry don't.",
+        },
+        {
+          heading: 'And if you leave?',
+          paragraphs: [
+            'You can leave any time. Month to month, no lock-in, no minimum term.',
+            'We never hold the things that would strand you. That is deliberate.',
+          ],
+          bullets: [
+            { label: 'No exit fee.', body: "Cancelling takes effect at your next renewal date. You keep the service until then, and there's nothing to pay after it. We bill monthly in advance and don't split billing periods, so a month already paid for isn't refunded. Want it switched off sooner? Just say so." },
+            { label: 'You take a full export of your site files', body: 'any time, for any reason, free. Not just when you leave.' },
+            { label: 'Your domain, your Google profile and your content stay exactly where they are', body: 'they were always yours.' },
+            { label: 'The service stops.', body: "Hosting, maintenance and the monthly work end. That's the service ending, not a punishment." },
+          ],
+        },
+        {
+          heading: "What we guarantee, and what we don't",
+          highlights: [
+            { label: 'We guarantee:', body: "within 90 days of launch you'll be live, indexed, and showing up when someone searches your business name and your area. We agree that exact search with you in writing before launch. If you're not showing up, your monthly fee stops until you are." },
+            { label: "We don't guarantee:", body: 'leads, sales, enquiries, traffic, or a ranking position on competitive searches like "plumber Dubbo". Nobody can honestly promise those. Getting found on competitive searches is ongoing work we do over time. It is not a guarantee.' },
+          ],
+          paragraphs: [
+            'Your rights under the Australian Consumer Law always apply, on top of everything above.',
+          ],
+        },
+      ],
+      footer: 'Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW',
     },
     sections: [
       {

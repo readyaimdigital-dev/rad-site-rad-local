@@ -30,6 +30,26 @@ const { page } = Astro.props as Props;
       <h2 class="legal-short__title">{page.shortVersion.heading}</h2>
       <div class="legal-copy legal-copy--inverse">
         {page.shortVersion.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        {page.shortVersion.sections && (
+          <div class="legal-short__sections">
+            {page.shortVersion.sections.map((section) => (
+              <section class="legal-short__section">
+                <h3 class="legal-short__section-title">{section.heading}</h3>
+                {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+                {section.bullets && (
+                  <ul>
+                    {section.bullets.map((bullet) => <li><strong>{bullet.label}</strong> {bullet.body}</li>)}
+                  </ul>
+                )}
+                {section.highlights?.map((highlight) => (
+                  <p><strong>{highlight.label}</strong> {highlight.body}</p>
+                ))}
+                {section.emphasis && <p class="legal-short__emphasis">{section.emphasis}</p>}
+              </section>
+            ))}
+          </div>
+        )}
+        {page.shortVersion.footer && <p class="legal-short__footer">{page.shortVersion.footer}</p>}
       </div>
     </div>
   </section>
@@ -87,6 +107,14 @@ const { page } = Astro.props as Props;
   .legal-short{border-bottom:var(--rule) solid var(--ink)}
   .legal-short__inner{padding-block:var(--space-12) var(--space-13);display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-8)}
   .legal-short__title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-2);line-height:var(--leading-tight);letter-spacing:var(--tracking-display);max-width:26ch;color:var(--paper)}
+  .legal-short__sections{display:flex;flex-direction:column;gap:var(--space-9);width:100%}
+  .legal-short__section{display:flex;flex-direction:column;gap:var(--space-5);border-top:var(--rule-hair) solid var(--grey);padding-top:var(--space-8);max-width:var(--measure)}
+  .legal-short__section-title{font-family:var(--font-display);font-weight:var(--weight-display);font-size:var(--text-display-3);line-height:var(--leading-tight);letter-spacing:var(--tracking-display-2);color:var(--paper)}
+  .legal-short__section ul{display:flex;flex-direction:column;gap:var(--space-4);padding-left:var(--space-8)}
+  .legal-short__section li{font-size:var(--text-body-size);color:var(--paper)}
+  .legal-short__section strong{color:var(--paper)}
+  .legal-short__emphasis{border-left:var(--rule) solid var(--text-teal);padding-left:var(--space-7);font-weight:var(--weight-medium)}
+  .legal-short__footer{border-top:var(--rule-hair) solid var(--grey);padding-top:var(--space-7);font-family:var(--font-mono);font-size:var(--text-mono-sm);letter-spacing:var(--tracking-chip);color:var(--paper)}
 
   .legal-clauses{border-bottom:var(--rule) solid var(--ink)}
   .legal-clauses__inner{padding-block:var(--space-12) var(--space-13)}
