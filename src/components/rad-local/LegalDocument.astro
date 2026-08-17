@@ -13,11 +13,10 @@ const { page } = Astro.props as Props;
 <Base title={page.title} description={page.description} stickyCta={false} noindex>
   <section class="legal-hero section section--paper">
     <div class="shell legal-hero__inner">
-      <Label>Contract register</Label>
+      <Label>{page.eyebrow ?? 'Contract register'}</Label>
       <h1 class="legal-hero__title">{page.headingLead} <span>{page.headingAccent}</span></h1>
       <p class="legal-hero__intro">{page.intro}</p>
       <div class="legal-hero__chips" aria-label="Document status">
-        <Chip variant="teal">Placeholder text</Chip>
         <Chip>Last updated {page.updated}</Chip>
       </div>
       {page.showTemplateNotice !== false && <aside class="legal-notice"><strong>Template notice:</strong> {legalTemplateNotice}</aside>}
@@ -120,7 +119,7 @@ const { page } = Astro.props as Props;
   .legal-clauses__inner{padding-block:var(--space-12) var(--space-13)}
   .legal-toc{border:var(--rule) solid var(--ink);background:var(--white);padding-block:var(--space-3);margin-bottom:var(--space-12)}
   .legal-toc__label{padding:var(--space-7) var(--space-8);font-family:var(--font-mono);font-size:var(--text-mono-sm);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--grey)}
-  .legal-toc__links{border-top:var(--rule-hair) solid var(--paper-dark);padding:var(--space-7) var(--space-8);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5) var(--space-9);font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-chip)}
+  .legal-toc__links{border-top:var(--rule-hair) solid var(--paper-dark);padding:var(--space-7) var(--space-8);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(8,auto);grid-auto-flow:column;gap:var(--space-5) var(--space-9);font-family:var(--font-mono);font-size:var(--text-mono);letter-spacing:var(--tracking-chip)}
   .legal-toc__links a{color:var(--text-accent)}
   .legal-toc__links a:hover{color:var(--orange-deepest)}
 
@@ -146,6 +145,6 @@ const { page } = Astro.props as Props;
     .legal-hero__inner,.legal-short__inner,.legal-clauses__inner,.legal-closing__inner{padding-block:var(--space-11) var(--space-12)}
     .legal-hero__title{font-size:var(--text-display-2)}
     .legal-toc__label,.legal-toc__links{padding-inline:var(--space-6)}
-    .legal-toc__links{grid-template-columns:1fr}
+    .legal-toc__links{grid-template-columns:1fr;grid-template-rows:none;grid-auto-flow:row}
   }
 </style>

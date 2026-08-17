@@ -58,15 +58,21 @@ describe("page composition uses the neutral section library", () => {
     expect(legalSource).toContain("id: 'guarantee'");
     expect(legalSource).toContain("id: 'getting'");
     expect(legalSource).toContain("id: 'usual-bits'");
+    expect(legalSource).toContain("eyebrow: 'PRIVACY'");
+    expect(legalSource).toContain('oaic.gov.au');
     expect(legalSource).toContain('3.2 Anything we create for your business');
     expect(legalSource).toContain('11.5 When you cancel:');
     expect(legalSource).not.toContain("footer: 'Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW'");
     expect(legalSource).toContain("What's yours, what's ours, and what happens if you leave");
     expect(documentSource).toContain('href={`#${section.id}`}');
     expect(documentSource).toContain('id={section.id}');
+    expect(documentSource).toContain("page.eyebrow ?? 'Contract register'");
     expect(documentSource).toContain("Template notice:");
     expect(documentSource).toContain("page.showTemplateNotice !== false");
     expect(documentSource).toContain("grid-template-columns:repeat(2,minmax(0,1fr))");
+    expect(documentSource).toContain("grid-template-rows:repeat(8,auto)");
+    expect(documentSource).toContain("grid-auto-flow:column");
+    expect(documentSource).not.toContain('>Placeholder text</Chip>');
     expect(documentSource).toContain("page.shortVersion.sections");
     expect(documentSource).toContain("section.highlights");
     expect(documentSource).toContain("noindex");
@@ -155,13 +161,20 @@ describe("page composition real render", () => {
     expect(termsHtml).toContain("Our 90-day guarantee");
     expect(termsHtml).toContain("Last updated 17 Aug 2026");
     expect(termsHtml).not.toContain("Template notice:");
+    expect(termsHtml).not.toContain("Placeholder text");
     expect(termsHtml).toContain("What&#39;s yours, what&#39;s ours, and what happens if you leave");
     expect(termsHtml).toContain("No exit fee.");
     expect(termsHtml).not.toContain("Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW");
     expect(privacyHtml).toContain('id="collect"');
     expect(privacyHtml).toContain('id="complaints"');
     expect(privacyHtml).toContain("Privacy policy");
-    expect(privacyHtml).toContain("Template notice:");
+    expect(privacyHtml).toContain('PRIVACY');
+    expect(privacyHtml).toContain('Last updated 17 Aug 2026');
+    expect(privacyHtml).toContain('Your contact details:');
+    expect(privacyHtml).toContain('oaic.gov.au');
+    expect(privacyHtml).toContain('Ready Aim Digital · ABN 70 710 322 317');
+    expect(privacyHtml).not.toContain('Template notice:');
+    expect(privacyHtml).not.toContain('Placeholder text');
   });
 
   it("keeps the free-demo confirmation hidden until the form succeeds", async () => {

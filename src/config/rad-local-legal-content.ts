@@ -23,6 +23,7 @@ export interface ShortVersionSection {
 export interface LegalPage {
   title: string;
   description: string;
+  eyebrow?: string;
   headingLead: string;
   headingAccent: string;
   intro: string;
@@ -43,21 +44,21 @@ export interface LegalPage {
 
 const placeholderNotice =
   'This is placeholder legal content. It must be reviewed and populated with client-specific detail by a qualified advisor before launch. Do not publish as-is.';
-const placeholderDate = '[DATE]';
-
 export const legalPages = {
   privacy: {
     title: 'Privacy policy | RAD Local',
     description: 'What we collect, why we collect it, and what we never do with it.',
+    eyebrow: 'PRIVACY',
     headingLead: 'Privacy',
     headingAccent: 'policy',
     intro: 'What we collect, why we collect it, and what we never do with it.',
-    updated: placeholderDate,
+    updated: '17 Aug 2026',
+    showTemplateNotice: false,
     shortVersion: {
       heading: 'We ask for what we need to build your site. Nothing else.',
       paragraphs: [
-        "Placeholder. We don't sell your details. [LEGAL COPY TO BE SUPPLIED]",
-        'Placeholder. Plain summary of the detail below, kept honest and short.',
+        "We don't sell your details. We don't rent them, trade them, or hand them to anyone building a marketing list. That isn't a policy we might revisit. It's just not the business we're in.",
+        "What we collect is what it takes to build your site, keep it running, send you an invoice and pick up the phone when you call. Below is the long version, in plain English. If anything here isn't clear, ring us and ask.",
       ],
     },
     sections: [
@@ -66,36 +67,57 @@ export const legalPages = {
         number: '01',
         heading: 'What we collect',
         paragraphs: [
-          'Placeholder. The details you give us through the demo form and during a build. [LEGAL COPY TO BE SUPPLIED]',
+          'The details you give us through the demo form and during your build.',
         ],
         bullets: [
-          'Name, business name, town and phone number.',
-          'Placeholder item covering billing details held by our payment provider.',
-          'Placeholder item covering site content and images you send us.',
+          "Your contact details: your name, your business name, your town, your phone number and your email. That's what the demo form asks for, and it's all we need to start.",
+          'Your business details: what you do, where you do it, your hours, your services, and anything else that needs to end up on the site.',
+          "Your billing details: handled by our payment and invoicing providers. We see that an invoice was paid. We don't see or store your full card number.",
+          'The content you send us: photos, logos, copy, and access to things like your Google Business Profile so we can set it up and work on it.',
+          "Basic site data: which pages get visited on this website, so we know what's useful and what isn't. See section 05.",
         ],
+        note: "If you're a customer of a business whose site we built, and you've filled in an enquiry form on it: that enquiry belongs to that business, not to us. We pass it to them and we don't use it for anything else.",
       },
       {
         id: 'why',
         number: '02',
         heading: 'Why we collect it',
         paragraphs: [
-          'Placeholder. Purposes: building the sample, running the site, billing, and getting in touch about your account. [LEGAL COPY TO BE SUPPLIED]',
+          'Five reasons, and no sixth one:',
         ],
+        bullets: [
+          'To build your free sample and, if you go ahead, your site.',
+          'To host it, run it and do the ongoing work of keeping you findable.',
+          'To bill you.',
+          'To contact you about your account, your build or your site.',
+          'To meet our legal obligations, like keeping tax records.',
+        ],
+        note: "We don't use your details for anything you didn't come to us for. We won't add you to a mailing list you didn't ask for, and we won't pass you to anyone else to sell to.",
       },
       {
         id: 'sharing',
         number: '03',
         heading: 'Who else sees it',
         paragraphs: [
-          'Placeholder. Named service providers: hosting, email, payments and analytics. Nothing sold, nothing rented. [LEGAL COPY TO BE SUPPLIED]',
+          'We use a handful of suppliers to actually deliver the service, and each of them only sees the part they need:',
         ],
+        bullets: [
+          'Hosting and infrastructure providers: they run the servers your site lives on.',
+          "Email and file storage providers: that's where our correspondence with you sits.",
+          'Payment and invoicing providers: they process your payments and issue your invoices.',
+          'Analytics providers: visit numbers for this website (section 05).',
+          'Google: for setting up and working on your Google Business Profile.',
+        ],
+        note: "Beyond that, we share your information only if the law requires it, or if our business is sold or restructured. In that case, your records move with the service, on the same terms, and we'd tell you. Nothing is sold. Nothing is rented. Nothing goes to a data broker.",
       },
       {
         id: 'storage',
         number: '04',
         heading: "Where it's stored",
         paragraphs: [
-          'Placeholder. Storage location, security measures, and how long records are kept. [LEGAL COPY TO BE SUPPLIED]',
+          "Your details are stored on servers run by our hosting and software providers. Some of those providers are based overseas, including in the United States, which means your information may be stored or processed outside Australia.",
+          "We take reasonable steps to protect it: access is limited to the people who actually need it, accounts are protected, and we don't keep things we no longer need. No system is perfectly secure, and we won't pretend otherwise. But we treat your details as if they were ours.",
+          'How long we keep it. While you\'re a client, and then for as long as the law requires afterwards. Generally seven years for anything tied to invoices and tax records. Everything else gets deleted or de-identified once we no longer need it.',
         ],
       },
       {
@@ -103,15 +125,21 @@ export const legalPages = {
         number: '05',
         heading: 'Cookies and analytics',
         paragraphs: [
-          'Placeholder. Which cookies this site sets, what analytics we run, and how to opt out. [LEGAL COPY TO BE SUPPLIED]',
+          'This website uses two kinds of cookies:',
         ],
+        bullets: [
+          "Essential ones, which make the site work: remembering your form entries and keeping things secure. The site can't run without them.",
+          "Analytics ones, which count visits and tell us which pages people actually read. They tell us how many, not who.",
+        ],
+        note: "We don't run advertising or remarketing cookies at the moment. We may advertise at some point. If we do, we'll update this page and the date at the top of it before anything goes live, so this always describes what's actually running. You can block or delete cookies in your browser settings at any time. Essential cookies being blocked may stop parts of the site working, but nothing here depends on you accepting analytics.",
       },
       {
         id: 'access',
         number: '06',
         heading: 'Access and correction',
         paragraphs: [
-          'Placeholder. How to ask for a copy of what we hold and how to have it corrected. [LEGAL COPY TO BE SUPPLIED]',
+          'You can ask us for a copy of the personal information we hold about you, and you can ask us to correct anything that\'s wrong. Both are free.',
+          "Email hello@readyaim.digital and we'll come back to you within 30 days. We may need to confirm who you are first. It's your information, so we're careful about who we hand it to.",
         ],
       },
       {
@@ -119,7 +147,9 @@ export const legalPages = {
         number: '07',
         heading: 'Deletion',
         paragraphs: [
-          'Placeholder. What we delete when you leave, what we keep for tax records, and the timeframe. [LEGAL COPY TO BE SUPPLIED]',
+          'You can ask us to delete what we hold about you at any time.',
+          'When you leave, we delete or de-identify the personal information we no longer need. What we have to keep is anything tied to invoices and tax records. Generally seven years, because the law says so, not because we want it.',
+          "Your site files are yours to export at any time, free, and your domain, your Google Business Profile and your content were always in your name. None of that depends on us. That's set out in our Terms of Service.",
         ],
       },
       {
@@ -127,16 +157,27 @@ export const legalPages = {
         number: '08',
         heading: 'Complaints',
         paragraphs: [
-          'Placeholder. How to raise a privacy complaint with us, and your right to take it to the OAIC. [LEGAL COPY TO BE SUPPLIED]',
+          "If you think we've mishandled your personal information, tell us first. Email hello@readyaim.digital with what happened. We'll acknowledge it quickly and give you an answer within 30 days.",
         ],
+        bullets: [
+          'oaic.gov.au',
+          '1300 363 992',
+        ],
+        note: "If you're not happy with how we've dealt with it, you can take it to the Office of the Australian Information Commissioner. You don't need our permission to do that, and it costs you nothing.",
       },
       {
         id: 'contact',
         number: '09',
         heading: 'Contact',
         paragraphs: [
-          'Placeholder. Privacy enquiries go to [EMAIL] or [PHONE]. Postal address [ADDRESS].',
+          'Privacy enquiries go to a person, not a form:',
         ],
+        bullets: [
+          'Email: hello@readyaim.digital',
+          'Phone: +61 2 5632 9005',
+          'Post: PO Box 250, Maclean NSW 2463',
+        ],
+        note: 'Ready Aim Digital · ABN 70 710 322 317',
       },
     ],
   },
