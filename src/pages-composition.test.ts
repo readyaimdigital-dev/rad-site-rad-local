@@ -65,6 +65,8 @@ describe("page composition uses the neutral section library", () => {
     expect(documentSource).toContain('href={`#${section.id}`}');
     expect(documentSource).toContain('id={section.id}');
     expect(documentSource).toContain("Template notice:");
+    expect(documentSource).toContain("page.showTemplateNotice !== false");
+    expect(documentSource).toContain("grid-template-columns:repeat(2,minmax(0,1fr))");
     expect(documentSource).toContain("page.shortVersion.sections");
     expect(documentSource).toContain("section.highlights");
     expect(documentSource).toContain("noindex");
@@ -151,12 +153,15 @@ describe("page composition real render", () => {
     expect(termsHtml).toContain('href="#guarantee"');
     expect(termsHtml).toContain('href="#getting"');
     expect(termsHtml).toContain("Our 90-day guarantee");
+    expect(termsHtml).toContain("Last updated 17 Aug 2026");
+    expect(termsHtml).not.toContain("Template notice:");
     expect(termsHtml).toContain("What&#39;s yours, what&#39;s ours, and what happens if you leave");
     expect(termsHtml).toContain("No exit fee.");
     expect(termsHtml).not.toContain("Ready Aim Digital · ABN 70 710 322 317 · Maclean, NSW");
     expect(privacyHtml).toContain('id="collect"');
     expect(privacyHtml).toContain('id="complaints"');
     expect(privacyHtml).toContain("Privacy policy");
+    expect(privacyHtml).toContain("Template notice:");
   });
 
   it("keeps the free-demo confirmation hidden until the form succeeds", async () => {

@@ -27,6 +27,7 @@ export interface LegalPage {
   headingAccent: string;
   intro: string;
   updated: string;
+  showTemplateNotice?: boolean;
   shortVersion: {
     heading: string;
     paragraphs: readonly string[];
@@ -145,7 +146,8 @@ export const legalPages = {
     headingLead: 'Terms of',
     headingAccent: 'service',
     intro: 'The rules that cover your subscription. Written to be read, not to be survived.',
-    updated: placeholderDate,
+    updated: '17 Aug 2026',
+    showTemplateNotice: false,
     shortVersion: {
       heading: "What's yours, what's ours, and what happens if you leave",
       paragraphs: [
