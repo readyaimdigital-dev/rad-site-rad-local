@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, it } from "vitest";
 import { meta } from "./config/rad-local-design-content";
@@ -28,6 +29,18 @@ describe("page composition uses the neutral section library", () => {
     expect(source).toContain("content.servicesPage.description");
     expect(source).not.toContain('"Free quote"');
     expect(source).toContain("servicesPage.serviceLabels.pricingValue");
+  });
+
+  it('keeps the pricing inclusions and plan scope copy aligned', () => {
+    const source = readFileSync(resolve('src/config/rad-local-design-content.ts'), 'utf8');
+    expect(source).toContain("an enquiry form straight to your inbox");
+    expect(source).toContain('A 1 to 3 page site, fully built');
+    expect(source).toContain('A 4 to 6 page site, fully built');
+    expect(source).toContain('Up to 8 core pages, plus new SEO pages added each quarter');
+    expect(source).toContain('One change a month: text, photos, hours, pricing');
+    expect(source).toContain('Three changes a month: text, photos, hours, pricing');
+    expect(source).toContain('Six priority changes a month');
+    expect(source).not.toContain('The full foundation');
   });
 
   it("about page uses the approved RAD Local design layer", () => {

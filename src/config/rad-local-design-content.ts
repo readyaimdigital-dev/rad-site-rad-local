@@ -30,16 +30,16 @@ export const pricing = {
   closingNote:
     "Most businesses land on Momentum. It's the plan where the monthly work actually happens, and where you get a report proving it did.",
   baseline:
-    'Every plan includes all of this: your site, hosting, SSL, security, backups, Google Business Profile, schema, a build that’s ready for AI search, and a monthly snapshot.',
+    "Every plan includes all of this: your site, an enquiry form straight to your inbox, hosting, SSL, security, backups, Google Business Profile, schema, a build that's ready for AI search, and a monthly snapshot.",
   tiers: [
     {
       name: 'Presence',
       price: '199',
       outcome: "You're live, you look the part, and you're built to be found.",
       lines: [
-        'The full foundation',
+        'A 1 to 3 page site, fully built',
         'A monthly snapshot of where you’re showing up',
-        'One content update a month',
+        'One change a month: text, photos, hours, pricing',
       ],
       bestFor: 'I need to look legitimate and get found.',
       popular: false,
@@ -50,10 +50,11 @@ export const pricing = {
       outcome:
         'Real work every month to keep you visible, and a report that proves it happened.',
       lines: [
+        'A 4 to 6 page site, fully built',
         { lead: true, text: 'Everything in Presence, plus:' },
         'Monthly search and AI-answer optimisation',
         'A full plain-English monthly report',
-        'Three content updates a month',
+        'Three changes a month: text, photos, hours, pricing',
       ],
       bestFor: "I want to keep showing up, and I want to see that it's working.",
       popular: true,
@@ -65,11 +66,12 @@ export const pricing = {
       outcome:
         'The full push, for businesses that intend to lead their region outright.',
       lines: [
+        'Up to 8 core pages, plus new SEO pages added each quarter',
         { lead: true, text: 'Everything in Momentum, plus:' },
         'Aggressive AI-answer optimisation for your niche',
         'Competitor monitoring',
         'Quarterly strategy review',
-        'Six priority content updates a month',
+        'Six priority changes a month',
       ],
       bestFor: 'I want to lead my patch, not just keep up with it.',
       popular: false,
