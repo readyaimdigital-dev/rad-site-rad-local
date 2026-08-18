@@ -68,7 +68,11 @@ const { page } = Astro.props as Props;
             <div class="legal-section__number">{section.number}</div>
             <h2 id={`${section.id}-heading`} class="legal-section__title">{section.heading}</h2>
             <div class="legal-copy">
-              {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+              {section.paragraphs.map((paragraph) =>
+                typeof paragraph === 'string'
+                  ? <p>{paragraph}</p>
+                  : <p><strong>{paragraph.strong}</strong> {paragraph.body}</p>
+              )}
               {section.bullets && (
                 <ul>
                   {section.bullets.map((bullet) => <li>{bullet}</li>)}
@@ -88,7 +92,7 @@ const { page } = Astro.props as Props;
         <Label>Questions</Label>
         <h2 class="legal-closing__title">{page.closing.heading}</h2>
         <p class="legal-closing__body">{page.closing.body}</p>
-        <span class="legal-button" aria-label="Placeholder email contact">Email [EMAIL]</span>
+        {page.closing.email && <a class="legal-button" href={page.closing.email.href}>{page.closing.email.label}</a>}
       </div>
     </section>
   )}

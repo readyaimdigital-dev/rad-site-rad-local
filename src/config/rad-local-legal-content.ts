@@ -1,8 +1,15 @@
+export type LegalParagraph =
+  | string
+  | {
+      strong: string;
+      body: string;
+    };
+
 export interface LegalSection {
   id: string;
   number: string;
   heading: string;
-  paragraphs: readonly string[];
+  paragraphs: readonly LegalParagraph[];
   bullets?: readonly string[];
   note?: string;
 }
@@ -39,6 +46,10 @@ export interface LegalPage {
   closing?: {
     heading: string;
     body: string;
+    email?: {
+      label: string;
+      href: string;
+    };
   };
 }
 
@@ -184,6 +195,7 @@ export const legalPages = {
   terms: {
     title: 'Terms of service | RAD Local',
     description: 'The terms that cover your RAD Local website subscription. Plain English, nothing buried.',
+    eyebrow: 'Terms',
     headingLead: 'Terms of',
     headingAccent: 'service',
     intro: 'The rules that cover your subscription. Written to be read, not to be survived.',
@@ -234,8 +246,9 @@ export const legalPages = {
         {
           heading: "What we guarantee, and what we don't",
           highlights: [
-            { label: 'We guarantee:', body: "within 90 days of launch you'll be live, indexed, and showing up when someone searches your business name and your area. We agree that exact search with you in writing before launch. If you're not showing up, your monthly fee stops until you are." },
-            { label: "We don't guarantee:", body: 'leads, sales, enquiries, traffic, or a ranking position on competitive searches like "plumber Dubbo". Nobody can honestly promise those. Getting found on competitive searches is ongoing work we do over time. It is not a guarantee.' },
+            { label: 'We guarantee:', body: "within 90 days of launch you'll be live, indexed, and showing up in Google when someone searches your business name and your area. We agree that exact search with you in writing before launch. If you're not showing up, your monthly fee stops until you are." },
+            { label: "We don't guarantee:", body: 'leads, sales, enquiries, traffic, or a ranking position on competitive searches like "plumber Dubbo". Nobody can honestly promise those. Getting found on competitive searches is ongoing work we do over time - it\'s not a guarantee.' },
+            { label: 'The guarantee is about Google, not AI.', body: "It doesn't cover ChatGPT, Google's AI Overviews, Perplexity or any other AI assistant. We work on AI findability every month on the plans that include it, and it's some of the most valuable work we do - but AI tools answer differently for different people at different times, so nobody can honestly guarantee what one will say about you." },
           ],
           paragraphs: [
             'Your rights under the Australian Consumer Law always apply, on top of everything above.',
@@ -330,10 +343,22 @@ export const legalPages = {
         number: '08',
         heading: 'Our 90-day guarantee',
         paragraphs: [
-          "8.1 Here's the guarantee, in full: Within 90 days of launch your site will be live, indexed, and showing up when someone searches for your business by name and area (for example, \"Joe's Plumbing Dubbo\"). This is not a promise of ranking for category searches like \"plumber Dubbo\". If it isn't, your monthly fee stops until it is, and this is in addition to your rights under the Australian Consumer Law, which always apply. You don't pay the monthly fee until your site is findable.",
-          '8.2 What "found" means. Your site shows up for a search of your business name and area. We agree that exact search with you in writing before launch and record it in your plan confirmation, so at day 90 we are both measuring the same thing.',
-          "8.3 What it doesn't cover. It isn't a promise about ranking position, competitive searches (like \"plumber Dubbo\"), leads, sales or traffic. Getting found for competitive searches is ongoing growth work we do over time, not a guarantee.",
-          '8.4 How it works if you claim it. Your monthly fee pauses until your site is findable, then resumes from that day. The build fee is not affected. Your rights under clause 14 always apply regardless.',
+          {
+            strong: "8.1 Here's the guarantee, in full: Within 90 days of launch your site will be live, indexed, and showing up in Google Search when someone searches for your business by name and area",
+            body: "(for example, \"Joe's Plumbing Dubbo\"). This is not a promise of ranking for category searches like \"plumber Dubbo\". If it isn't, your monthly fee stops until it is - and this is in addition to your rights under the Australian Consumer Law, which always apply. You don't pay the monthly fee until your site is findable.",
+          },
+          {
+            strong: '8.2 What "found" means, exactly.',
+            body: "Your site shows up in Google Search (google.com.au) when someone searches your business name and your area. That's the whole measure: Google, standard search results, checked while signed out so nobody's personal search history flatters the result. We agree the exact search with you in writing before launch and record it in your plan confirmation, so at day 90 we're both measuring the same thing.",
+          },
+          {
+            strong: '8.3 The guarantee is Google Search only.',
+            body: "It is not a promise about ChatGPT, Google's AI Overviews, Perplexity, Copilot or any other AI assistant, and it isn't a promise about Bing or any other search engine. We do ongoing AI findability work every month on the plans that include it, and we think it's the most valuable work we do - but AI assistants give different answers to different people at different times, and there's no honest way to guarantee what one will say about your business. Anyone telling you otherwise is selling you something. If that ever becomes measurable, we'll guarantee it too.",
+          },
+          {
+            strong: '8.4 How it works if you claim it.',
+            body: 'Your monthly fee pauses until your site is findable, then resumes from that day. The build fee is not affected. Your rights under clause 14 always apply regardless.',
+          },
         ],
       },
       {
@@ -341,8 +366,18 @@ export const legalPages = {
         number: '09',
         heading: "What we don't guarantee",
         paragraphs: [
-          "9.1 We can't and don't guarantee lead volume, sales, enquiries, traffic, conversion rates or search ranking positions. Those depend on things outside our control: your market, your competitors, your pricing, and how search engines choose to behave.",
-          "9.2 We'll always be straight with you about what we can and can't promise. Anyone guaranteeing you a number one ranking or a set number of leads is guessing.",
+          {
+            strong: '9.1',
+            body: "The 90-day guarantee in clause 8 is the only outcome we guarantee. We can't and don't promise lead volume, sales, enquiries, traffic, conversion rates, or ranking positions on competitive searches like \"plumber Dubbo\". Those depend on things outside our control - your market, your competitors, your pricing, and how search engines and AI tools decide to behave.",
+          },
+          {
+            strong: '9.2',
+            body: "Getting found on competitive searches is ongoing growth work we do over time. It's real work, and after launch it's most of what your monthly fee pays for - but it isn't a guarantee and we won't dress it up as one.",
+          },
+          {
+            strong: '9.3',
+            body: "We'll always be straight with you about what we can and can't promise. Anyone guaranteeing you a number one ranking or a set number of leads is guessing.",
+          },
         ],
       },
       {
@@ -427,7 +462,11 @@ export const legalPages = {
     ],
     closing: {
       heading: 'Not sure what a clause means? Ask.',
-      body: 'Placeholder. Call or email and you will get a straight answer from the person who built it. [CONTACT DETAILS TO BE SUPPLIED]',
+      body: 'Call or email and you will get a straight answer from the person who built it.',
+      email: {
+        label: 'Email hello@readyaim.digital',
+        href: 'mailto:hello@readyaim.digital',
+      },
     },
   },
 } satisfies Record<'privacy' | 'terms', LegalPage>;

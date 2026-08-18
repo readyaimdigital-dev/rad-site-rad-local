@@ -72,6 +72,12 @@ describe("page composition uses the neutral section library", () => {
     expect(legalSource).toContain("id: 'getting'");
     expect(legalSource).toContain("id: 'usual-bits'");
     expect(legalSource).toContain("eyebrow: 'PRIVACY'");
+    expect(legalSource).toContain("eyebrow: 'Terms'");
+    expect(legalSource).toContain('Email hello@readyaim.digital');
+    expect(legalSource).toContain('mailto:hello@readyaim.digital');
+    expect(legalSource).not.toContain('[CONTACT DETAILS TO BE SUPPLIED]');
+    expect(legalSource).toContain('8.3 The guarantee is Google Search only.');
+    expect(legalSource).toContain("strong: '9.3'");
     expect(legalSource).toContain('oaic.gov.au');
     expect(legalSource).toContain('3.2 Anything we create for your business');
     expect(legalSource).toContain('11.5 When you cancel:');
@@ -88,6 +94,8 @@ describe("page composition uses the neutral section library", () => {
     expect(documentSource).not.toContain('>Placeholder text</Chip>');
     expect(documentSource).toContain("page.shortVersion.sections");
     expect(documentSource).toContain("section.highlights");
+    expect(documentSource).toContain("typeof paragraph === 'string'");
+    expect(documentSource).toContain('page.closing.email.href');
     expect(documentSource).toContain("noindex");
   });
 
