@@ -37,7 +37,7 @@ export const pricing = {
       price: '199',
       outcome: "You're live, you look the part, and you're built to be found.",
       lines: [
-        'A 1 to 3 page site, fully built',
+        '1 to 3 page site, fully built',
         'A monthly snapshot of where you’re showing up',
         'One change a month: text, photos, hours, pricing',
       ],
@@ -50,7 +50,7 @@ export const pricing = {
       outcome:
         'Real work every month to keep you visible, and a report that proves it happened.',
       lines: [
-        'A 4 to 6 page site, fully built',
+        '4 to 6 page site, fully built',
         { lead: true, text: 'Everything in Presence, plus:' },
         'Monthly search and AI-answer optimisation',
         'A full plain-English monthly report',
@@ -84,9 +84,9 @@ export const pricing = {
 export const guarantee = {
   heading: 'Found, or the fee pauses.',
   body: [
-    "Within 90 days of launch you'll be live, indexed, and showing up when people search your business name and your service area.",
+    "Within 90 days of launch you'll be live, indexed, and showing up in Google when people search your business name and your service area.",
     "If you're not, your monthly fee stops until you are.",
-    'We agree the exact search in writing before launch, so there’s no arguing later about what "showing up" means.',
+    "We agree the exact search in writing before launch, so what \"showing up\" means isn't hidden in fine print after.",
   ],
   notGuaranteed: {
     heading: "Honest about what isn't guaranteed.",

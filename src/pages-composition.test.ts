@@ -34,13 +34,21 @@ describe("page composition uses the neutral section library", () => {
   it('keeps the pricing inclusions and plan scope copy aligned', () => {
     const source = readFileSync(resolve('src/config/rad-local-design-content.ts'), 'utf8');
     expect(source).toContain("an enquiry form straight to your inbox");
-    expect(source).toContain('A 1 to 3 page site, fully built');
-    expect(source).toContain('A 4 to 6 page site, fully built');
+    expect(source).toContain('1 to 3 page site, fully built');
+    expect(source).toContain('4 to 6 page site, fully built');
     expect(source).toContain('Up to 8 core pages, plus new SEO pages added each quarter');
     expect(source).toContain('One change a month: text, photos, hours, pricing');
     expect(source).toContain('Three changes a month: text, photos, hours, pricing');
     expect(source).toContain('Six priority changes a month');
     expect(source).not.toContain('The full foundation');
+    expect(source).toContain("showing up in Google when people search your business name and your service area");
+    expect(source).toContain("isn't hidden in fine print after");
+  });
+
+  it("home page FAQ includes the add-a-page entry", () => {
+    const source = readFileSync("src/pages/index.astro", "utf8");
+    expect(source).toContain("What if I want to add a new page to my website later?");
+    expect(source).toContain("New pages are quoted separately, from $189.");
   });
 
   it("about page uses the approved RAD Local design layer", () => {
