@@ -194,14 +194,14 @@ const faqs = [
           </div>
         ))}
         <div class="market__payoff">
-          <p>One simple price. $599 build, then from <em>$199 a month</em>. That's the lot.</p>
+          <p>One simple price.<br />$599 build, then from <em>$199 a month</em>.<br />That's the lot.</p>
         </div>
       </div>
       <p class="market__source">Based on typical published Australian market pricing.</p>
 
       <!-- build-fee anchor · new, from the July page -->
       <div class="anchor">
-        <p class="anchor__copy">One <strong>one-off build fee</strong> on every plan. That's everything it takes to get you designed, built and live. Then choose the monthly plan that fits.</p>
+        <p class="anchor__copy"><span>{pricing.anchor.leadBefore}<strong>{pricing.anchor.leadEmphasis}</strong>{pricing.anchor.leadAfter}</span><br /><span>{pricing.anchor.explanation}</span><br /><span>{pricing.anchor.close}</span></p>
         <PriceNumber amount={pricing.buildFee.amount} suffix={pricing.buildFee.caption} size={64} class="anchor__price" />
       </div>
 
@@ -270,7 +270,6 @@ const faqs = [
       <h2 class="h2">{portfolio.heading}</h2>
       <div class="lede s7__lede">
         {portfolio.lede.map((l) => <p>{l}</p>)}
-        {portfolio.note.map((l) => <p class="s7__note">{l}</p>)}
       </div>
       <div class="s7__grid">
         {portfolio.items.map((item) => (

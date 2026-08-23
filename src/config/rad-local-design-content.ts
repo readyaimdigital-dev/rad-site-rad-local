@@ -1,5 +1,5 @@
 import earthworks from '../assets/rad-sample-earthworks.jpg';
-import vet from '../assets/rad-sample-vet.jpg';
+import brickrite from '../assets/brickrite-homepage.jpg';
 import solar from '../assets/rad-sample-solar.jpg';
 import bakery from '../assets/rad-sample-bakery.jpg';
 import haydenPhoto from '../assets/hayden.jpg';
@@ -24,8 +24,13 @@ import townPhoto from '../assets/hero-town.jpg';
 
 export const pricing = {
   buildFee: { amount: '599', caption: 'one-off build' },
-  anchor:
-    "One one-off build fee on every plan. That's everything it takes to get you designed, built and live. Then choose the monthly plan that fits.",
+  anchor: {
+    leadBefore: 'One ',
+    leadEmphasis: 'one-off build fee',
+    leadAfter: ' on every plan.',
+    explanation: "That's everything it takes to get you designed, built and live.",
+    close: 'Then choose the monthly plan that fits.',
+  },
   footnote: 'All prices ex GST.',
   closingNote:
     "Most businesses land on Momentum. It's the plan where the monthly work actually happens, and where you get a report proving it did.",
@@ -128,40 +133,37 @@ export const meta = {
   },
 } as const;
 
-/* ── portfolio · 11 Part 1. Captions corrected: a vet clinic is not allied
-      health and a bakery is not a venue. ───────────────────────────────────── */
+/* ── portfolio ─────────────────────────────────────────────────────────── */
 
 export const portfolio = {
   heading: 'Have a squiz at what we build.',
   lede: [
-    'These are demo sites we built for regional businesses like yours.',
-    'An earthmoving contractor. A vet clinic. A solar sparkie. A regional bakery.',
+    'An earthmoving contractor. A brickie. A sparkie. A regional bakery.',
+    "Every one designed properly, built to load fast, and set out to be found in Google and AI search. That's the standard. Every site that leaves our bench gets it, whether you're a one ute operation or the busiest shop on the main street.",
+    'Yours could be sitting here next.',
   ],
-  /** NOTE: "Built to the same spec yours would be." was removed pending Hayden's
-   *  call: the samples are in a different visual language. See 11 Part 1. */
-  note: ['As real client sites go live, they’ll take this spot over.'],
   items: [
     {
       image: earthworks,
-      caption: 'Earthmoving demo · featured',
+      caption: 'Earthmoving',
       featured: true,
       alt: 'Sample site for an earthmoving contractor: a dark editorial layout with a large headline set against a cinematic photograph of an excavator at sunset.',
     },
     {
-      image: vet,
-      caption: 'Vet clinic demo',
+      image: brickrite,
+      caption: 'Brickrite',
       featured: false,
-      alt: 'Sample site for a regional vet clinic: a calm, airy layout in bone and forest green with a warm photograph of a woman and her dog.',
+      alt: "Screenshot of the Brickrite homepage: a bricklayer building a herringbone brick wall beside the headline 'The bricklayer that proves it.'",
     },
     {
       image: solar,
-      caption: 'Solar and electrical demo',
+      caption: 'Solar and electrical',
       featured: false,
       alt: 'Sample site for a solar and electrical company: a precise typographic layout with an oversized headline beside a graphic photograph of solar panels.',
     },
     {
       image: bakery,
-      caption: 'Bakery demo',
+      caption: 'Bakery',
       featured: false,
       alt: 'Sample site for a regional bakery: an editorial magazine layout with a serif headline beside a close photograph of a sourdough loaf.',
     },
@@ -234,7 +236,6 @@ export const demo = {
         body: [
           "Book a time that suits you, and we'll share the screen.",
           "You'll see the sample, ask your questions, and take it from there.",
-          "You get the recording, so you're not stuck taking notes.",
           'Or not. Your call either way.',
         ],
       },

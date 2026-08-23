@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, it } from "vitest";
-import { meta } from "./config/rad-local-design-content";
+import { demo, meta, portfolio, pricing } from "./config/rad-local-design-content";
 import { site } from "./config/site";
 
 const requestUrl = (path: string) => new Request(new URL(path, "http://localhost/"));
@@ -43,6 +43,29 @@ describe("page composition uses the neutral section library", () => {
     expect(source).not.toContain('The full foundation');
     expect(source).toContain("showing up in Google when people search your business name and your service area");
     expect(source).toContain("isn't hidden in fine print after");
+  });
+
+  it("keeps the approved pricing, portfolio, and free-demo copy in its intended beats", () => {
+    const homeSource = readFileSync("src/pages/index.astro", "utf8");
+
+    expect(homeSource).toContain("One simple price.<br />$599 build, then from <em>$199 a month</em>.<br />That's the lot.");
+    expect(pricing.anchor).toEqual({
+      leadBefore: 'One ',
+      leadEmphasis: 'one-off build fee',
+      leadAfter: ' on every plan.',
+      explanation: "That's everything it takes to get you designed, built and live.",
+      close: 'Then choose the monthly plan that fits.',
+    });
+    expect(portfolio.lede).toEqual([
+      'An earthmoving contractor. A brickie. A sparkie. A regional bakery.',
+      'Every one designed properly, built to load fast, and set out to be found in Google and AI search. That\'s the standard. Every site that leaves our bench gets it, whether you\'re a one ute operation or the busiest shop on the main street.',
+      'Yours could be sitting here next.',
+    ]);
+    expect(portfolio.items.map((item) => item.caption)).toContain('Brickrite');
+    expect(portfolio.items.map((item) => item.caption)).not.toContain('Vet clinic');
+    expect(portfolio.items.map((item) => item.caption)).not.toContain('Earthmoving demo · featured');
+    expect(portfolio.items.every((item) => !item.caption.toLowerCase().includes('demo'))).toBe(true);
+    expect(demo.next.steps[2].body).not.toContain("You get the recording, so you're not stuck taking notes.");
   });
 
   it("home page FAQ includes the add-a-page entry", () => {
