@@ -277,7 +277,8 @@ const faqs = [
             <Figure
               image={item.image}
               alt={item.alt}
-              minHeight={item.featured ? 420 : 220}
+              class={item.featured ? 's7__figure--featured' : 's7__figure'}
+              minHeight={item.featured ? 420 : 0}
               widths={item.featured ? [640, 1000, 1400] : [400, 640, 900]}
               sizes={item.featured ? '(max-width: 1023px) 100vw, 1100px' : '(max-width: 1023px) 100vw, 360px'}
             />
@@ -533,6 +534,8 @@ const faqs = [
   .s7__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-8)}
   .s7__item{display:flex;flex-direction:column;gap:var(--space-4)}
   .s7__item--featured{grid-column:1 / -1}
+  :global(.s7__figure){aspect-ratio:1200 / 896;min-height:0}
+  :global(.s7__figure img){min-height:0;object-fit:cover}
   .s7__caption{
     font-family:var(--font-mono);font-size:var(--text-mono);
     letter-spacing:var(--tracking-chip);text-transform:uppercase;color:var(--grey);

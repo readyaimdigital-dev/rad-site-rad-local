@@ -65,6 +65,10 @@ describe("page composition uses the neutral section library", () => {
     expect(portfolio.items.map((item) => item.caption)).not.toContain('Vet clinic');
     expect(portfolio.items.map((item) => item.caption)).not.toContain('Earthmoving demo · featured');
     expect(portfolio.items.every((item) => !item.caption.toLowerCase().includes('demo'))).toBe(true);
+    expect(homeSource).toContain("class={item.featured ? 's7__figure--featured' : 's7__figure'}");
+    expect(homeSource).toContain('minHeight={item.featured ? 420 : 0}');
+    expect(homeSource).toContain(':global(.s7__figure){aspect-ratio:1200 / 896;min-height:0}');
+    expect(homeSource).toContain(':global(.s7__figure img){min-height:0;object-fit:cover}');
     expect(demo.next.steps[2].body).not.toContain("You get the recording, so you're not stuck taking notes.");
   });
 
