@@ -62,6 +62,8 @@ describe("page composition uses the neutral section library", () => {
       'Yours could be sitting here next.',
     ]);
     expect(portfolio.items.map((item) => item.caption)).toContain('Brickrite');
+    expect(portfolio.items[0]).toMatchObject({ caption: 'Brickrite', featured: true });
+    expect(portfolio.items.find((item) => item.caption === 'Earthmoving')).toMatchObject({ featured: false });
     expect(portfolio.items.map((item) => item.caption)).not.toContain('Vet clinic');
     expect(portfolio.items.map((item) => item.caption)).not.toContain('Earthmoving demo · featured');
     expect(portfolio.items.every((item) => !item.caption.toLowerCase().includes('demo'))).toBe(true);

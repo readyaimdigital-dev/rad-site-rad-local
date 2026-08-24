@@ -1,5 +1,5 @@
 import earthworks from '../assets/rad-sample-earthworks.jpg';
-import brickrite from '../assets/brickrite-homepage.jpg';
+import brickrite from '../assets/brickrite-homepage.png';
 import solar from '../assets/rad-sample-solar.jpg';
 import bakery from '../assets/rad-sample-bakery.jpg';
 import haydenPhoto from '../assets/hayden.jpg';
@@ -144,16 +144,16 @@ export const portfolio = {
   ],
   items: [
     {
-      image: earthworks,
-      caption: 'Earthmoving',
-      featured: true,
-      alt: 'Sample site for an earthmoving contractor: a dark editorial layout with a large headline set against a cinematic photograph of an excavator at sunset.',
-    },
-    {
       image: brickrite,
       caption: 'Brickrite',
+      featured: true,
+      alt: "Screenshot of the Brickrite homepage, with the full header, hero headline, assessment CTA, and bricklayer image visible.",
+    },
+    {
+      image: earthworks,
+      caption: 'Earthmoving',
       featured: false,
-      alt: "Screenshot of the Brickrite homepage: a bricklayer building a herringbone brick wall beside the headline 'The bricklayer that proves it.'",
+      alt: 'Sample site for an earthmoving contractor: a dark editorial layout with a large headline set against a cinematic photograph of an excavator at sunset.',
     },
     {
       image: solar,
