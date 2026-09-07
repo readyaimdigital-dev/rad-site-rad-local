@@ -4,6 +4,10 @@ import { site } from "./site";
 import { GET as getRobotsTxt } from "../pages/robots.txt";
 
 describe("shouldIncludeInSitemap", () => {
+  it("uses the primary RAD Local domain", () => {
+    expect(site.url).toBe("https://radlocal.com.au");
+  });
+
   it("excludes noindex legal templates", () => {
     expect(shouldIncludeInSitemap("https://example.com.au/privacy/")).toBe(false);
     expect(shouldIncludeInSitemap("https://example.com.au/terms/")).toBe(false);

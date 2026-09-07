@@ -75,7 +75,7 @@ export const site: SiteConfig = {
   tagline: "A better website, without the technical headache",
   description:
     "RAD Local builds and supports websites for regional Australian businesses.",
-  url: "https://radlocal.readyaim.digital",
+  url: "https://radlocal.com.au",
   locale: "en-AU",
   contact: {
     email: "hello@readyaim.digital",
